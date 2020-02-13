@@ -1,0 +1,29 @@
+# WPILib
+bin/
+build/
+dist/
+sysProps.xml
+workbench.xmi
+
+# IDE
+*.ipr
+*.iml
+*.iws
+out/
+tmp/
+.settings/
+.loadpath
+.project
+/.idea
+.classpath
+
+# Toast/GradleRIO
+run/
+.gradle/
+gradle/.launch/
+
+# backup files
+*~
+
+# directory for XML generated after running junit tests through ant
+junit/
