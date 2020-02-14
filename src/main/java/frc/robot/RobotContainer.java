@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // Creating a base object
   private final Base base = new Base();
   private final Intake intake = new Intake();
   private final Hang hang = new Hang();
@@ -34,12 +33,7 @@ public class RobotContainer {
   private JoystickButton rtBtn1 = new JoystickButton(stick1, 8);
 
   // constructor for teleopCommand
-  private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, hang, shooter, stick1, rbBtn1, rtBtn1);
-
-
-
-
-
+  private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, stick1, rbBtn1, rtBtn1);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

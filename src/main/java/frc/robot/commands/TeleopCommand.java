@@ -27,18 +27,18 @@ public class TeleopCommand extends CommandBase {
   private final Shooter shooter;
   private final Hang hang;
   private final Joystick stick1;
-  private final JoystickButton rbBtn0, rtBtn0;
+  private final JoystickButton rbBtn1, rtBtn1;
   /**
    * Creates a new TeleopCommand.
    */
-  public TeleopCommand(Base base, Intake intake, Shooter shooter, Hang hang, Joystick stick1, JoystickButton rbBtn0, JoystickButton rtBtn0) {
+  public TeleopCommand(Base base, Intake intake, Shooter shooter, Hang hang, Joystick stick1, JoystickButton rbBtn1, JoystickButton rtBtn1) {
     this.base = base;
     this.intake = intake;
     this.shooter = shooter;
     this.hang = hang;
     this.stick1 = stick1;
-    this.rbBtn0 = rbBtn0;
-    this.rtBtn0 = rtBtn0;
+    this.rbBtn1 = rbBtn1;
+    this.rtBtn1 = rtBtn1;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(base);
     addRequirements(intake);
@@ -58,7 +58,7 @@ public class TeleopCommand extends CommandBase {
     base.drive(-stick1.getRawAxis(1), stick1.getRawAxis(2));
 
     // running the intake if rb is pressed
-    if (rbBtn0.get()){
+    if (rbBtn1.get()){
       intake.succ(0.65);
     }
     // if nothing is being pressed, do not run the intake
@@ -66,12 +66,16 @@ public class TeleopCommand extends CommandBase {
       intake.succ(0);
     }
 
-    if(rtBtn0.get()){
+    // run the feeder if the right trigger is pressed
+    if(rtBtn1.get()){
       intake.feed(0.30);
     }
+
+    // keep the feeder and 0 if nothing is pressed
     else{
       intake.feed(0);
     }
+
   }
 
   // Called once the command ends or is interrupted.
@@ -80,6 +84,7 @@ public class TeleopCommand extends CommandBase {
     // stops the base by setting the inputs to 0
     base.drive(0, 0);
     intake.succ(0);
+    intake.feed(0);
   }
 
   // Returns true when the command should end.
