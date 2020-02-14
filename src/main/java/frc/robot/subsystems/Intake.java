@@ -22,8 +22,10 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
  */
 public class Intake extends SubsystemBase {
   CANSparkMax intake = new CANSparkMax(RobotMap.intake, MotorType.kBrushless);
+  CANSparkMax feeder = new CANSparkMax(RobotMap.feeder, MotorType.kBrushless);
   
   DoubleSolenoid intakeS = new DoubleSolenoid(RobotMap.forwardChannelIntake, RobotMap.reverseChannelIntake);
+
   /**
    * Creates a new Intake.
    */
@@ -41,10 +43,10 @@ public class Intake extends SubsystemBase {
     intake.set(pow);
   }
 
-  public void outtake(double pow){
-    intake.set(-pow);
+  public void feed(double pow){
+    intake.set(pow);
   }
-
+  
   public void deployIntake(){
     intakeS.set(kForward);
   }
