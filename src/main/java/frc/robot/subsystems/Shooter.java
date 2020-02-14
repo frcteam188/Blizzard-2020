@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,19 +18,19 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  // Flywheel motors
+  // Flywheel (motors, encoder)
   CANSparkMax shooterLeft = new CANSparkMax(0, MotorType.kBrushless);
   CANSparkMax shooterRight = new CANSparkMax(0, MotorType.kBrushless);
+  CANEncoder shooterEnc = new CANEncoder(shooterLeft);
 
-  // Turret motor
+
+  // Turret motor, encoder
   CANSparkMax turret = new CANSparkMax(0, MotorType.kBrushless);
+  CANEncoder turretEnc = new CANEncoder(turret);
 
-  // Hood Motor
+  // Hood Motor, encoder
   CANSparkMax hood = new CANSparkMax(0, MotorType.kBrushless);
-
-  Encoder hoodEnc;
-  Encoder turretEnc;
-  Encoder shooterEnc;
+  CANEncoder hoodEnc = new CANEncoder(hood);
 
   
   public Shooter() {
@@ -48,10 +49,6 @@ public class Shooter extends SubsystemBase {
     shooterRight.set(rPow);
   }
 
-
-
-
-
   /**
    * Method to run the turret
    * 
@@ -63,20 +60,72 @@ public class Shooter extends SubsystemBase {
   }
 
 
-  
-
-
   /**
    * Method to run the hood
    * 
    * @param pow - the power at which the hood will be run at
    * @author Zayeed Ghori
    */
+
   public void moveHood(double pow){
     hood.set(pow);
   }
 
 
+
+
+
+  /**
+   * Method to get the velocity of the flywheel, through the speed of motors
+   * 
+   * @author Zayeed Ghori
+   */
+
+  public double getVelShooter(){
+    return shooterEnc.getVelocity();
+  }
+
+  /**
+   * Method to get the hood's position
+   * 
+   * @author Zayeed Ghori
+   */
+
+  public double getHoodPos(){
+    return hoodEnc.getPosition();
+  }
+
+
+  /**
+   * Method to get the turret's position
+   * 
+   * @author Zayeed Ghori
+   */
+
+  public double getTurretPos(){
+    return turretEnc.getPosition();
+  }
+
+  /**
+   * Testing method to reset the hood encoder to 0
+   * 
+   * @author Zayeed Ghori
+   */
+
+  public void resetHoodPos(){
+    hoodEnc.setPosition(0);
+  }
+
+
+  /**
+   * Testing method to reset the turret encoder to 0
+   * 
+   * @author Zayeed Ghori
+   */
+  
+  public void resetTurretPos(){
+    turretEnc.setPosition(0);
+  }
 
   @Override
   public void periodic() {
