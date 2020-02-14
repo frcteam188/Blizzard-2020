@@ -23,7 +23,13 @@ public class Hang extends SubsystemBase {
   public Hang() {
   }
 
-  // This function makes the hang motor move, pow is from 0.0 to 1.0
+  /**
+   * Method to run the hang
+   * This function makes the hang motor move, pow is from 0.0 to 1.0
+   * 
+   * @param pow - the power at which the hang will be run at
+   * @author Zayeed Ghori
+   */
   public void hang(double pow){
     hang.set(pow);
   }
