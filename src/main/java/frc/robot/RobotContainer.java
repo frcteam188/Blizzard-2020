@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.Base;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -24,12 +26,15 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // Creating a base object
   private final Base base = new Base();
+  private final Intake intake = new Intake();
 
   // creating a new stick (controller) which will be the DRIVER controller (port 0)
   private Joystick stick1 = new Joystick(0);
+  private JoystickButton rbBtn0 = new JoystickButton(stick1, 6);
+  private JoystickButton rtBtn0 = new JoystickButton(stick1, 8);
 
   // constructor for teleopCommand
-  private final TeleopCommand teleopCommand = new TeleopCommand(base, stick1);
+  private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, stick1, rbBtn0, rtBtn0);
 
 
 

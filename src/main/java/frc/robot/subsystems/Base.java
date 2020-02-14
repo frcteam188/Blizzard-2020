@@ -38,7 +38,7 @@ public class Base extends SubsystemBase {
   CANEncoder rightBackEnc = new CANEncoder(rightBack);
 
   // initializing a double solenoid for the gearbox's shifters
-  DoubleSolenoid baseS = new DoubleSolenoid(0, 7);
+  DoubleSolenoid baseS = new DoubleSolenoid(RobotMap.forwardChannelBase, RobotMap.reverseChannelBase);
   /**
    * Creates a new Base.
    */
