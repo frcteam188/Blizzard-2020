@@ -14,6 +14,7 @@ import frc.robot.subsystems.Base;
 import frc.robot.subsystems.Hang;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+
 /**
  * The teleop command for the robot
  * 
@@ -26,19 +27,19 @@ public class TeleopCommand extends CommandBase {
   private final Intake intake;
   private final Shooter shooter;
   private final Hang hang;
-  private final Joystick stick1;
-  private final JoystickButton rbBtn1, rtBtn1;
+  private final Joystick opStick;
+  private final Joystick drStick;
+
   /**
    * Creates a new TeleopCommand.
    */
-  public TeleopCommand(Base base, Intake intake, Shooter shooter, Hang hang, Joystick stick1, JoystickButton rbBtn1, JoystickButton rtBtn1) {
+  public TeleopCommand(Base base, Intake intake, Shooter shooter, Hang hang, Joystick opStick, Joystick drStick) {
     this.base = base;
     this.intake = intake;
     this.shooter = shooter;
     this.hang = hang;
-    this.stick1 = stick1;
-    this.rbBtn1 = rbBtn1;
-    this.rtBtn1 = rtBtn1;
+    this.opStick = opStick;
+    this.drStick = drStick;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(base);
     addRequirements(intake);
@@ -54,28 +55,36 @@ public class TeleopCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // using the drive method in the base subsystem to run the base based on the input from the controller's axis
-    base.drive(-stick1.getRawAxis(1), stick1.getRawAxis(2));
+    // using the drive method in the base subsystem to run the base based on the
+    // input from the controller's axis
+    base.drive(-opStick.getRawAxis(1), opStick.getRawAxis(2));
+    // shift the base on if the right button is pressed
+    if (opStick.getRawButton(6)){
+      base.gearShiftOn();
+    }
+    // shift the base off if the right button is pressed
+    else if(opStick.getRawButton(5)){
+      base.gearShiftOff();
+    }
 
-    // running the intake if rb is pressed
-    if (rbBtn1.get()){
+    // running the intake if right button is pressed
+    if (opStick.getRawButton(7)) {
       intake.succ(0.65);
     }
     // if nothing is being pressed, do not run the intake
-    else{
+    else {
       intake.succ(0);
     }
 
     // run the feeder if the right trigger is pressed
-    if(rtBtn1.get()){
-      intake.feed(0.30);
+    if (opStick.getRawButton(8)) {
+      intake.feed(-1);
     }
 
     // keep the feeder and 0 if nothing is pressed
-    else{
+    else {
       intake.feed(0);
     }
-
   }
 
   // Called once the command ends or is interrupted.

@@ -19,6 +19,7 @@ public class RobotMap {
 
     // PCM ids for solenoids
     public static int forwardChannelBase = 0;
+    
     public static int reverseChannelBase = 7;
 
     public static int forwardChannelIntake = 1; // THESE ARE NOT ACTUAL VALUES, THEY WILL BE CHNAGED WHEN WE ACTUALLY GET THEM
@@ -28,7 +29,7 @@ public class RobotMap {
     public static int intake = 3;
 
     // id for feeder motor
-    public static int feeder = 4;
+    public static int feeder = 5;
 
-    
+
 }

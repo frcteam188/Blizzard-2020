@@ -43,15 +43,30 @@ public class Intake extends SubsystemBase {
     intake.set(pow);
   }
 
+  /**
+   * Method to run the feeder
+   * 
+   * @param pow - the power at which the feeder will be run at
+   * @author Shiv Patel
+   */
   public void feed(double pow){
     feeder.set(pow);
   }
 
-
+  /**
+   * Method to deploy the intake
+   * 
+   * @author Shiv Patel
+   */
   public void deployIntake(){
     intakeS.set(kForward);
   }
 
+  /**
+   * Method reset the intake
+   * 
+   * @author Shiv Patel, aka retard
+   */
   public void resetIntake(){
     intakeS.set(kReverse);
   }

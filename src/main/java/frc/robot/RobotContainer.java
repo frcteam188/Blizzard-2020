@@ -27,13 +27,15 @@ public class RobotContainer {
   private final Hang hang = new Hang();
   private final Shooter shooter = new Shooter();
 
-  // creating a new stick (controller) which will be the DRIVER controller (port 0)
-  private Joystick stick1 = new Joystick(0);
-  private JoystickButton rbBtn1 = new JoystickButton(stick1, 6);
-  private JoystickButton rtBtn1 = new JoystickButton(stick1, 8);
+  // creating a new stick (controller) which will be the OPERATOR controller (port 0)
+  private Joystick opStick = new Joystick(0);
+
+  //creating a new stick (controller) which will be the DRIVER controller (port 1)
+  private Joystick drStick =  new Joystick(1);
+  
 
   // constructor for teleopCommand
-  private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, stick1, rbBtn1, rtBtn1);
+  private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, opStick, drStick);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
