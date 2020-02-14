@@ -44,9 +44,10 @@ public class Intake extends SubsystemBase {
   }
 
   public void feed(double pow){
-    intake.set(pow);
+    feeder.set(pow);
   }
-  
+
+
   public void deployIntake(){
     intakeS.set(kForward);
   }
