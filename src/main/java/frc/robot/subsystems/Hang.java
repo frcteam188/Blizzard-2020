@@ -10,6 +10,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -19,19 +22,68 @@ public class Hang extends SubsystemBase {
    */
 
   CANSparkMax hang = new CANSparkMax(0, MotorType.kBrushless);
+  DoubleSolenoid hangTopLeftS = new DoubleSolenoid(0, 0);
+  DoubleSolenoid hangTopRightS = new DoubleSolenoid(0, 0);
+  DoubleSolenoid hangBotLeftS = new DoubleSolenoid(0, 0);
+  DoubleSolenoid hangBotRightS = new DoubleSolenoid(0, 0);
+
+
 
   public Hang() {
   }
 
   /**
-   * Method to run the hang
-   * This function makes the hang motor move, pow is from 0.0 to 1.0
+   * Method to hang properly
+   * This function is incomplete
    * 
    * @param pow - the power at which the hang will be run at
    * @author Zayeed Ghori
    */
   public void hang(double pow){
-    hang.set(pow);
+  }
+
+  /**
+   * Method to fire first stage of hang
+   * This function is incomplete
+   * 
+   * @author Zayeed Ghori
+   */
+  public void fireFirstStage(){
+    hangBotLeftS.set(kForward);
+    hangBotRightS.set(kForward);
+  }
+
+
+  /**
+   * Method to second first stage of hang
+   * This function is incomplete
+   * 
+   * @author Zayeed Ghori
+   */
+  public void retractFirstStage(){
+    hangBotLeftS.set(kReverse);
+    hangBotRightS.set(kReverse);
+  }
+
+  /**
+   * Method to retract second stage of hang
+   * This function is incomplete
+   * 
+   * @author Zayeed Ghori
+   */
+  public void fireSecondStage(){
+    hangTopLeftS.set(kForward);
+    hangTopRightS.set(kForward);
+  }
+  /**
+   * Method to fire second stage of hang
+   * This function is incomplete
+   * 
+   * @author Zayeed Ghori
+   */
+  public void retractSecondStage(){
+    hangTopLeftS.set(kReverse);
+    hangTopRightS.set(kReverse);
   }
   @Override
   public void periodic() {
