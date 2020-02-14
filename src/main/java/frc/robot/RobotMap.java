@@ -26,4 +26,9 @@ public class RobotMap {
 
     // id for intake motor
     public static int intake = 3;
+
+    // id for feeder motor
+    public static int feeder = 4;
+
+    
 }
