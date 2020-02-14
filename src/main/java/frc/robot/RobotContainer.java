@@ -8,9 +8,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.TeleopCommand;
+import frc.robot.subsystems.Base;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -21,9 +22,17 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  // Creating a base object
+  private final Base base = new Base();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // creating a new stick (controller) which will be the DRIVER controller (port 0)
+  private Joystick stick1 = new Joystick(0);
+
+  // constructor for teleopCommand
+  private final TeleopCommand teleopCommand = new TeleopCommand(base, stick1);
+
+
+
 
 
 
@@ -46,12 +55,12 @@ public class RobotContainer {
 
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
+   * Returns the teleop command
+   * 
+   * @author Shiv Patel
+   * @return the command to run in teleop
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+  public Command getTeleopCommand(){
+    return teleopCommand;
   }
 }

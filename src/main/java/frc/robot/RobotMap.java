@@ -11,4 +11,12 @@ package frc.robot;
  * Add your docs here.
  */
 public class RobotMap {
+    // ids for the base motors
+    public static int leftFront = 1;
+    public static int leftBack = 2;
+    public static int rightFront = 6;
+    public static int rightBack = 7;
+
+    // id for intake motor
+    public static int intake = 3;
 }
