@@ -11,7 +11,6 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -40,13 +39,12 @@ public class Shooter extends SubsystemBase {
   /**
    * Method to run the shooter flywheel
    * 
-   * @param lPow - the power *opposite of right motor* at which the left motor (shooterLeft) will be run at 
-   * @param rPow - the power *opposite of left motor* at which the right motor (shooterRight) will be run at
+   * @param pow - the power at which the shooter will be run at
    * @author Zayeed Ghori
    */
-  public void shoot(double lPow, double rPow){
-    shooterLeft.set(lPow);
-    shooterRight.set(rPow);
+  public void shoot(double pow){
+    shooterLeft.set(pow);
+    shooterRight.set(-pow);
   }
 
   /**
@@ -122,7 +120,7 @@ public class Shooter extends SubsystemBase {
    * 
    * @author Zayeed Ghori
    */
-  
+
   public void resetTurretPos(){
     turretEnc.setPosition(0);
   }
