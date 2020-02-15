@@ -16,4 +16,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static double kTurretP = 0.050000;
+    public static double kTurretI = 0;
+    public static double kTurretD = 0.001100;
 }

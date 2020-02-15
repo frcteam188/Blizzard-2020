@@ -11,6 +11,9 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -18,6 +21,16 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
+
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTableEntry tx = table.getEntry("tx");
+  NetworkTableEntry ty = table.getEntry("ty");
+  NetworkTableEntry ta = table.getEntry("ta");
+
+  double x = tx.getDouble(0.0);
+  double y = ty.getDouble(0.0);
+  double area = ta.getDouble(0.0);
+
   // Flywheel (motors, encoder)
   CANSparkMax shooterLeft = new CANSparkMax(RobotMap.shooterLeft, MotorType.kBrushless);
   CANSparkMax shooterRight = new CANSparkMax(RobotMap.shooterRight, MotorType.kBrushless);
@@ -115,6 +128,15 @@ public class Shooter extends SubsystemBase {
 
   public void resetHoodPos(){
     hoodEnc.setPosition(0);
+  }
+
+  public double getLimelightX(){
+    x = tx.getDouble(0.0);
+    return x;
+  }
+  public double getLimelightY(){
+    y = ty.getDouble(0.0);
+    return y;
   }
 
 

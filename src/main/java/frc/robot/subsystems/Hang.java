@@ -21,7 +21,7 @@ public class Hang extends SubsystemBase {
    * Creates a new Hang.
    */
 
-  CANSparkMax hang = new CANSparkMax(0, MotorType.kBrushless);
+  CANSparkMax hang; //= new CANSparkMax(0, MotorType.kBrushless);
   DoubleSolenoid stageOne = new DoubleSolenoid(RobotMap.forwardChannelHangStage1, RobotMap.reverseChannelHangStage1);
   DoubleSolenoid stageTwo = new DoubleSolenoid(RobotMap.forwardChannelHangStage2, RobotMap.reverseChannelHangStage2);
   public static final int STATE_OUT = 1;

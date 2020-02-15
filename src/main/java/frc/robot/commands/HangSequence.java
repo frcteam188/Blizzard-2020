@@ -23,5 +23,7 @@ public class HangSequence extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super();
+
+    
   }
 }

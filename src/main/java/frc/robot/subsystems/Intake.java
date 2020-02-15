@@ -11,6 +11,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
@@ -25,6 +27,9 @@ public class Intake extends SubsystemBase {
   CANSparkMax feeder = new CANSparkMax(RobotMap.feeder, MotorType.kBrushless);
   
   DoubleSolenoid intakeS = new DoubleSolenoid(RobotMap.forwardChannelIntake, RobotMap.reverseChannelIntake);
+
+  AnalogInput sensor = new AnalogInput(0);
+
 
   /**
    * Creates a new Intake.
@@ -69,6 +74,19 @@ public class Intake extends SubsystemBase {
    */
   public void resetIntake(){
     intakeS.set(kReverse);
+  }
+
+  public double getValueOfSensor(){
+    return sensor.getVoltage();
+
+    // if(sensor.get() == true){
+    //   System.out.println("DETECTING");
+    // }
+
+    // else{
+    //   System.out.println("NOT DETECTING");
+    // }
+    
   }
 
   @Override
