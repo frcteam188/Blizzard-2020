@@ -37,6 +37,8 @@ public class Shooter extends SubsystemBase {
   CANSparkMax shooterLeft = new CANSparkMax(RobotMap.shooterLeft, MotorType.kBrushless);
   CANSparkMax shooterRight = new CANSparkMax(RobotMap.shooterRight, MotorType.kBrushless);
   CANEncoder shooterEnc = new CANEncoder(shooterLeft);
+  CANPIDController pidControllerLeft = shooterLeft.getPIDController();
+  CANPIDController pidControllerRight = shooterRight.getPIDController();
 
 
   // Turret motor, encoder
@@ -57,6 +59,18 @@ public class Shooter extends SubsystemBase {
     hoodPIDController.setP(Constants.kHoodP);
     hoodPIDController.setI(Constants.kHoodI);
     hoodPIDController.setD(Constants.kHoodD);
+
+    pidControllerLeft.setP(Constants.kShooterP);
+    pidControllerLeft.setI(Constants.kShooterI);
+    pidControllerLeft.setD(Constants.kShooterD);
+    pidControllerLeft.setFF(Constants.kShooterF);
+    pidControllerLeft.setOutputRange(Constants.kShooterMinOutput,Constants.kShooterMaxOutput);
+    pidControllerLeft.setIZone(0);
+
+    pidControllerRight = pidControllerLeft;
+
+
+
 
   }
   /**
