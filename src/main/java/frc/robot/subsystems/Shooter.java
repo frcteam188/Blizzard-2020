@@ -12,24 +12,27 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
   // Flywheel (motors, encoder)
-  CANSparkMax shooterLeft = new CANSparkMax(0, MotorType.kBrushless);
-  CANSparkMax shooterRight = new CANSparkMax(0, MotorType.kBrushless);
+  CANSparkMax shooterLeft = new CANSparkMax(RobotMap.shooterLeft, MotorType.kBrushless);
+  CANSparkMax shooterRight = new CANSparkMax(RobotMap.shooterRight, MotorType.kBrushless);
   CANEncoder shooterEnc = new CANEncoder(shooterLeft);
 
 
   // Turret motor, encoder
-  CANSparkMax turret = new CANSparkMax(0, MotorType.kBrushless);
+  CANSparkMax turret = new CANSparkMax(RobotMap.turret, MotorType.kBrushless);
   CANEncoder turretEnc = new CANEncoder(turret);
 
   // Hood Motor, encoder
-  CANSparkMax hood = new CANSparkMax(0, MotorType.kBrushless);
+  CANSparkMax hood = new CANSparkMax(RobotMap.hood, MotorType.kBrushless);
   CANEncoder hoodEnc = new CANEncoder(hood);
+
+  CANSparkMax shooterFeeder = new CANSparkMax(RobotMap.shooterFeeder, MotorType.kBrushless);
 
   
   public Shooter() {
@@ -45,6 +48,10 @@ public class Shooter extends SubsystemBase {
   public void shoot(double pow){
     shooterLeft.set(pow);
     shooterRight.set(-pow);
+  }
+
+  public void runShooterFeeder(double pow){
+    shooterFeeder.set(pow);
   }
 
   /**
@@ -68,10 +75,6 @@ public class Shooter extends SubsystemBase {
   public void moveHood(double pow){
     hood.set(pow);
   }
-
-
-
-
 
   /**
    * Method to get the velocity of the flywheel, through the speed of motors
