@@ -56,7 +56,7 @@ public class Base extends SubsystemBase {
     leftFront.set(y + x);
     leftBack.set(y + x);
     rightFront.set(-y + x);
-    rightFront.set(-y + x);
+    rightBack.set(-y + x);
   }
 
   /**

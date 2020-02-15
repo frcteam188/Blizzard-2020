@@ -12,30 +12,56 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+<<<<<<< HEAD
 import frc.robot.Constants;
+=======
+>>>>>>> 39b4daf7f26334f50061ffa82cc6823be295cb48
 import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
+
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTableEntry tx = table.getEntry("tx");
+  NetworkTableEntry ty = table.getEntry("ty");
+  NetworkTableEntry ta = table.getEntry("ta");
+
+  double x = tx.getDouble(0.0);
+  double y = ty.getDouble(0.0);
+  double area = ta.getDouble(0.0);
+
   // Flywheel (motors, encoder)
-  CANSparkMax shooterLeft = new CANSparkMax(0, MotorType.kBrushless);
-  CANSparkMax shooterRight = new CANSparkMax(0, MotorType.kBrushless);
+  CANSparkMax shooterLeft = new CANSparkMax(RobotMap.shooterLeft, MotorType.kBrushless);
+  CANSparkMax shooterRight = new CANSparkMax(RobotMap.shooterRight, MotorType.kBrushless);
   CANEncoder shooterEnc = new CANEncoder(shooterLeft);
 
 
   // Turret motor, encoder
-  CANSparkMax turret = new CANSparkMax(0, MotorType.kBrushless);
+  CANSparkMax turret = new CANSparkMax(RobotMap.turret, MotorType.kBrushless);
   CANEncoder turretEnc = new CANEncoder(turret);
 
+<<<<<<< HEAD
   // Hood Motor, encoder, PID controller
+=======
+  // Hood Motor, encoder
+>>>>>>> 39b4daf7f26334f50061ffa82cc6823be295cb48
   CANSparkMax hood = new CANSparkMax(RobotMap.hood, MotorType.kBrushless);
   CANEncoder hoodEnc = new CANEncoder(hood);
   CANPIDController hoodPIDController = hood.getPIDController();
 
+<<<<<<< HEAD
   //creating shooter object
+=======
+  CANSparkMax shooterFeeder = new CANSparkMax(RobotMap.shooterFeeder, MotorType.kBrushless);
+
+  
+>>>>>>> 39b4daf7f26334f50061ffa82cc6823be295cb48
   public Shooter() {
     hoodPIDController.setP(Constants.kHoodP);
     hoodPIDController.setI(Constants.kHoodI);
@@ -62,6 +88,10 @@ public class Shooter extends SubsystemBase {
     shooterRight.set(-pow);
   }
 
+  public void runShooterFeeder(double pow){
+    shooterFeeder.set(pow);
+  }
+
   /**
    * Method to run the turret
    * 
@@ -83,10 +113,6 @@ public class Shooter extends SubsystemBase {
   public void moveHood(double pow){
     hood.set(pow);
   }
-
-
-
-
 
   /**
    * Method to get the velocity of the flywheel, through the speed of motors
@@ -127,6 +153,23 @@ public class Shooter extends SubsystemBase {
 
   public void resetHoodPos(){
     hoodEnc.setPosition(0);
+  }
+
+  public double getLimelightX(){
+    x = tx.getDouble(0.0);
+    return x;
+  }
+  public double getLimelightY(){
+    y = ty.getDouble(0.0);
+    return y;
+  }
+
+  public CANSparkMax getShooterLeft(){
+    return this.shooterLeft;
+  }
+
+  public CANSparkMax getShooterRight(){
+    return this.shooterRight;
   }
 
 

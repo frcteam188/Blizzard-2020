@@ -16,10 +16,25 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+<<<<<<< HEAD
 
     public static double kHoodP = 0;
     public static double kHoodI = 0;
     public static double kHoodD = 0;
 
     
+=======
+    public static double kTurretP = 0.050000;
+    public static double kTurretI = 0;
+    public static double kTurretD = 0.001100;
+
+    public static double kShooterP = 0;
+    public static double kShooterI = 0;
+    public static double kShooterD = 0;
+    public static double kShooterF = 0;
+    public static double kShooterMaxOutput = 1;
+    public static double kShooterMinOutput = -1;
+    public static double shooterSetpoint = 1;
+    public static double kShooterIZone = 0;
+>>>>>>> 39b4daf7f26334f50061ffa82cc6823be295cb48
 }

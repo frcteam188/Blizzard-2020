@@ -17,12 +17,29 @@ public class RobotMap {
     public static int rightFront = 6;
     public static int rightBack = 7;
 
+    public static int hood = 10;
+    public static int turret = 11;
+    public static int shooterLeft = 12;
+    public static int shooterFeeder = 13;
+    public static int shooterRight = 14;
+
     // PCM ids for solenoids
+    // id for forward and reverse channel for base
     public static int forwardChannelBase = 0;
     public static int reverseChannelBase = 7;
 
-    public static int forwardChannelIntake = 1; // THESE ARE NOT ACTUAL VALUES, THEY WILL BE CHNAGED WHEN WE ACTUALLY GET THEM
-    public static int reverseChannelIntake= 2; // THESE ARE NOT ACTUAL VALUES, THEY WILL BE CHANGED WHEN WE ACTUALLY GET THEM
+    // id for forward and reverse channel for intake
+    public static int forwardChannelIntake = 1;
+    public static int reverseChannelIntake = 6; 
+
+    // id for forward and reverse channel for stage 1 of the hang 
+    public static int forwardChannelHangStage1 = 2; 
+    public static int reverseChannelHangStage1 = 5;
+
+    // id for forward and reverse channel for stage 2 of the hang
+    public static int forwardChannelHangStage2 = 3;
+    public static int reverseChannelHangStage2 = 4;
+
 
     //id for the hood
     public static int hood;
@@ -33,7 +50,7 @@ public class RobotMap {
     public static int intake = 3;
 
     // id for feeder motor
-    public static int feeder = 4;
+    public static int feeder = 5;
 
-    
+
 }
