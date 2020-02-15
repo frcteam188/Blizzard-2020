@@ -39,11 +39,6 @@ public class RobotMap {
     // id for forward and reverse channel for stage 2 of the hang
     public static int forwardChannelHangStage2 = 3;
     public static int reverseChannelHangStage2 = 4;
-
-
-    //id for the hood
-    public static int hood;
-
     
 
     // id for intake motor

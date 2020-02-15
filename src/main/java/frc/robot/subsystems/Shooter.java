@@ -16,10 +16,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-<<<<<<< HEAD
 import frc.robot.Constants;
-=======
->>>>>>> 39b4daf7f26334f50061ffa82cc6823be295cb48
 import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
@@ -46,22 +43,16 @@ public class Shooter extends SubsystemBase {
   CANSparkMax turret = new CANSparkMax(RobotMap.turret, MotorType.kBrushless);
   CANEncoder turretEnc = new CANEncoder(turret);
 
-<<<<<<< HEAD
   // Hood Motor, encoder, PID controller
-=======
   // Hood Motor, encoder
->>>>>>> 39b4daf7f26334f50061ffa82cc6823be295cb48
   CANSparkMax hood = new CANSparkMax(RobotMap.hood, MotorType.kBrushless);
   CANEncoder hoodEnc = new CANEncoder(hood);
   CANPIDController hoodPIDController = hood.getPIDController();
 
-<<<<<<< HEAD
   //creating shooter object
-=======
   CANSparkMax shooterFeeder = new CANSparkMax(RobotMap.shooterFeeder, MotorType.kBrushless);
 
   
->>>>>>> 39b4daf7f26334f50061ffa82cc6823be295cb48
   public Shooter() {
     hoodPIDController.setP(Constants.kHoodP);
     hoodPIDController.setI(Constants.kHoodI);
