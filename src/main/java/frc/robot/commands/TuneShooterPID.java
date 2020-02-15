@@ -17,7 +17,7 @@ import frc.robot.subsystems.Shooter;
 
 public class TuneShooterPID extends CommandBase {
   /**
-   * Creates a new runShooterPID.
+   * Creates a new tuneShooterPID.
    */
 
   private final Shooter shooter;
@@ -74,16 +74,17 @@ public class TuneShooterPID extends CommandBase {
     double setPoint = Constants.shooterSetpoint;
     pidControllerLeft.setReference(setPoint, ControlType.kVelocity);
 
+    // Set pidControllerRight to everything pidControllerLeft was set to
     pidControllerRight = pidControllerLeft;
-    pidControllerRight.setReference(-setPoint, ControlType.kVelocity);
+    pidControllerRight.setReference(-setPoint, ControlType.kVelocity); // Invert velocity setpoint
 
-    double p = SmartDashboard.getNumber("P Gain", kP);
-    double i = SmartDashboard.getNumber("I Gain", kI);
-    double d = SmartDashboard.getNumber("D Gain", kD);
-    double iz = SmartDashboard.getNumber("I Zone", kIz);
-    double f = SmartDashboard.getNumber("Feed Forward", kF);
-    double max = SmartDashboard.getNumber("Max Output", kMaxOutput);
-    double min = SmartDashboard.getNumber("Min Output", kMinOutput);
+    double p = SmartDashboard.getNumber("Shooter P: ", kP);
+    double i = SmartDashboard.getNumber("Shooter I: ", kI);
+    double d = SmartDashboard.getNumber("Shooter D: ", kD);
+    double iz = SmartDashboard.getNumber("Shooter I Zone: ", kIz);
+    double f = SmartDashboard.getNumber("Shooter F: ", kF);
+    double max = SmartDashboard.getNumber("Max Output: ", kMaxOutput);
+    double min = SmartDashboard.getNumber("Min Output: ", kMinOutput);
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
     if((p != kP)) { pidControllerLeft.setP(p); kP = p; }

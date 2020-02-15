@@ -9,8 +9,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -59,12 +61,33 @@ public class TeleopCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    SmartDashboard.putNumber("Turret P:", Constants.kTurretP);
+    SmartDashboard.putNumber("Turret I:", Constants.kTurretI);
+    SmartDashboard.putNumber("Turret D:", Constants.kTurretD);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    // Reporting to SmartDashBoard
+
+    // Turret Stuff
+    SmartDashboard.getNumber("Turret P:", Constants.kTurretP);
+    SmartDashboard.getNumber("Turret I:", Constants.kTurretI);
+    SmartDashboard.getNumber("Turret D:", Constants.kTurretD);
+
+    SmartDashboard.putNumber("Limelight Angle:", shooter.getLimelightX());
+    SmartDashboard.putNumber("Turret Pos", shooter.getTurretPos());
+
+    SmartDashboard.putNumber("Limelight Angle Graph", shooter.getLimelightX());
+
+    // Shooter Stuff (Actual PID values are printed and modified in TuneShooterPID.java)
+    SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
+    SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
+
+
+    // MATH
     
     double a1 = 61.0; // Vert Mounting angle of limelight
     double a2 = shooter.getLimelightY(); // Vert angle of limelight target
