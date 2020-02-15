@@ -20,31 +20,22 @@ public class RunShooterPID extends CommandBase {
    */
 
   private final Shooter shooter;
-  CANPIDController pidControllerLeft;
-  CANPIDController pidControllerRight;
+  private int setpoint;
+  private CANPIDController PIDControllerLeft;
+  private CANPIDController PIDControllerRight;
 
-  public RunShooterPID(Shooter shooter) {
+
+  
+
+  public RunShooterPID(Shooter shooter,int sP) {
     // Use addRequirements() here to declare subsystem dependenacies.
 
     this.shooter = shooter;
-    pidControllerLeft = shooter.getShooterLeft().getPIDController();
+    this.setpoint = sP;
+    this.PIDControllerLeft = shooter.getPIDController();
+    this.PIDControllerRight = shooter.getPIDController();
 
-
-    double kP = Constants.kShooterP;
-    double kI = Constants.kShooterI;
-    double kD = Constants.kShooterD;
-    double kMaxOutputLeft = Constants.kShooterMaxOutput;
-    double kMinOutputLeft = Constants.kShooterMinOutput;
-    double kF = Constants.kShooterF;
-
-    pidControllerLeft.setP(kP);
-    pidControllerLeft.setI(kI);
-    pidControllerLeft.setD(kD);
-    pidControllerLeft.setFF(kF);
-    pidControllerLeft.setOutputRange(kMinOutputLeft, kMaxOutputLeft);
-    pidControllerLeft.setIZone(0);
     
-    pidControllerRight = pidControllerLeft;
   }
 
   // Called when the command is initially scheduled.
@@ -55,14 +46,15 @@ public class RunShooterPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double setPoint = Constants.shooterSetpoint;
-    pidControllerLeft.setReference(setPoint, ControlType.kVelocity);
-    pidControllerRight.setReference(-setPoint, ControlType.kVelocity);
+    PIDControllerLeft.setReference(setpoint, ControlType.kVelocity);
+    PIDControllerRight.setReference(-setpoint, ControlType.kVelocity);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    PIDControllerLeft.setReference(0,ControlType.kDutyCycle);
+    PIDControllerRight.setReference(0,ControlType.kDutyCycle);
   }
 
   // Returns true when the command should end.
