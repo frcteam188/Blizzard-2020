@@ -139,6 +139,14 @@ public class Shooter extends SubsystemBase {
     return y;
   }
 
+  public CANSparkMax getShooterLeft(){
+    return this.shooterLeft;
+  }
+
+  public CANSparkMax getShooterRight(){
+    return this.shooterRight;
+  }
+
 
   /**
    * Testing method to reset the turret encoder to 0
