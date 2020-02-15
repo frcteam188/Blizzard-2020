@@ -8,10 +8,13 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
   /**
@@ -27,13 +30,25 @@ public class Shooter extends SubsystemBase {
   CANSparkMax turret = new CANSparkMax(0, MotorType.kBrushless);
   CANEncoder turretEnc = new CANEncoder(turret);
 
-  // Hood Motor, encoder
-  CANSparkMax hood = new CANSparkMax(0, MotorType.kBrushless);
+  // Hood Motor, encoder, PID controller
+  CANSparkMax hood = new CANSparkMax(RobotMap.hood, MotorType.kBrushless);
   CANEncoder hoodEnc = new CANEncoder(hood);
+  CANPIDController hoodPIDController = hood.getPIDController();
 
-  
+  //creating shooter object
   public Shooter() {
+    hoodPIDController.setP(Constants.kHoodP);
+    hoodPIDController.setI(Constants.kHoodI);
+    hoodPIDController.setD(Constants.kHoodD);
 
+  }
+  /**
+   * returns the hoodPIDController object
+   * 
+   * @return hoodPIDController - the PIDController instance variable
+   */
+  public CANPIDController getPIDController(){
+    return hoodPIDController;
   }
 
   /**

@@ -24,6 +24,9 @@ public class RobotMap {
     public static int forwardChannelIntake = 1; // THESE ARE NOT ACTUAL VALUES, THEY WILL BE CHNAGED WHEN WE ACTUALLY GET THEM
     public static int reverseChannelIntake= 2; // THESE ARE NOT ACTUAL VALUES, THEY WILL BE CHANGED WHEN WE ACTUALLY GET THEM
 
+    //id for the hood
+    public static int hood;
+
     
 
     // id for intake motor

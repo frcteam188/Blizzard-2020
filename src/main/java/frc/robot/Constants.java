@@ -16,4 +16,10 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static double kHoodP = 0;
+    public static double kHoodI = 0;
+    public static double kHoodD = 0;
+
+    
 }
