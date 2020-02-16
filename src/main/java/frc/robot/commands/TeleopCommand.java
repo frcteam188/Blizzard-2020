@@ -88,6 +88,14 @@ public class TeleopCommand extends CommandBase {
     SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
     SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
 
+    // Uncomment after not using tuneShooterPID
+    // SmartDashboard.putNumber("Shooter P: ", Constants.kShooterP);
+    // SmartDashboard.putNumber("Shooter I: ", Constants.kShooterI);
+    // SmartDashboard.putNumber("Shooter D: ", Constants.kShooterD);
+    // SmartDashboard.putNumber("Shooter F: ", Constants.kShooterF);
+    // SmartDashboard.putNumber("Max Output: ", Constants.kShooterMaxOutput);
+    // SmartDashboard.putNumber("Min Output: ", Constants.kShooterMinOutput);
+
 
     // MATH
     
@@ -123,38 +131,6 @@ public class TeleopCommand extends CommandBase {
       System.out.println("Gear change to low ");
     }
 
-    // // running the intake if right button is pressed
-    // if (opStick.getRawButton(7)) {
-    //   intake.succ(0.65);
-    // }
-    // // if nothing is being pressed, do not run the intake
-    // else {
-    //   intake.succ(0);
-    // }
-
-    // // run the feeder if the right trigger is pressed
-    // if (opStick.getRawButton(8)) {
-    //   intake.feed(-1);
-    // }
-
-    // keep the feeder and 0 if nothing is pressed
-    // else {
-    //   intake.feed(0);
-    // }
-
-    // if(opStick.getRawButton(2)){
-    //   hang.moveStageOne(Hang.STATE_IN);
-    // }
-    // else if(opStick.getRawButton(3)){
-    //   hang.moveStageOne(Hang.STATE_OUT);
-    // }
-
-    // if(opStick.getRawButton(1)){
-    //   hang.moveStageTwo(Hang.STATE_IN);
-    // }
-    // else if(opStick.getRawButton(4)){
-    //   hang.moveStageTwo(Hang.STATE_OUT);
-    // }
     if(opStick.getRawButton(7) && !moveFeeder.isScheduled()){
       moveFeeder.schedule();
    

@@ -25,7 +25,7 @@ public class HoodPID extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = s;
     this.setpoint = sP;
-    hoodPIDController = shooter.getPIDController();
+    hoodPIDController = shooter.getHoodPIDController();
 
     
   }
