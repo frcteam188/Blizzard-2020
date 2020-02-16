@@ -7,10 +7,14 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.Shooter;
+
 /**
  * Add your docs here.
  */
 public class RobotMath {
+    Shooter shooter = new Shooter();
+
     double a1 = 61.0; // Vert Mounting angle of limelight
     double a2 = shooter.getLimelightY(); // Vert angle of limelight target
 
@@ -21,5 +25,10 @@ public class RobotMath {
     
     double d = (h2 - h1)/Math.tan(a1 + a2); // Calculates the distance between the limelight and the targets
 
-    System.out.println("distance: "+ d);
+    public double getDistance() {
+        return d;
+    }
+
+
+    
 }
