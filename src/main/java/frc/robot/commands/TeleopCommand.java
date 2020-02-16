@@ -132,19 +132,18 @@ public class TeleopCommand extends CommandBase {
     }
     
     // LT (driver) - fire piston to deploy intake and run the intake motor
-    if(drStick.getRawButton(7)){
+    if(drStick.getRawButton(5)){
       intake.deployIntake();
-      intake.succ(0.30);
     }
 
-    else if(drStick.getRawButton(8)){ // RT (driver) - retract the intake piston
+    else if(drStick.getRawButton(7)){ // RT (driver) - retract the intake piston
       intake.resetIntake();
     }
 
     if(drStick.getRawButton(6)){ // RB (driver) - run the intake
       intake.succ(0.65);
     }
-    else if (drStick.getRawButton(5)){ // LB (driver) - run the intake in reverse
+    else if (drStick.getRawButton(8)){ // LB (driver) - run the intake in reverse
       intake.succ(-0.65);
     }
     else{
