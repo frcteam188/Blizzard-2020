@@ -20,7 +20,7 @@ import frc.robot.subsystems.*;
 /**
  * The teleop command for the robot
  * 
- * @author Shiv Patel
+ * @author Shiv Patel, Edward Su, Zayeed Ghori
  */
 public class TeleopCommand extends CommandBase {
 
@@ -36,6 +36,7 @@ public class TeleopCommand extends CommandBase {
   private final Joystick opStick;
   private final Joystick drStick;
   
+  // power for the feeder
   private double pow = -1;
 
   private boolean gearShiftTrue = false;
@@ -83,6 +84,7 @@ public class TeleopCommand extends CommandBase {
     SmartDashboard.putNumber("Turret Pos", shooter.getTurretPos());
 
     SmartDashboard.putNumber("Limelight Angle Graph", shooter.getLimelightX());
+    SmartDashboard.putNumber("Angle of Base: ", base.getBaseAngle());
 
     // Shooter Stuff (Actual PID values are printed and modified in TuneShooterPID.java)
     SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
@@ -96,31 +98,13 @@ public class TeleopCommand extends CommandBase {
     // SmartDashboard.putNumber("Max Output: ", Constants.kShooterMaxOutput);
     // SmartDashboard.putNumber("Min Output: ", Constants.kShooterMinOutput);
 
-
-    // MATH
-    
-    double a1 = 61.0; // Vert Mounting angle of limelight
-    double a2 = shooter.getLimelightY(); // Vert angle of limelight target
-
-    double h1 = 24.8; // height of limelight to ground (inches)
-    double h2 = 98.25; // height of limelight to target (inches)
-    
-    
-    
-    double d = (h2 - h1)/Math.tan(a1 + a2); // Calculates the distance between the limelight and the targets
-
-    System.out.println("distance: "+ d);
-
     // CONTROLS
-
-
 
     base.drive(-drStick.getRawAxis(1), drStick.getRawAxis(2)); // Joysticks (driver) - drive
 
     if (drStick.getRawButton(2)){ // LB (driver) - hold to shift the gear, otherwise the gear shift will be on
       base.gearShiftOff();
       gearShiftOn = true;
-      System.out.println("Gear Change to high");
     }
     //else if(drStick.getRawButton(2) && gearShiftTrue == false && gearShiftOn == true){
       //base.gearShiftOn();
@@ -128,7 +112,6 @@ public class TeleopCommand extends CommandBase {
    // }
     else if(drStick.getRawButton(3)){
       base.gearShiftOn();
-      System.out.println("Gear change to low ");
     }
 
     if(opStick.getRawButton(7) && !moveFeeder.isScheduled()){
@@ -146,14 +129,13 @@ public class TeleopCommand extends CommandBase {
     else{
       shooter.runShooterFeeder(0);
     }
-
+    
+    // LT (driver) - fire piston to deploy intake and run the intake motor
     if(drStick.getRawButton(7)){
+      intake.deployIntake();
       intake.succ(0.30);
     }
 
-    if(drStick.getRawButton(7)){ // LT (driver) - shoot the intake piston to deploy it
-      intake.deployIntake();
-    }
     else if(drStick.getRawButton(8)){ // RT (driver) - retract the intake piston
       intake.resetIntake();
     }
@@ -161,19 +143,13 @@ public class TeleopCommand extends CommandBase {
     if(drStick.getRawButton(6)){ // RB (driver) - run the intake
       intake.succ(0.65);
     }
-    else if (drStick.getRawButton(5)){
+    else if (drStick.getRawButton(5)){ // LB (driver) - run the intake in reverse
       intake.succ(-0.65);
     }
     else{
-      intake.succ(opStick.getRawAxis(1)*0.3);//Set to 0
+      intake.succ(0);
     }
 
-    if(opStick.getRawButton(5)){
-      hang.pullUp(0.3);
-    }
-    else{
-      hang.pullUp(0);
-    }
 
 
     if(opStick.getPOV() == 90){ // Right Depad (operator) - move turret to the right
@@ -196,50 +172,57 @@ public class TeleopCommand extends CommandBase {
     else{
       shooter.moveHood(0);
     }
-/*
-    if(opStick.getRawButton(1)){ // X (operator) - shoot at 70%
-      shooter.shoot(0.7);
-    }
 
-    else if(opStick.getRawButton(2)){ // A (operator) - shoot at 80%
-      shooter.shoot(0.8);
-    }
+    // if(opStick.getRawButton(1)){ // X (operator) - shoot at 70%
+    //   shooter.shoot(0.7);
+    // }
 
-    else if(opStick.getRawButton(3)){ // B (operator) - shoot at 90%
+    // else if(opStick.getRawButton(2)){ // A (operator) - shoot at 80%
+    //   shooter.shoot(0.8);
+    // }
+
+    if(drStick.getRawButton(1)){ // B (operator) - shoot at 90%
       shooter.shoot(0.9);
     }
     else{
       shooter.shoot(0);
     }
 
-    if(opStick.getRawButton(4)){
-      turretPID.schedule();
-    }
-    else
-      turretPID.cancel();
+    base.getBaseAngle();
 
-*/
+    // if(opStick.getRawButton(4)){
+    //   turretPID.schedule();
+    // }
+    // else
+    //   turretPID.cancel();
+
+
 
 //    if (drStick.getRawButton(2)){
   //    gearShiftTrue = true;
     //}
 
-    if(opStick.getRawButton(1)){
+    if(opStick.getRawButton(1)){ // X (operator) - Fire both hang stages
       hang.moveStageOne(1);
+      hang.moveStageTwo(1);
       System.out.println("Hang");
 
-    } else if (opStick.getRawButton(2)){
+    } 
+    else if (opStick.getRawButton(2)){ // A (operator) - Retract both
       hang.moveStageOne(-1);
-
+      hang.moveStageTwo(-1);
     }
 
-    if(opStick.getRawButton(3)){
-      hang.moveStageTwo(-1);
-    } else if(opStick.getRawButton(4)){
-      hang.moveStageTwo(1);
+
+    if(opStick.getRawButton(5)){
+      hang.pullUp(-1);
+    }
+    else{
+      hang.pullUp(0);
     }
 
   }
+
 
   // Called once the command ends or is interrupted.
   @Override

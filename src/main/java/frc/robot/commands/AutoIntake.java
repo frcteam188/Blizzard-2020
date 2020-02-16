@@ -31,7 +31,6 @@ public class AutoIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Auto Inakte is running");
     // If sensor is detecting a ball, turn on the feeder
     if(intake.getValueOfSensor() < 2.5){
       intake.feed(-0.5);

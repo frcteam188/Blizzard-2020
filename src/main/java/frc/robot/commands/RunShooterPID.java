@@ -14,6 +14,11 @@ import com.revrobotics.ControlType;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
+/**
+ * ShooterPID command 
+ * 
+ * @author Zayeed Ghori, Edward Su
+ */
 public class RunShooterPID extends CommandBase {
   /**
    * Creates a new runShooterPID.
@@ -26,7 +31,7 @@ public class RunShooterPID extends CommandBase {
 
 
   
-
+  
   public RunShooterPID(Shooter shooter,int sP) {
     // Use addRequirements() here to declare subsystem dependenacies.
 

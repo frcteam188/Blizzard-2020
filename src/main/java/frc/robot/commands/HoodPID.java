@@ -12,6 +12,9 @@ import frc.robot.subsystems.Shooter;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
 
+/**
+ * 
+ */
 public class HoodPID extends CommandBase {
   /**
    * Creates a new HoodPID2.
