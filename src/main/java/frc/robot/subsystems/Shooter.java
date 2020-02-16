@@ -57,7 +57,6 @@ public class Shooter extends SubsystemBase {
   CANPIDController hoodPIDController = hood.getPIDController();
 
   //creating shooter object
-  CANSparkMax shooterFeeder = new CANSparkMax(RobotMap.shooterFeeder, MotorType.kBrushless);
 
   
   public Shooter() {
@@ -108,9 +107,6 @@ public class Shooter extends SubsystemBase {
     shooterRight.set(-pow);
   }
 
-  public void runShooterFeeder(double pow){
-    shooterFeeder.set(pow);
-  }
 
   /**
    * Method to run the turret

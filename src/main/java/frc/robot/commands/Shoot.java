@@ -7,20 +7,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class AutoIntake extends CommandBase {
+public class Shoot extends CommandBase {
   /**
-   * Creates a new AutoIntake.
+   * Creates a new Shoot.
    */
-  private final Intake intake;
 
-  public AutoIntake(Intake intake) {
+  private final Intake intake;
+  public Shoot(Intake i) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
-    addRequirements(intake);
+    this.intake = i;
+    addRequirements(i);
   }
 
   // Called when the command is initially scheduled.
@@ -31,23 +30,17 @@ public class AutoIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // If sensor is detecting a ball, turn on the feeder
-    if(intake.getValueOfSensor() < 2.5){
-      intake.feed(-0.3);
-    }
-    else{
-      intake.feed(0);
-    }
-    intake.runShooterFeeder(0.75);
-    intake.succ(0.3);
+    intake.runShooterFeeder(-1);
+    intake.succ(0.30);
+    intake.feed(-1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.feed(0);
     intake.runShooterFeeder(0);
     intake.succ(0);
+    intake.feed(0);
   }
 
   // Returns true when the command should end.

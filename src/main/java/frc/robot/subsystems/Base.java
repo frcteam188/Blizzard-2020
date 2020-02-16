@@ -90,11 +90,19 @@ public class Base extends SubsystemBase {
     return navx.getAngle();
   }
 
-  // public doul
-
-
-
-
+  // Test
+  public CANSparkMax getLeftFront(){
+    return leftFront;
+  }
+  public CANSparkMax getLeftBack(){
+    return leftBack;
+  }
+  public CANSparkMax getRightFront(){
+    return rightFront;
+  }
+  public CANSparkMax getRightBack(){
+    return rightBack;
+  }
 
 
 

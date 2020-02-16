@@ -28,6 +28,8 @@ public class Intake extends SubsystemBase {
   
   DoubleSolenoid intakeS = new DoubleSolenoid(RobotMap.forwardChannelIntake, RobotMap.reverseChannelIntake);
 
+  CANSparkMax shooterFeeder = new CANSparkMax(RobotMap.shooterFeeder, MotorType.kBrushless);
+
   AnalogInput sensor = new AnalogInput(0);
 
 
@@ -88,6 +90,11 @@ public class Intake extends SubsystemBase {
     // }
     
   }
+
+  public void runShooterFeeder(double pow){
+    shooterFeeder.set(pow);
+  }
+
 
   @Override
   public void periodic() {
