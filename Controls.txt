@@ -1,2 +1,14 @@
-rb - Intake in balls
-rt - Intake out balls
+Driver:
+rb - Intake In
+rt - deploy intake (piston)
+lt - retracting intake
+lb - base gear shift
+joysticks for arcade drive
+
+Operator:
+x - 70% for flywheel
+a - 80% for flywheel
+b - 90% for flywheel
+lt - runs hopper feeder, shooter feeder
+POV 90/180 - turret right/left
+POV 0/270 - hood up/down

@@ -121,7 +121,7 @@ public class TeleopCommand extends CommandBase {
     else{
       base.gearShiftOn();
     }
-    
+
     if(opStick.getRawButton(7) && !moveFeeder.isScheduled()){
       moveFeeder.schedule();
    
