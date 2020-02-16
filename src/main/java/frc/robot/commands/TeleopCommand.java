@@ -38,6 +38,8 @@ public class TeleopCommand extends CommandBase {
   
   private double pow = -1;
 
+  private boolean gearShiftTrue = false;
+  private boolean gearShiftOn = false;
   /**
    * Creates a new TeleopCommand.
    */
@@ -107,11 +109,18 @@ public class TeleopCommand extends CommandBase {
 
     base.drive(-drStick.getRawAxis(1), drStick.getRawAxis(2)); // Joysticks (driver) - drive
 
-    if (drStick.getRawButton(5)){ // LB (driver) - hold to shift the gear, otherwise the gear shift will be on
+    if (drStick.getRawButton(2)){ // LB (driver) - hold to shift the gear, otherwise the gear shift will be on
       base.gearShiftOff();
+      gearShiftOn = true;
+      System.out.println("Gear Change to high");
     }
-    else{
+    //else if(drStick.getRawButton(2) && gearShiftTrue == false && gearShiftOn == true){
+      //base.gearShiftOn();
+      //gearShiftOn = false;
+   // }
+    else if(drStick.getRawButton(3)){
       base.gearShiftOn();
+      System.out.println("Gear change to low ");
     }
 
     // // running the intake if right button is pressed
@@ -162,6 +171,9 @@ public class TeleopCommand extends CommandBase {
       shooter.runShooterFeeder(0);
     }
 
+    if(drStick.getRawButton(7)){
+      intake.succ(0.30);
+    }
 
     if(drStick.getRawButton(7)){ // LT (driver) - shoot the intake piston to deploy it
       intake.deployIntake();
@@ -171,10 +183,20 @@ public class TeleopCommand extends CommandBase {
     }
 
     if(drStick.getRawButton(6)){ // RB (driver) - run the intake
-      intake.succ(0.5);
+      intake.succ(0.65);
+    }
+    else if (drStick.getRawButton(5)){
+      intake.succ(-0.65);
     }
     else{
-      intake.succ(0);
+      intake.succ(opStick.getRawAxis(1)*0.3);//Set to 0
+    }
+
+    if(opStick.getRawButton(5)){
+      hang.pullUp(0.3);
+    }
+    else{
+      hang.pullUp(0);
     }
 
 
@@ -198,7 +220,7 @@ public class TeleopCommand extends CommandBase {
     else{
       shooter.moveHood(0);
     }
-
+/*
     if(opStick.getRawButton(1)){ // X (operator) - shoot at 70%
       shooter.shoot(0.7);
     }
@@ -220,8 +242,26 @@ public class TeleopCommand extends CommandBase {
     else
       turretPID.cancel();
 
+*/
 
+//    if (drStick.getRawButton(2)){
+  //    gearShiftTrue = true;
+    //}
 
+    if(opStick.getRawButton(1)){
+      hang.moveStageOne(1);
+      System.out.println("Hang");
+
+    } else if (opStick.getRawButton(2)){
+      hang.moveStageOne(-1);
+
+    }
+
+    if(opStick.getRawButton(3)){
+      hang.moveStageTwo(-1);
+    } else if(opStick.getRawButton(4)){
+      hang.moveStageTwo(1);
+    }
 
   }
 
@@ -234,6 +274,7 @@ public class TeleopCommand extends CommandBase {
     intake.feed(0);
     shooter.moveTurret(0);
     shooter.moveHood(0);
+    hang.pullUp(0);
   }
 
   // Returns true when the command should end.

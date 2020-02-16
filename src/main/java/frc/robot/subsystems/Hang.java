@@ -24,7 +24,7 @@ public class Hang extends SubsystemBase {
    * Creates a new Hang.
    */
 
-  CANSparkMax hang; //= new CANSparkMax(0, MotorType.kBrushless);
+  CANSparkMax hang = new CANSparkMax(RobotMap.hang, MotorType.kBrushless); //= new CANSparkMax(0, MotorType.kBrushless);
   DoubleSolenoid stageOne = new DoubleSolenoid(RobotMap.forwardChannelHangStage1, RobotMap.reverseChannelHangStage1);
   DoubleSolenoid stageTwo = new DoubleSolenoid(RobotMap.forwardChannelHangStage2, RobotMap.reverseChannelHangStage2);
   public static final int STATE_OUT = 1;
@@ -56,6 +56,7 @@ public class Hang extends SubsystemBase {
     else if(state == -1){
       stageOne.set(kReverse);
     }
+    System.out.println("State: " + state);
   }
 
   /**
@@ -72,6 +73,8 @@ public class Hang extends SubsystemBase {
       stageTwo.set(kReverse);
     }
   }
+
+
 
 
   @Override
