@@ -77,10 +77,24 @@ public class Shooter extends SubsystemBase {
    * returns the hoodPIDController object
    * 
    * @return hoodPIDController - the PIDController instance variable
+   * 
    */
-  public CANPIDController getPIDController(){
+  public CANPIDController getHoodPIDController(){
     return hoodPIDController;
   }
+  /**
+   * returns the hoodPIDController object
+   * 
+   * @return hoodPIDController - the PIDController instance variable
+   */
+  public CANPIDController getShooterLeftPIDController(){
+    return pidControllerLeft;
+  }
+  public CANPIDController getShooterRightPIDController(){
+    return pidControllerRight;
+  }
+
+
 
   /**
    * Method to run the shooter flywheel

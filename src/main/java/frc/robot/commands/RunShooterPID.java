@@ -32,8 +32,8 @@ public class RunShooterPID extends CommandBase {
 
     this.shooter = shooter;
     this.setpoint = sP;
-    this.PIDControllerLeft = shooter.getPIDController();
-    this.PIDControllerRight = shooter.getPIDController();
+    this.PIDControllerLeft = shooter.getShooterLeftPIDController();
+    this.PIDControllerRight = shooter.getShooterRightPIDController();
 
     
   }
