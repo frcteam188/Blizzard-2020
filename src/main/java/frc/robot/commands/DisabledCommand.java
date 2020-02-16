@@ -8,26 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
 
-public class AutoCommand extends CommandBase {
+public class DisabledCommand extends CommandBase {
   /**
-   * Creates a new AutoCommand.
+   * Creates a new DisabledCommand.
    */
-
-  private final TurretPID turretPID;
-  private final Shooter shooter;
-
-  public AutoCommand(Shooter s) {
+  public DisabledCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = s;
-    turretPID = new TurretPID(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turretPID.schedule();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,7 +30,6 @@ public class AutoCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    turretPID.cancel();
   }
 
   // Returns true when the command should end.

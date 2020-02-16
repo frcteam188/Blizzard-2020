@@ -39,6 +39,7 @@ public class Base extends SubsystemBase {
   // initializing a double solenoid for the gearbox's shifters
   DoubleSolenoid baseS = new DoubleSolenoid(RobotMap.forwardChannelBase, RobotMap.reverseChannelBase);
 
+  // ini
   AHRS navx = new AHRS(Port.kMXP);
   /**
    * Creates a new Base.

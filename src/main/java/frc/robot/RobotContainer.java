@@ -10,7 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.AutoCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,7 +39,6 @@ public class RobotContainer {
   private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, opStick, drStick);
 
   // constructor for auto commmand
-  private final AutoCommand autoCommand = new AutoCommand(shooter);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -71,7 +69,7 @@ public class RobotContainer {
   }
 
   public Command getAutoCommand(){
-    return autoCommand;
+    return null;
   }
 
   public Intake getIntake(){

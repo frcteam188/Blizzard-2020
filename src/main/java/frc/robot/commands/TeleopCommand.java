@@ -229,9 +229,8 @@ public class TeleopCommand extends CommandBase {
       turretPIDOn = false;
     }
     if(turretPIDOn == false){
-      shooter.moveTurret(opStick.getRawAxis(2));
+      shooter.moveTurret(opStick.getRawAxis(2)*0.8);
     }
-
     turretButtonPressed = opStick.getRawButton(4);
   }
 
