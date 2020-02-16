@@ -21,8 +21,9 @@ public class TuneShooterPID extends CommandBase {
    */
 
   private final Shooter shooter;
-  CANPIDController pidControllerLeft;
-  CANPIDController pidControllerRight;
+  private double setpoint;
+  private CANPIDController pidControllerLeft;
+  private CANPIDController pidControllerRight;
 
   double kP;
   double kI;
@@ -32,11 +33,13 @@ public class TuneShooterPID extends CommandBase {
   double kMinOutput;
   double kIz;
 
-  public TuneShooterPID(Shooter shooter) {
+  public TuneShooterPID(Shooter shooter, int sP) {
     // Use addRequirements() here to declare subsystem dependenacies.
 
     this.shooter = shooter;
-    pidControllerLeft = shooter.getShooterLeft().getPIDController();
+    this.setpoint = sP;
+    this.pidControllerLeft = shooter.getShooterLeftPIDController();
+    this.pidControllerRight = shooter.getShooterRightPIDController();
 
 
     kP = Constants.kShooterP;
@@ -46,15 +49,6 @@ public class TuneShooterPID extends CommandBase {
     kMinOutput = Constants.kShooterMinOutput;
     kF = Constants.kShooterF;
     kIz = Constants.kShooterIZone; 
-
-    pidControllerLeft.setP(kP);
-    pidControllerLeft.setI(kI);
-    pidControllerLeft.setD(kD);
-    pidControllerLeft.setFF(kF);
-    pidControllerLeft.setOutputRange(kMinOutput, kMaxOutput);
-    pidControllerLeft.setIZone(kIz);
-    
-    pidControllerRight = pidControllerLeft;
   }
 
   // Called when the command is initially scheduled.
@@ -66,17 +60,14 @@ public class TuneShooterPID extends CommandBase {
     SmartDashboard.putNumber("Shooter F: ", kF);
     SmartDashboard.putNumber("Max Output: ", kMaxOutput);
     SmartDashboard.putNumber("Min Output: ", kMinOutput);
+    SmartDashboard.putNumber("Shooter Setpoint: ", setpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double setPoint = Constants.shooterSetpoint;
-    pidControllerLeft.setReference(setPoint, ControlType.kVelocity);
-
-    // Set pidControllerRight to everything pidControllerLeft was set to
-    pidControllerRight = pidControllerLeft;
-    pidControllerRight.setReference(-setPoint, ControlType.kVelocity); // Invert velocity setpoint
+    shooter.getShooterLeftPIDController().setReference(setpoint, ControlType.kVelocity);
+    pidControllerRight.setReference(-setpoint, ControlType.kVelocity);
 
     double p = SmartDashboard.getNumber("Shooter P: ", kP);
     double i = SmartDashboard.getNumber("Shooter I: ", kI);
@@ -85,15 +76,42 @@ public class TuneShooterPID extends CommandBase {
     double f = SmartDashboard.getNumber("Shooter F: ", kF);
     double max = SmartDashboard.getNumber("Max Output: ", kMaxOutput);
     double min = SmartDashboard.getNumber("Min Output: ", kMinOutput);
+    double sP = SmartDashboard.getNumber("Shooter Setpoint: ", setpoint);
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { pidControllerLeft.setP(p); kP = p; }
-    if((i != kI)) { pidControllerLeft.setI(i); kI = i; }
-    if((d != kD)) { pidControllerLeft.setD(d); kD = d; }
-    if((iz != kIz)) { pidControllerLeft.setIZone(iz); kIz = iz; }
-    if((f != kF)) { pidControllerLeft.setFF(f); kF = f; }
+    if((p != kP)) { 
+      pidControllerLeft.setP(p); 
+      pidControllerRight.setP(p);
+      kP = p; 
+    }
+    if((i != kI)) { 
+      pidControllerLeft.setI(i);
+      pidControllerRight.setI(i);
+      kI = i; 
+    }
+    if((d != kD)) { 
+      pidControllerLeft.setD(d); 
+      pidControllerRight.setD(d);
+      kD = d; 
+    }
+    if((iz != kIz)) { 
+      pidControllerLeft.setIZone(iz); 
+      pidControllerRight.setIZone(iz);
+      kIz = iz; 
+    }
+    if((f != kF)) { 
+      pidControllerLeft.setFF(f); 
+      pidControllerRight.setFF(f);
+      kF = f; 
+    }
+    if((sP != setpoint)){
+      pidControllerLeft.setReference(sP, ControlType.kVelocity);
+      pidControllerRight.setReference(-sP, ControlType.kVelocity);
+      setpoint = sP;
+    }
     if((max != kMaxOutput) || (min != kMinOutput)) { 
       pidControllerLeft.setOutputRange(min, max);
+      pidControllerRight.setOutputRange(min, max);
       kMinOutput = min; kMaxOutput = max;
     }
 

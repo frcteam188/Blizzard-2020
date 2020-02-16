@@ -86,6 +86,14 @@ public class TeleopCommand extends CommandBase {
     SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
     SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
 
+    // Uncomment after not using tuneShooterPID
+    // SmartDashboard.putNumber("Shooter P: ", Constants.kShooterP);
+    // SmartDashboard.putNumber("Shooter I: ", Constants.kShooterI);
+    // SmartDashboard.putNumber("Shooter D: ", Constants.kShooterD);
+    // SmartDashboard.putNumber("Shooter F: ", Constants.kShooterF);
+    // SmartDashboard.putNumber("Max Output: ", Constants.kShooterMaxOutput);
+    // SmartDashboard.putNumber("Min Output: ", Constants.kShooterMinOutput);
+
 
     // MATH
     

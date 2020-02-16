@@ -21,8 +21,8 @@ public class RunShooterPID extends CommandBase {
 
   private final Shooter shooter;
   private int setpoint;
-  private CANPIDController PIDControllerLeft;
-  private CANPIDController PIDControllerRight;
+  private CANPIDController pidControllerLeft;
+  private CANPIDController pidControllerRight;
 
 
   
@@ -32,8 +32,8 @@ public class RunShooterPID extends CommandBase {
 
     this.shooter = shooter;
     this.setpoint = sP;
-    this.PIDControllerLeft = shooter.getShooterLeftPIDController();
-    this.PIDControllerRight = shooter.getShooterRightPIDController();
+    this.pidControllerLeft = shooter.getShooterLeftPIDController();
+    this.pidControllerRight = shooter.getShooterRightPIDController();
 
     
   }
@@ -46,15 +46,15 @@ public class RunShooterPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    PIDControllerLeft.setReference(setpoint, ControlType.kVelocity);
-    PIDControllerRight.setReference(-setpoint, ControlType.kVelocity);
+    pidControllerLeft.setReference(setpoint, ControlType.kVelocity);
+    pidControllerRight.setReference(-setpoint, ControlType.kVelocity);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    PIDControllerLeft.setReference(0,ControlType.kDutyCycle);
-    PIDControllerRight.setReference(0,ControlType.kDutyCycle);
+    pidControllerLeft.setReference(0,ControlType.kDutyCycle);
+    pidControllerRight.setReference(0,ControlType.kDutyCycle);
   }
 
   // Returns true when the command should end.
