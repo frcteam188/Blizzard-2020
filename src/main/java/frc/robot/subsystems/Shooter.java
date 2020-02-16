@@ -73,10 +73,6 @@ public class Shooter extends SubsystemBase {
     pidControllerLeft.setIZone(0);
 
     pidControllerRight = pidControllerLeft;
-
-
-
-
   }
   /**
    * returns the hoodPIDController object
@@ -168,7 +164,6 @@ public class Shooter extends SubsystemBase {
   public double getTurretPos(){
     return turretEnc.getPosition();
   }
-
   /**
    * Testing method to reset the hood encoder to 0
    * 
@@ -196,6 +191,9 @@ public class Shooter extends SubsystemBase {
     return this.shooterRight;
   }
 
+  public void setTurretAngle(double newAngle){
+    turretEnc.setPosition(newAngle);
+  }
 
   /**
    * Testing method to reset the turret encoder to 0

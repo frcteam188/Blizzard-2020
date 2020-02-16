@@ -86,6 +86,7 @@ public class TeleopCommand extends CommandBase {
     SmartDashboard.putNumber("Limelight Angle Graph", shooter.getLimelightX());
     SmartDashboard.putNumber("Angle of Base: ", base.getBaseAngle());
 
+
     // Shooter Stuff (Actual PID values are printed and modified in TuneShooterPID.java)
     SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
     SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());

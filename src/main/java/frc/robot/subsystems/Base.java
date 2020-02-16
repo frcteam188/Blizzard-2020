@@ -12,8 +12,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
+import com.kauailabs.navx.frc.AHRS;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
@@ -29,16 +31,15 @@ public class Base extends SubsystemBase {
   CANEncoder frontLeftEnc = new CANEncoder(leftFront);
   
   CANSparkMax leftBack = new CANSparkMax(RobotMap.leftBack, MotorType.kBrushless);
-  CANEncoder frontBackEnc = new CANEncoder(leftBack);
 
   CANSparkMax rightFront = new CANSparkMax(RobotMap.rightFront, MotorType.kBrushless);
-  CANEncoder rightLeftEnc = new CANEncoder(rightFront);
 
   CANSparkMax rightBack = new CANSparkMax(RobotMap.rightBack, MotorType.kBrushless);
-  CANEncoder rightBackEnc = new CANEncoder(rightBack);
 
   // initializing a double solenoid for the gearbox's shifters
   DoubleSolenoid baseS = new DoubleSolenoid(RobotMap.forwardChannelBase, RobotMap.reverseChannelBase);
+
+  AHRS navx = new AHRS(Port.kMXP);
   /**
    * Creates a new Base.
    */
@@ -79,6 +80,19 @@ public class Base extends SubsystemBase {
   public void gearShiftOff(){
     baseS.set(kReverse);
   }
+
+  /**
+   * Returns the angle of the navx
+   * 
+   * @author Shiv Patel
+   */
+  public double getBaseAngle(){
+    return navx.getAngle();
+  }
+
+  // public doul
+
+
 
 
 

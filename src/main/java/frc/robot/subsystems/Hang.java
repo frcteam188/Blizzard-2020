@@ -56,7 +56,7 @@ public class Hang extends SubsystemBase {
     else if(state == -1){
       stageOne.set(kReverse);
     }
-    System.out.println("State: " + state);
+    // System.out.println("State: " + state);
   }
 
   /**
@@ -72,7 +72,7 @@ public class Hang extends SubsystemBase {
     else if(state == -1){
       stageTwo.set(kReverse);
     }
-    System.out.println("State: " + state);
+    // System.out.println("State: " + state);
   }
 
 
