@@ -60,8 +60,8 @@ public class Base extends SubsystemBase {
   public void drive(double y, double x){
     leftFront.set(y + x);
     leftBack.set(y + x);
-    rightFront.set(-y + x);
-    rightBack.set(-y + x);
+    rightFront.set(0.9*(-y + x));
+    rightBack.set(0.9*(-y + x));
   }
 
   /**

@@ -33,6 +33,7 @@ public class Shooter extends SubsystemBase {
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry toggleLED = table.getEntry("ledMode");
 
   double x = tx.getDouble(0.0);
   double y = ty.getDouble(0.0);
@@ -55,6 +56,11 @@ public class Shooter extends SubsystemBase {
   CANSparkMax hood = new CANSparkMax(RobotMap.hood, MotorType.kBrushless);
   CANEncoder hoodEnc = new CANEncoder(hood);
   CANPIDController hoodPIDController = hood.getPIDController();
+
+  //limelight onstants
+  public static final int LED_OFF = 1;
+  public static final int LED_ON = 3;
+  
 
   //creating shooter object
 
@@ -124,6 +130,15 @@ public class Shooter extends SubsystemBase {
       pow = 0;
     }
     turret.set(pow);
+    
+  }
+/**
+ * Method that turns the limelight on or off
+ * 
+ * @param state - state of limelight
+ */
+  public void setLimelightLED(int state){
+    toggleLED.setNumber(state);
   }
 
 

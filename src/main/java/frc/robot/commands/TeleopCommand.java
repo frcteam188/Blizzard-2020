@@ -54,6 +54,7 @@ public class TeleopCommand extends CommandBase {
   private final boolean turretButtonPressed = false;
   private boolean shootOn = false;
   private boolean intakeOn = false;
+  private boolean intakeButtonPressed = false;
   private final boolean hoodPIDTrue = false;
   private boolean shootingButtonX = false;
   private boolean shootingButtonA = false;
@@ -78,7 +79,7 @@ public class TeleopCommand extends CommandBase {
     hoodPID = new HoodPID(shooter, hoodSetpoint);
     autoIntake = new AutoIntake(intake);
     moveFeeder = new MoveFeeder(intake, pow);
-    moveIntake = new MoveIntake(intake, pow);
+    moveIntake = new MoveIntake(intake, -0.4);
     shoot = new Shoot(intake);
     shooterPID = new TuneShooterPID(shooter, 4360);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -94,6 +95,7 @@ public class TeleopCommand extends CommandBase {
     SmartDashboard.putNumber("Turret I: ", Constants.kTurretI);
     SmartDashboard.putNumber("Turret D: ", Constants.kTurretD);
     SmartDashboard.putNumber("Turret Setpoint: ", 0);
+    
 
     // Start in low gear
     base.gearShiftOff();
@@ -139,7 +141,7 @@ public class TeleopCommand extends CommandBase {
 
     // CONTROLS
 
-    base.drive(-drStick.getRawAxis(1), drStick.getRawAxis(2)); // Joysticks (driver) - drive
+    base.drive(-drStick.getRawAxis(1), drStick.getRawAxis(2)*0.4); // Joysticks (driver) - drive
     if(drStick.getRawAxis(2) < -0.5) {
       drStick.setRumble(RumbleType.kLeftRumble, (-drStick.getRawAxis(2)-0.5)*2);
       drStick.setRumble(RumbleType.kRightRumble, 0);
@@ -163,21 +165,43 @@ public class TeleopCommand extends CommandBase {
       base.gearShiftOn();
     }
 
+    if (opStick.getRawButton(5) && intakeOn == false ){
+      intake.deployIntake();
+      intakeOn = true;
+    }
+    else if(opStick.getRawButton(7) && intakeOn == true){
+      intake.resetIntake();
+      intakeOn = false;
+    }
+
+
+
+
     // LT (driver) - fire piston to deploy intake and run the intake motor
     if (opStick.getRawButton(6)) {
-      intake.deployIntake();
       if (autoIntakeOn == false) {
+        moveIntake.cancel();
         autoIntake.schedule();
         autoIntakeOn = true;
+      } 
+      
+    }
+    else if(opStick.getRawButton(8)){
+      if (intakeOn == false){
+        autoIntake.cancel();
+        moveIntake.schedule();
+        intakeOn = true;
       }
-    } 
-    else { // RT (driver) - retract the intake piston
-      intake.resetIntake();
+    }
+    else{ // RT (driver) - retract the intake piston
       if (autoIntakeOn == true) {
         autoIntake.cancel();
         autoIntakeOn = false;
-      
       }
+      else if (intakeOn == true){
+        intakeOn = false;
+        moveIntake.cancel();  
+      }  
     }
 
       
@@ -193,7 +217,7 @@ public class TeleopCommand extends CommandBase {
     if (opStick.getRawButton(2)) { // X (operator) - shoot at 70%
       opStick.setRumble(RumbleType.kLeftRumble, 0.5);
       opStick.setRumble(RumbleType.kRightRumble, 0.5);
-      shooter.shoot(0.9);
+      shooter.shoot(0.95);
       if (!shootingButtonX) {
         hoodPID.setSetpoint(60);
         hoodPID.schedule();
@@ -205,7 +229,7 @@ public class TeleopCommand extends CommandBase {
     else if (opStick.getRawButton(3)) {
       opStick.setRumble(RumbleType.kLeftRumble, 1.0);
       opStick.setRumble(RumbleType.kRightRumble, 1.0);
-      shooter.shoot(0.9);
+      shooter.shoot(0.95);
       if (!shootingButtonA) {
         hoodPID.setSetpoint(80);
         hoodPID.schedule();
@@ -215,7 +239,7 @@ public class TeleopCommand extends CommandBase {
     } else if (opStick.getRawButton(4)) { // B (operator) - shoot at 90%
       opStick.setRumble(RumbleType.kLeftRumble, 0.2);
       opStick.setRumble(RumbleType.kRightRumble, 0.2);
-      shooter.shoot(0.9);
+      shooter.shoot(0.95);
       if (!shootingButtonB) {
         hoodPID.setSetpoint(100);
         hoodPID.schedule();
@@ -246,10 +270,10 @@ public class TeleopCommand extends CommandBase {
     }
 
     //runs all feeding mechanisms if lb is pressed
-    if (opStick.getRawButton(5) && !shootPressed){
+    if (opStick.getPOV(0) == 0 && !shootPressed){
       shoot.schedule();
     }
-    else if (!opStick.getRawButton(5)){
+    else if (opStick.getPOV(0) != 0 ){
       shoot.cancel();
     }
 
@@ -280,7 +304,7 @@ public class TeleopCommand extends CommandBase {
     } else {
       hang.pullUp(0);
     }
-    //
+    
     // HOOD - 1
     // TURRET - 2
 
@@ -305,9 +329,8 @@ public class TeleopCommand extends CommandBase {
     shootingButtonX = opStick.getRawButton(1);
     shootingButtonA = opStick.getRawButton(2);
     shootingButtonB = opStick.getRawButton(3);
-    shootPressed = opStick.getRawButton(5);
-
-
+    shootPressed = opStick.getPOV(0) == 0;
+    intakeButtonPressed = drStick.getRawButton(6);
   }
 
   // Called once the command ends or is interrupted.
