@@ -277,7 +277,7 @@ public class TeleopCommand extends CommandBase {
       shoot.cancel();
     }
 
-    //boolean value for proper rpm
+    //boolean value for proper rpm, change
     if (shooter.getVelShooter() >= 4250){
       canShoot = true;
     }
