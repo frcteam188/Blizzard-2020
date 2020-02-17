@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.DisabledCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -31,6 +32,7 @@ public class RobotContainer {
 
   // creating a new stick (controller) which will be the OPERATOR controller (port 0)
   private Joystick opStick = new Joystick(0);
+  private JoystickButton opABtn = new JoystickButton(opStick, 2);
 
   //creating a new stick (controller) which will be the DRIVER controller (port 1)
   private Joystick drStick =  new Joystick(1);
@@ -39,6 +41,7 @@ public class RobotContainer {
   // constructor for teleopCommand
   private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, opStick, drStick);
   private final DisabledCommand disabledCommand = new DisabledCommand(drStick, base, shooter);
+  private final Shoot shoot = new Shoot(intake);
 
   // constructor for auto commmand
 
@@ -57,8 +60,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    opABtn.toggleWhenPressed(shoot);
   }
-
 
   /**
    * Returns the teleop command
