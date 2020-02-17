@@ -7,53 +7,35 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Base;
-import frc.robot.subsystems.Shooter;
-
-public class DisabledCommand extends CommandBase {
+import frc.robot.subsystems.*;
+public class DeployAndRunIntake extends CommandBase {
   /**
-   * Creates a new DisabledCommand.
+   * Creates a new DeployAndRunIntake.
    */
-
-  private final Joystick drStick;
-  private final Base base;
-  private final Shooter shooter;
-
-  public DisabledCommand(Joystick driveStick, Base b, Shooter s) {
+  private Intake intake;
+  public DeployAndRunIntake(Intake i) {
+    this.intake = i;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.drStick = driveStick;
-    this.base = b;
-    this.shooter = s;
-  }
-
-  public boolean runsWhenDisabled() {
-    return true;
+    addRequirements(i);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.setLimelightLED(Shooter.LED_OFF);
-
+    intake.deployIntake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(drStick.getRawButton(3)){
-      shooter.resetHoodPos();
-      shooter.resetTurretPos();
-      base.resetBaseEnc();
-      base.resetNavxAngle();
-    }
-    
+    intake.succ(0.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.resetIntake();
   }
 
   // Returns true when the command should end.
