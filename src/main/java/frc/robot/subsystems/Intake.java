@@ -66,7 +66,7 @@ public class Intake extends SubsystemBase {
    * @author Shiv Patel
    */
   public void deployIntake(){
-    intakeS.set(kForward);
+    intakeS.set(kReverse);
   }
 
   /**
@@ -75,7 +75,7 @@ public class Intake extends SubsystemBase {
    * @author Shiv Patel, aka retard
    */
   public void resetIntake(){
-    intakeS.set(kReverse);
+    intakeS.set(kForward);
   }
 
   public double getValueOfSensor(){

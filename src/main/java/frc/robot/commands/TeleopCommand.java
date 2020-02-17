@@ -97,6 +97,7 @@ public class TeleopCommand extends CommandBase {
 
     // Start in low gear
     base.gearShiftOff();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -163,15 +164,13 @@ public class TeleopCommand extends CommandBase {
     }
 
     // LT (driver) - fire piston to deploy intake and run the intake motor
-    if (opStick.getRawButton(7)) {
+    if (opStick.getRawButton(6)) {
       intake.deployIntake();
       if (autoIntakeOn == false) {
         autoIntake.schedule();
         autoIntakeOn = true;
       }
     } 
-    
-
     else { // RT (driver) - retract the intake piston
       intake.resetIntake();
       if (autoIntakeOn == true) {
@@ -180,8 +179,6 @@ public class TeleopCommand extends CommandBase {
       
       }
     }
-
-    if (opStick.getRawButton(7)) { // RB (driver) - run the intake and only then run the autoIntake command
 
       
 
@@ -309,6 +306,8 @@ public class TeleopCommand extends CommandBase {
     shootingButtonA = opStick.getRawButton(2);
     shootingButtonB = opStick.getRawButton(3);
     shootPressed = opStick.getRawButton(5);
+
+
   }
 
   // Called once the command ends or is interrupted.
