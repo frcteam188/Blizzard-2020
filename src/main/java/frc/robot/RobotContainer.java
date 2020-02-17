@@ -37,11 +37,36 @@ public class RobotContainer {
   //creating a new stick (controller) which will be the DRIVER controller (port 1)
   private Joystick drStick =  new Joystick(1);
   
+  // Buttons Operator
+  JoystickButton xBtnOp = new JoystickButton(opStick, 1);
+  JoystickButton aBtnOp = new JoystickButton(opStick, 2);
+  JoystickButton bBtnOp = new JoystickButton(opStick, 3);
+  JoystickButton yBtnOp = new JoystickButton(opStick, 4);
+  JoystickButton lbBtnOp = new JoystickButton(opStick, 5);
+  JoystickButton rbBtnOp = new JoystickButton(opStick, 6);
+  JoystickButton ltBtnOp = new JoystickButton(opStick, 7);
+  JoystickButton rtBtnOp = new JoystickButton(opStick, 8);
+
+  // Buttons Driver
+  JoystickButton xBtnDr = new JoystickButton(drStick, 1);
+  JoystickButton aBtnDr = new JoystickButton(drStick, 2);
+  JoystickButton bBtnDr = new JoystickButton(drStick, 3);
+  JoystickButton yBtnDr = new JoystickButton(drStick, 4);
+  JoystickButton lbBtnDr = new JoystickButton(drStick, 5);
+  JoystickButton rbBtnDr = new JoystickButton(drStick, 6);
+  JoystickButton ltBtnDr = new JoystickButton(drStick, 7);
+  JoystickButton rtBtnDr = new JoystickButton(drStick, 8);
+
+  // Variables
+  private double feederPow = 0;
+  private double intakePow = 0;
+  private double hoodSp = 0;
+  private double shooterSp = 0;
+  
 
   // constructor for teleopCommand
   private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, opStick, drStick);
   private final DisabledCommand disabledCommand = new DisabledCommand(drStick, base, shooter);
-  private final Shoot shoot = new Shoot(intake);
 
   // constructor for auto commmand
 
@@ -60,7 +85,33 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+<<<<<<< HEAD
     // opABtn.toggleWhenPressed(shoot);
+=======
+    // Operator Controls
+
+    // Regular intake with autofeed
+    ltBtnOp.whileHeld(new AutoIntake(intake));
+
+    // Low pwr hoodSp = 60
+    aBtnOp.whileHeld(new HoodPID(shooter, 60));
+    aBtnOp.whileHeld(new TurretPID(shooter));
+
+    // Med pwr, hoodSp = 80
+    bBtnOp.whileHeld(new HoodPID(shooter, 80));
+    bBtnOp.whileHeld(new TurretPID(shooter));
+
+    // Hi pwr, hoodSp = 100
+    yBtnOp.whileHeld(new HoodPID(shooter, 100));
+    yBtnOp.whileHeld(new TurretPID(shooter));
+
+    // Activate shootFeed
+    lbBtnOp.whileHeld(new Shoot(intake));
+
+    // Driver Controls
+    aBtnDr.whenHeld(new DeployHang(hang));
+    yBtnDr.whenHeld(new Winch(hang));
+>>>>>>> d0100d7c2829c68832d55c4c417be8bc682fd2e4
   }
 
   /**
@@ -81,8 +132,6 @@ public class RobotContainer {
     return disabledCommand;
   }
 
-  public Intake getIntake(){
-    return intake;
-  }
+
 
 }

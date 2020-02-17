@@ -61,6 +61,8 @@ public class TuneShooterPID extends CommandBase {
     SmartDashboard.putNumber("Max Output: ", kMaxOutput);
     SmartDashboard.putNumber("Min Output: ", kMinOutput);
     SmartDashboard.putNumber("Shooter Setpoint: ", setpoint);
+
+    shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -120,7 +122,9 @@ public class TuneShooterPID extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.setLimelightLED(Shooter.LED_OFF);
   }
+
 
   // Returns true when the command should end.
   @Override
