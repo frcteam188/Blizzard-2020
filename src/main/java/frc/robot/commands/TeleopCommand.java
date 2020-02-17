@@ -163,26 +163,27 @@ public class TeleopCommand extends CommandBase {
     }
 
     // LT (driver) - fire piston to deploy intake and run the intake motor
-    if (opStick.getRawButton(6)) {
+    if (opStick.getRawButton(7)) {
       intake.deployIntake();
-    }
-
-    else if (opStick.getRawButton(8)) { // RT (driver) - retract the intake piston
-      intake.resetIntake();
-    }
-
-    if (opStick.getRawButton(7)) { // RB (driver) - run the intake and only then run the autoIntake command
-
       if (autoIntakeOn == false) {
         autoIntake.schedule();
         autoIntakeOn = true;
       }
-    } else {
+    } 
+    
+
+    else { // RT (driver) - retract the intake piston
+      intake.resetIntake();
       if (autoIntakeOn == true) {
         autoIntake.cancel();
         autoIntakeOn = false;
+      
       }
     }
+
+    if (opStick.getRawButton(7)) { // RB (driver) - run the intake and only then run the autoIntake command
+
+      
 
     // if (opStick.getRawButton(6) && intakeOn == false) {
     //   moveIntake.schedule();
@@ -192,7 +193,7 @@ public class TeleopCommand extends CommandBase {
     //   moveIntake.cancel();
     // }
 
-    if (opStick.getRawButton(1)) { // X (operator) - shoot at 70%
+    if (opStick.getRawButton(2)) { // X (operator) - shoot at 70%
       opStick.setRumble(RumbleType.kLeftRumble, 0.5);
       opStick.setRumble(RumbleType.kRightRumble, 0.5);
       shooter.shoot(0.9);
@@ -204,7 +205,7 @@ public class TeleopCommand extends CommandBase {
 
     }
 
-    else if (opStick.getRawButton(2)) {
+    else if (opStick.getRawButton(3)) {
       opStick.setRumble(RumbleType.kLeftRumble, 1.0);
       opStick.setRumble(RumbleType.kRightRumble, 1.0);
       shooter.shoot(0.9);
@@ -214,7 +215,7 @@ public class TeleopCommand extends CommandBase {
         turretPID.schedule();
       }
 
-    } else if (opStick.getRawButton(3)) { // B (operator) - shoot at 90%
+    } else if (opStick.getRawButton(4)) { // B (operator) - shoot at 90%
       opStick.setRumble(RumbleType.kLeftRumble, 0.2);
       opStick.setRumble(RumbleType.kRightRumble, 0.2);
       shooter.shoot(0.9);
@@ -230,6 +231,12 @@ public class TeleopCommand extends CommandBase {
       hoodPID.setSetpoint(0);
       if (turretPID.isScheduled()) {
         turretPID.cancel();
+      }
+      
+      //if turret pid is off, manual turret mvmt
+      if (!turretPID.isScheduled()){
+        shooter.moveTurret(opStick.getRawAxis(0));
+
       }
       // put turret to middle again
       if (shooter.getTurretAngle() > 0 + turretDeadZone) {
