@@ -66,8 +66,8 @@ public class TuneShooterPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.getShooterLeftPIDController().setReference(setpoint, ControlType.kVelocity);
-    pidControllerRight.setReference(-setpoint, ControlType.kVelocity);
+    pidControllerLeft.setReference(-setpoint, ControlType.kVelocity);
+    pidControllerRight.setReference(setpoint, ControlType.kVelocity);
 
     double p = SmartDashboard.getNumber("Shooter P: ", kP);
     double i = SmartDashboard.getNumber("Shooter I: ", kI);
@@ -105,8 +105,8 @@ public class TuneShooterPID extends CommandBase {
       kF = f; 
     }
     if((sP != setpoint)){
-      pidControllerLeft.setReference(sP, ControlType.kVelocity);
-      pidControllerRight.setReference(-sP, ControlType.kVelocity);
+      pidControllerLeft.setReference(-sP, ControlType.kVelocity);
+      pidControllerRight.setReference(sP, ControlType.kVelocity);
       setpoint = sP;
     }
     if((max != kMaxOutput) || (min != kMinOutput)) { 

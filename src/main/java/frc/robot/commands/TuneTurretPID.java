@@ -23,7 +23,9 @@ public class TuneTurretPID extends PIDCommand {
   public TuneTurretPID(Shooter s) {
     super(
         // The controller that the command will use
-        new PIDController(Constants.kTurretP, Constants.kTurretI, Constants.kTurretD),
+        new PIDController(SmartDashboard.getNumber("Turret P: ", Constants.kHoodP), 
+        SmartDashboard.getNumber("Turret I: ", Constants.kHoodI), 
+        SmartDashboard.getNumber("Turret D: ", Constants.kHoodD)),
         // This should return the measurement
         // this is the error rate, based off the the x value of the limelight (the # of degrees that you are off the center of the limelight)
         s::getLimelightX, 
@@ -33,12 +35,22 @@ public class TuneTurretPID extends PIDCommand {
         // This uses the output
         output -> {
           // moves the turret based off the output of this method
-          s.moveTurret(output);
+          s.moveTurret(-output);
           // outputs the power at which the turret is moving on the SmartDashboard
-          SmartDashboard.putNumber("Turret Power", output);
+          SmartDashboard.putNumber("Turret Power", -output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+  }
+
+  @Override
+  public void initialize() {
+    // TODO Auto-generated method stub
+    super.initialize();
+    getController().setP(SmartDashboard.getNumber("Turret P: ", Constants.kHoodP));
+    getController().setI(SmartDashboard.getNumber("Turret I: ", Constants.kHoodI));
+    getController().setD(SmartDashboard.getNumber("Turret D: ", Constants.kHoodD));
+    getController().setSetpoint(SmartDashboard.getNumber("Turret Setpoint: ", 0));
   }
 
   // Returns true when the command should end.

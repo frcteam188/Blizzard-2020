@@ -39,7 +39,7 @@ public class AutoIntake extends CommandBase {
       intake.feed(0);
     }
     intake.runShooterFeeder(0.75);
-    intake.succ(0.6);
+    intake.succ(0.4);
   }
 
   // Called once the command ends or is interrupted.

@@ -72,6 +72,8 @@ public class Shooter extends SubsystemBase {
     pidControllerLeft.setIZone(0);
 
     pidControllerRight = pidControllerLeft;
+
+    turretEnc.setPositionConversionFactor(1.54373);
   }
   /**
    * returns the hoodPIDController object
@@ -115,6 +117,12 @@ public class Shooter extends SubsystemBase {
    * @author Zayeed Ghori
    */
   public void moveTurret(double pow){
+    if(pow > 0 && getTurretAngle() > 30){
+      pow = 0;
+    }
+    else if(pow < 0 && getTurretAngle() < -210){
+      pow = 0;
+    }
     turret.set(pow);
   }
 
@@ -127,6 +135,13 @@ public class Shooter extends SubsystemBase {
    */
 
   public void moveHood(double pow){
+    if(pow > 0 && getHoodPos() > 110){
+      pow = 0;
+    }
+    else if(pow < 0 && getHoodPos() < 0){
+      pow = 0;
+    }
+    
     hood.set(pow);
   }
 
@@ -157,8 +172,8 @@ public class Shooter extends SubsystemBase {
    * @author Zayeed Ghori
    */
 
-  public double getTurretPos(){
-    return turretEnc.getPosition();
+  public double getTurretAngle(){
+    return turretEnc.getPosition();  
   }
   /**
    * Testing method to reset the hood encoder to 0

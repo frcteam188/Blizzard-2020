@@ -45,10 +45,10 @@ public class Base extends SubsystemBase {
    * Creates a new Base.
    */
   public Base() {
-    leftFront.setOpenLoopRampRate(0.2);
-    leftBack.setOpenLoopRampRate(0.2);
-    rightFront.setOpenLoopRampRate(0.2);
-    rightBack.setOpenLoopRampRate(0.2);
+    // leftFront.setOpenLoopRampRate(0.2);
+    // leftBack.setOpenLoopRampRate(0.2);
+    // rightFront.setOpenLoopRampRate(0.2);
+    // rightBack.setOpenLoopRampRate(0.2);
   }
   /**
    * Method used to actually drive the robot itself
@@ -91,6 +91,11 @@ public class Base extends SubsystemBase {
     return navx.getAngle();
   }
 
+  // Test, change to zero navx angle if necessary
+  public void resetNavxAngle(){
+    navx.zeroYaw();
+  }
+
   // Test
   public CANSparkMax getLeftFront(){
     return leftFront;
@@ -103,6 +108,10 @@ public class Base extends SubsystemBase {
   }
   public CANSparkMax getRightBack(){
     return rightBack;
+  }
+
+  public void resetBaseEnc(){
+    frontLeftEnc.setPosition(0);
   }
 
 

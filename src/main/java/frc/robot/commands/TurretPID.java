@@ -29,13 +29,13 @@ public class TurretPID extends PIDCommand {
         s::getLimelightX, 
         // This should return the setpoint (can also be a constant)
         // This is the turret setpoint, the setpoint for the turret is 0.0 and displays that on the SmartDashboard
-        () -> SmartDashboard.getNumber("Turret Setpoint", 0.0),
+        () -> -4,
         // This uses the output
         output -> {
           // moves the turret based off the output of this method
-          s.moveTurret(output);
+          s.moveTurret(-output);
           // outputs the power at which the turret is moving on the SmartDashboard
-          SmartDashboard.putNumber("Turret Power", output);
+          SmartDashboard.putNumber("Turret Power", -output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.

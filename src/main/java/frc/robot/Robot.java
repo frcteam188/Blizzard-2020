@@ -22,6 +22,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   // make a command object called teleopCommand
   private Command teleopCommand;
+
+  private Command m_disabledCommand;
  
   
 
@@ -60,6 +62,24 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    
+
+
+    m_disabledCommand = m_robotContainer.getDisabledCommand();
+
+    if (m_disabledCommand != null) {
+      m_disabledCommand.schedule();
+    }
+
+    // if auto command is null, cancel it, as you don't want to run it during autonomous period
+    if (m_autonomousCommand != null){
+      m_autonomousCommand.cancel();
+    }
+
+    // if teleop command is null, cancel it, as you don't want to run it during autonomous period
+    if (teleopCommand != null){
+      teleopCommand.cancel();
+    }
   }
 
   @Override
@@ -78,8 +98,13 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
+    // if disabled command is null, cancel it, as you don't want to run it during autonomous period
+    if (m_disabledCommand != null){
+      m_disabledCommand.cancel();
+    }
+
     // if teleop command is null, cancel it, as you don't want to run it during autonomous period
-    else if (teleopCommand != null){
+    if (teleopCommand != null){
       teleopCommand.cancel();
     }
   }
@@ -103,8 +128,13 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+    // if disabled command is null, cancel it, as you don't want to run it during autonomous period
+    if (m_disabledCommand != null){
+      m_disabledCommand.cancel();
+    }
+
     // schedule the teleop command
-    else if (teleopCommand != null){
+    if (teleopCommand != null){
       teleopCommand.schedule();
     }
   }

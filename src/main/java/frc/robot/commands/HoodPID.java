@@ -7,10 +7,13 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
@@ -20,28 +23,37 @@ public class HoodPID extends CommandBase {
    * Creates a new HoodPID2.
    */
 
-  private int setpoint;
+  private double setpoint;
   private Shooter shooter;
   private CANPIDController hoodPIDController;
 
-  public HoodPID(Shooter s, int sP) {
+  public HoodPID(Shooter s,double sp) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = s;
-    this.setpoint = sP;
+    SmartDashboard.putNumber("Hood Setpoint: ", 0);
+    this.setpoint = sp;
     hoodPIDController = shooter.getHoodPIDController();
 
     
   }
 
+  public void setSetpoint(double setpoint) {
+    this.setpoint = setpoint;
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.putNumber("Hood Setpoint: ", setpoint);
     hoodPIDController.setReference(setpoint,ControlType.kPosition);
+    hoodPIDController.setP(Constants.kHoodP);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // setpoint = SmartDashboard.getNumber("Hood Setpoint: ", setpoint);
+    hoodPIDController.setReference(setpoint, ControlType.kPosition);
   }
 
   // Called once the command ends or is interrupted.
