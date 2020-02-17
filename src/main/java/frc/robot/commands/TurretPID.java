@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class TurretPID extends PIDCommand {
-  
+
+  public Shooter shooter;
 
   /**
    * Creates a new TurretFaceToAngle.
@@ -39,8 +40,25 @@ public class TurretPID extends PIDCommand {
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+    this.shooter = s;
+  }
+  
+
+  @Override
+  public void initialize() {
+    // TODO Auto-generated method stub
+    super.initialize();
+    shooter.setLimelightLED(Shooter.LED_ON);
+
+
   }
 
+  public void end(boolean interrupted) {
+    // TODO Auto-generated method stub
+    super.end(interrupted);
+    shooter.setLimelightLED(Shooter.LED_OFF);
+
+  }
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

@@ -179,11 +179,7 @@ public class TeleopCommand extends CommandBase {
         autoIntakeOn = false;
       
       }
-    }
-
-    if (opStick.getRawButton(7)) { // RB (driver) - run the intake and only then run the autoIntake command
-
-      
+    } 
 
     // if (opStick.getRawButton(6) && intakeOn == false) {
     //   moveIntake.schedule();
