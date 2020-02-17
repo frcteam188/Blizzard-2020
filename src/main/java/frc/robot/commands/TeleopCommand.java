@@ -105,16 +105,16 @@ public class TeleopCommand extends CommandBase {
 
     // Reporting to SmartDashBoard
 
-    SmartDashboard.putNumber("Limelight Angle:", shooter.getLimelightX());
-    SmartDashboard.putNumber("Turret Angle", shooter.getTurretAngle());
+    // SmartDashboard.putNumber("Limelight Angle:", shooter.getLimelightX());
+    // SmartDashboard.putNumber("Turret Angle", shooter.getTurretAngle());
 
-    SmartDashboard.putNumber("Limelight Angle Graph", shooter.getLimelightX());
-    SmartDashboard.putNumber("Angle of Base: ", base.getBaseAngle());
+    // SmartDashboard.putNumber("Limelight Angle Graph", shooter.getLimelightX());
+    // SmartDashboard.putNumber("Angle of Base: ", base.getBaseAngle());
 
-    // Shooter Stuff (Actual PID values are printed and modified in
-    // TuneShooterPID.java)
-    SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
-    SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
+    // // Shooter Stuff (Actual PID values are printed and modified in
+    // // TuneShooterPID.java)
+    // SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
+    // SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
 
     // Uncomment after not using tuneShooterPID
     // SmartDashboard.putNumber("Shooter P: ", Constants.kShooterP);
@@ -125,15 +125,15 @@ public class TeleopCommand extends CommandBase {
     // SmartDashboard.putNumber("Min Output: ", Constants.kShooterMinOutput);
 
     // Base Motor retport
-    SmartDashboard.putNumber("Base leftFront Current: ", base.getLeftFront().getOutputCurrent());
-    SmartDashboard.putNumber("Base leftBack Current: ", base.getLeftBack().getOutputCurrent());
-    SmartDashboard.putNumber("Base rightFront Current: ", base.getRightFront().getOutputCurrent());
-    SmartDashboard.putNumber("Base rightBack Current: ", base.getRightBack().getOutputCurrent());
+    // SmartDashboard.putNumber("Base leftFront Current: ", base.getLeftFront().getOutputCurrent());
+    // SmartDashboard.putNumber("Base leftBack Current: ", base.getLeftBack().getOutputCurrent());
+    // SmartDashboard.putNumber("Base rightFront Current: ", base.getRightFront().getOutputCurrent());
+    // SmartDashboard.putNumber("Base rightBack Current: ", base.getRightBack().getOutputCurrent());
 
     // HOOD
-    SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
+    // SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
 
-    //CAN SHOOT?
+    // CAN SHOOT?
     SmartDashboard.putBoolean("Can Shoot", canShoot);
 
     // CONTROLS
@@ -151,6 +151,8 @@ public class TeleopCommand extends CommandBase {
       drStick.setRumble(RumbleType.kLeftRumble, 0);
       drStick.setRumble(RumbleType.kRightRumble, 0);
     }
+
+    
       
 
     if (drStick.getRawButton(8)) { // LB (driver) - hold to shift the gear, otherwise the gear shift will be on
