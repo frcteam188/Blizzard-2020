@@ -89,26 +89,26 @@ public class RobotContainer {
     // Operator Controls
 
     // Regular intake with autofeed
-    ltBtnOp.whileHeld(new AutoIntake(intake));
+    // ltBtnOp.whileHeld(new AutoIntake(intake));
 
-    // Low pwr hoodSp = 60
-    aBtnOp.whileHeld(new HoodPID(shooter, 60));
-    aBtnOp.whileHeld(new TurretPID(shooter));
+    // // Low pwr hoodSp = 60
+    // aBtnOp.whileHeld(new HoodPID(shooter, 60));
+    // aBtnOp.whileHeld(new TurretPID(shooter));
 
-    // Med pwr, hoodSp = 80
-    bBtnOp.whileHeld(new HoodPID(shooter, 80));
-    bBtnOp.whileHeld(new TurretPID(shooter));
+    // // Med pwr, hoodSp = 80
+    // bBtnOp.whileHeld(new HoodPID(shooter, 80));
+    // bBtnOp.whileHeld(new TurretPID(shooter));
 
-    // Hi pwr, hoodSp = 100
-    yBtnOp.whileHeld(new HoodPID(shooter, 100));
-    yBtnOp.whileHeld(new TurretPID(shooter));
+    // // Hi pwr, hoodSp = 100
+    // yBtnOp.whileHeld(new HoodPID(shooter, 100));
+    // yBtnOp.whileHeld(new TurretPID(shooter));
 
-    // Activate shootFeed
-    lbBtnOp.whileHeld(new Shoot(intake));
+    // // Activate shootFeed
+    // lbBtnOp.whileHeld(new Shoot(intake));
 
-    // Driver Controls
-    aBtnDr.whenHeld(new DeployHang(hang));
-    yBtnDr.whenHeld(new Winch(hang));
+    // // Driver Controls
+    // aBtnDr.whenHeld(new DeployHang(hang));
+    // yBtnDr.whenHeld(new Winch(hang));
   }
 
   /**

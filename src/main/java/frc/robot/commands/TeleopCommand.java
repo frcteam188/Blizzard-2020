@@ -54,7 +54,7 @@ public class TeleopCommand extends CommandBase {
   private final boolean turretButtonPressed = false;
   private boolean shootOn = false;
   private boolean intakeOn = false;
-  private boolean intakeButtonPressed = false;
+  private boolean intakeDeployed = false;
   private final boolean hoodPIDTrue = false;
   private boolean shootingButtonX = false;
   private boolean shootingButtonA = false;
@@ -165,15 +165,6 @@ public class TeleopCommand extends CommandBase {
       base.gearShiftOn();
     }
 
-    if (opStick.getRawButton(5) && intakeOn == false ){
-      intake.deployIntake();
-      intakeOn = true;
-    }
-    else if(opStick.getRawButton(7) && intakeOn == true){
-      intake.resetIntake();
-      intakeOn = false;
-    }
-
 
 
 
@@ -201,7 +192,16 @@ public class TeleopCommand extends CommandBase {
       else if (intakeOn == true){
         intakeOn = false;
         moveIntake.cancel();  
-      }  
+      }
+    }
+
+    if (opStick.getRawButton(5) && intakeDeployed == false){
+      intake.deployIntake();
+      intakeDeployed = true;
+    }
+    else if(opStick.getRawButton(7) && intakeDeployed == true){
+      intake.resetIntake();
+      intakeDeployed = false;
     }
 
       
@@ -217,7 +217,7 @@ public class TeleopCommand extends CommandBase {
     if (opStick.getRawButton(2)) { // X (operator) - shoot at 70%
       opStick.setRumble(RumbleType.kLeftRumble, 0.5);
       opStick.setRumble(RumbleType.kRightRumble, 0.5);
-      shooter.shoot(0.95);
+      shooter.shoot(0.98);
       if (!shootingButtonX) {
         hoodPID.setSetpoint(60);
         hoodPID.schedule();
@@ -229,7 +229,7 @@ public class TeleopCommand extends CommandBase {
     else if (opStick.getRawButton(3)) {
       opStick.setRumble(RumbleType.kLeftRumble, 1.0);
       opStick.setRumble(RumbleType.kRightRumble, 1.0);
-      shooter.shoot(0.95);
+      shooter.shoot(0.98);
       if (!shootingButtonA) {
         hoodPID.setSetpoint(80);
         hoodPID.schedule();
@@ -239,9 +239,9 @@ public class TeleopCommand extends CommandBase {
     } else if (opStick.getRawButton(4)) { // B (operator) - shoot at 90%
       opStick.setRumble(RumbleType.kLeftRumble, 0.2);
       opStick.setRumble(RumbleType.kRightRumble, 0.2);
-      shooter.shoot(0.95);
+      shooter.shoot(0.98);
       if (!shootingButtonB) {
-        hoodPID.setSetpoint(100);
+        hoodPID.setSetpoint(105);
         hoodPID.schedule();
         turretPID.schedule();
       }
@@ -278,7 +278,7 @@ public class TeleopCommand extends CommandBase {
     }
 
     //boolean value for proper rpm
-    if (shooter.getVelShooter() >= 4250){
+    if (shooter.getVelShooter() >= 4500){
       canShoot = true;
     }
     else{
@@ -330,7 +330,6 @@ public class TeleopCommand extends CommandBase {
     shootingButtonA = opStick.getRawButton(2);
     shootingButtonB = opStick.getRawButton(3);
     shootPressed = opStick.getPOV(0) == 0;
-    intakeButtonPressed = drStick.getRawButton(6);
   }
 
   // Called once the command ends or is interrupted.
