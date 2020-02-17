@@ -80,6 +80,12 @@ public class Shooter extends SubsystemBase {
     pidControllerRight = pidControllerLeft;
 
     turretEnc.setPositionConversionFactor(1.54373);
+
+    // Nominal Voltage Compensation
+    shooterRight.enableVoltageCompensation(12);
+    shooterLeft.enableVoltageCompensation(12);
+    hood.enableVoltageCompensation(12);
+    turret.enableVoltageCompensation(12);
   }
   /**
    * returns the hoodPIDController object
