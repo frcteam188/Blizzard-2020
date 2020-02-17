@@ -67,6 +67,7 @@ public class RobotContainer {
   // constructor for teleopCommand
   private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, opStick, drStick);
   private final DisabledCommand disabledCommand = new DisabledCommand(drStick, base, shooter);
+  private final SmartDashboardPrints smartDashboardPrints = new SmartDashboardPrints(shooter, intake, hang, base);
 
   // constructor for auto commmand
 
@@ -85,9 +86,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-<<<<<<< HEAD
-    // opABtn.toggleWhenPressed(shoot);
-=======
     // Operator Controls
 
     // Regular intake with autofeed
@@ -111,7 +109,6 @@ public class RobotContainer {
     // Driver Controls
     aBtnDr.whenHeld(new DeployHang(hang));
     yBtnDr.whenHeld(new Winch(hang));
->>>>>>> d0100d7c2829c68832d55c4c417be8bc682fd2e4
   }
 
   /**
@@ -130,6 +127,10 @@ public class RobotContainer {
 
   public Command getDisabledCommand(){
     return disabledCommand;
+  }
+
+  public Command getSmartDashboardPrints(){
+    return smartDashboardPrints;
   }
 
 
