@@ -58,7 +58,9 @@ public class Shooter extends SubsystemBase {
   CANPIDController hoodPIDController = hood.getPIDController();
 
   //limelight onstants
+  public static final int LED_DEFAULT = 0;
   public static final int LED_OFF = 1;
+  public static final int LED_BLINK = 2;
   public static final int LED_ON = 3;
   
 

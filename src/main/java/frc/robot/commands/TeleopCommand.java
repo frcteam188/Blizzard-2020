@@ -46,6 +46,9 @@ public class TeleopCommand extends CommandBase {
   private final double pow = -1;
   private double hoodSetpoint;
   private final int turretDeadZone = 5;
+  private final double shooterP = 0.0001;
+  private double shooterSetpoint = 5420;
+  private int shooterDeadZone = 5;
 
   private boolean gearShiftTrue = false;
   private boolean gearShiftOn = false;
@@ -77,7 +80,7 @@ public class TeleopCommand extends CommandBase {
     turretPID = new TurretPID(shooter);
     tuneTurretPID = new TuneTurretPID(shooter);
     hoodPID = new HoodPID(shooter, hoodSetpoint);
-    autoIntake = new AutoIntake(intake);
+    autoIntake = new AutoIntake(intake, shooter);
     moveFeeder = new MoveFeeder(intake, pow);
     moveIntake = new MoveIntake(intake, -0.4);
     shoot = new Shoot(intake);
@@ -116,7 +119,7 @@ public class TeleopCommand extends CommandBase {
 
     // // Shooter Stuff (Actual PID values are printed and modified in
     // // TuneShooterPID.java)
-    // SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
+    SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
     // SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
 
     // Uncomment after not using tuneShooterPID
@@ -165,8 +168,35 @@ public class TeleopCommand extends CommandBase {
       base.gearShiftOn();
     }
 
+    if (drStick.getRawButton(2)) { // X (operator) - Fire both hang stages
+      hang.moveStageOne(1);
+      hang.moveStageTwo(1);
 
+    } else if (drStick.getRawButton(3)) { // A (operator) - Retract both
+      hang.moveStageOne(-1);
+      hang.moveStageTwo(-1);
+    }
 
+    if (drStick.getRawButton(4)) {
+      hang.pullUp(-1);
+    } else {
+      hang.pullUp(0);
+    }
+
+    if (!opStick.getRawButton(2) && 
+    !opStick.getRawButton(3) && 
+    !opStick.getRawButton(4) && 
+    !opStick.getRawButton(6) &&
+    drStick.getRawButton(12)){
+      shooter.setLimelightLED(Shooter.LED_BLINK);
+    }
+    else if (!opStick.getRawButton(2) && 
+    !opStick.getRawButton(3) && 
+    !opStick.getRawButton(4) && 
+    !opStick.getRawButton(6) &&
+    !drStick.getRawButton(12)){
+      shooter.setLimelightLED(Shooter.LED_OFF);
+    }
 
     // LT (driver) - fire piston to deploy intake and run the intake motor
     if (opStick.getRawButton(6)) {
@@ -231,15 +261,28 @@ public class TeleopCommand extends CommandBase {
       opStick.setRumble(RumbleType.kRightRumble, 1.0);
       shooter.shoot(0.98);
       if (!shootingButtonA) {
-        hoodPID.setSetpoint(80);
+        hoodPID.setSetpoint(85);
         hoodPID.schedule();
         turretPID.schedule();
       }
 
-    } else if (opStick.getRawButton(4)) { // B (operator) - shoot at 90%
+    } else if (opStick.getRawButton(4)) { // Y (operator) - shoot at 90%
       opStick.setRumble(RumbleType.kLeftRumble, 0.2);
       opStick.setRumble(RumbleType.kRightRumble, 0.2);
-      shooter.shoot(0.98);
+
+      // banG BANG
+      if(shooter.getVelShooter() < shooterSetpoint){
+        shooter.shoot(1);
+      }
+      else if(shooter.getVelShooter() > shooterSetpoint + shooterDeadZone){
+        shooter.shoot(0.6);
+      }
+      else{
+        shooter.shoot(0.95);
+      }
+      
+      shooter.shoot(0.95);
+      // shooter.shoot(shooterP * (setpoint - shooter.getVelShooter()) + 0.95);
       if (!shootingButtonB) {
         hoodPID.setSetpoint(105);
         hoodPID.schedule();
@@ -283,26 +326,6 @@ public class TeleopCommand extends CommandBase {
     }
     else{
       canShoot = false;
-    }
-
-
-
-    if (drStick.getRawButton(2)) { // X (operator) - Fire both hang stages
-      hang.moveStageOne(1);
-      hang.moveStageTwo(1);
-
-    } else if (drStick.getRawButton(3)) { // A (operator) - Retract both
-      hang.moveStageOne(-1);
-      hang.moveStageTwo(-1);
-    }
-
-
-
-
-    if (drStick.getRawButton(4)) {
-      hang.pullUp(-1);
-    } else {
-      hang.pullUp(0);
     }
     
     // HOOD - 1

@@ -10,16 +10,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class AutoIntake extends CommandBase {
   /**
    * Creates a new AutoIntake.
    */
   private final Intake intake;
+  private final Shooter shooter;
 
-  public AutoIntake(Intake intake) {
+  public AutoIntake(Intake intake, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
+    this.shooter = shooter;
     addRequirements(intake);
   }
 
@@ -34,9 +37,11 @@ public class AutoIntake extends CommandBase {
     // If sensor is detecting a ball, turn on the feeder
     if(intake.getValueOfSensor() < 2.5){
       intake.feed(-0.3);
+      shooter.setLimelightLED(Shooter.LED_BLINK);
     }
     else{
       intake.feed(0);
+      shooter.setLimelightLED(Shooter.LED_OFF);
     }
     intake.runShooterFeeder(0.75);
     intake.succ(0.4);
@@ -48,6 +53,7 @@ public class AutoIntake extends CommandBase {
     intake.feed(0);
     intake.runShooterFeeder(0);
     intake.succ(0);
+    shooter.setLimelightLED(Shooter.LED_OFF);
   }
 
   // Returns true when the command should end.
