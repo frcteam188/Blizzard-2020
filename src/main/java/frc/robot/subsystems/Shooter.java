@@ -33,11 +33,16 @@ public class Shooter extends SubsystemBase {
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry thor = table.getEntry("thor");
+  NetworkTableEntry tvert = table.getEntry("tvert");
   NetworkTableEntry toggleLED = table.getEntry("ledMode");
 
   double x = tx.getDouble(0.0);
   double y = ty.getDouble(0.0);
-  double area = ta.getDouble(0.0);
+  // double area = ta.getDouble(0.0);
+  double hor = thor.getDouble(0);
+  double vert = tvert.getDouble(0);
+  double area = 0;
 
   // Flywheel (motors, encoder)
   CANSparkMax shooterLeft = new CANSparkMax(RobotMap.shooterLeft, MotorType.kBrushless);
@@ -215,6 +220,15 @@ public class Shooter extends SubsystemBase {
   public double getLimelightY(){
     y = ty.getDouble(0.0);
     return y;
+  }
+
+  public double getLimelightArea(){
+    hor = thor.getDouble(0.0);
+    vert = tvert.getDouble(0.0);
+    area = hor * vert;
+    System.out.println(hor);
+    System.out.println(vert);
+    return area;
   }
 
   public CANSparkMax getShooterLeft(){

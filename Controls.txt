@@ -6,6 +6,7 @@ lb - base gear shift
 joysticks for arcade drive
 
 Operator:
+// 
 x - 70% for flywheel
 a - 80% for flywheel
 b - 90% for flywheel

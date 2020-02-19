@@ -8,33 +8,50 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hang;
+import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.util.Units;
 
-public class DeployHang extends CommandBase {
+public class RobotMath extends CommandBase {
   /**
-   * Creates a new DeployHang.
-   * 
+   * Creates a new RobotMath.
    */
-  public Hang hang;
 
-  public DeployHang(Hang h) {
-    this.hang = h;
+  private Shooter shooter;
+  private double a1 = 26; //28 original value
+  private double a2;
+  private double h1 = 24.5;
+  private double h2 = 90;
+  private double d;
+
+  private double area;
+  
+  public RobotMath(Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(h);
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hang.moveStageOne(Hang.STATE_OUT);
-    // wait(1000, 0);
-    hang.moveStageTwo(Hang.STATE_OUT);
+    // h1 = Units.inchesToMeters(h1);
+    // h2 = Units.inchesToMeters(h2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    a2 = shooter.getLimelightY();
+    d = (h2 - h1)/Math.tan(Units.degreesToRadians(a1 + a2)); // 105
+    // d = Units.metersToInches(d);
 
+    
+    System.out.println("Distance: " + d);
+    System.out.println("Y Angle: " + a2);
+    // area = shooter.getLimelightArea();
+    // System.out.println("Area: " + area);
+
+    // d = area * (1.0/453.0);
+    // System.out.println("Distance: " + d);
   }
 
   // Called once the command ends or is interrupted.

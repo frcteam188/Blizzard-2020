@@ -41,6 +41,7 @@ public class TeleopCommand extends CommandBase {
   private final Joystick opStick;
   private final Joystick drStick;
   private final TuneShooterPID shooterPID;
+  private final RobotMath quikmaphs;
   
   // power for the feeder
   private final double pow = -1;
@@ -85,6 +86,7 @@ public class TeleopCommand extends CommandBase {
     moveIntake = new MoveIntake(intake, -0.4);
     shoot = new Shoot(intake);
     shooterPID = new TuneShooterPID(shooter, 4360);
+    quikmaphs = new RobotMath(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.base);
     addRequirements(this.shooter);
@@ -102,6 +104,8 @@ public class TeleopCommand extends CommandBase {
 
     // Start in low gear
     base.gearShiftOff();
+
+    quikmaphs.schedule();
 
   }
 
@@ -141,6 +145,8 @@ public class TeleopCommand extends CommandBase {
 
     // CAN SHOOT?
     SmartDashboard.putBoolean("Can Shoot", canShoot);
+
+    // Distance 
 
     // CONTROLS
 
@@ -195,7 +201,7 @@ public class TeleopCommand extends CommandBase {
     !opStick.getRawButton(4) && 
     !opStick.getRawButton(6) &&
     !drStick.getRawButton(12)){
-      shooter.setLimelightLED(Shooter.LED_OFF);
+      shooter.setLimelightLED(Shooter.LED_ON); // change to off
     }
 
     // LT (driver) - fire piston to deploy intake and run the intake motor
@@ -270,15 +276,22 @@ public class TeleopCommand extends CommandBase {
       opStick.setRumble(RumbleType.kLeftRumble, 0.2);
       opStick.setRumble(RumbleType.kRightRumble, 0.2);
 
-      // banG BANG
+      // BANG BANG
+      // if the shooter velocity is under the setpoint, the shooter will run at full power
       if(shooter.getVelShooter() < shooterSetpoint){
         shooter.shoot(1);
+        System.out.println("BANG BANG IS RUNNING");
+
       }
+      // if the shooter velocity is around the setpoint, the shooter will run at 60 percent power
       else if(shooter.getVelShooter() > shooterSetpoint + shooterDeadZone){
         shooter.shoot(0.6);
+        System.out.println("BANG BANG IS RUNNING");
       }
+      // if it is under, run at 95 percent power
       else{
         shooter.shoot(0.95);
+        System.out.println("BANG BANG IS RUNNING");
       }
       
       shooter.shoot(0.95);
