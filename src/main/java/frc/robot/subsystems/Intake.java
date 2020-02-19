@@ -44,7 +44,6 @@ public class Intake extends SubsystemBase {
    * Method to run the intake
    * 
    * @param pow - the power at which the intake will be run at
-   * @author Shiv Patel
    */
   public void succ(double pow){
     intake.set(pow);
@@ -54,7 +53,6 @@ public class Intake extends SubsystemBase {
    * Method to run the feeder
    * 
    * @param pow - the power at which the feeder will be run at
-   * @author Shiv Patel
    */
   public void feed(double pow){
     feeder.set(pow);
@@ -63,7 +61,6 @@ public class Intake extends SubsystemBase {
   /**
    * Method to deploy the intake
    * 
-   * @author Shiv Patel
    */
   public void deployIntake(){
     intakeS.set(kReverse);
@@ -72,25 +69,25 @@ public class Intake extends SubsystemBase {
   /**
    * Method reset the intake
    * 
-   * @author Shiv Patel, aka retard
    */
   public void resetIntake(){
     intakeS.set(kForward);
   }
 
+  /**
+   * Returns the value that the sensor is outputting
+   * 
+   * @return the value that the sensor is outputting
+   */
   public double getValueOfSensor(){
     return sensor.getVoltage();
-
-    // if(sensor.get() == true){
-    //   System.out.println("DETECTING");
-    // }
-
-    // else{
-    //   System.out.println("NOT DETECTING");
-    // }
-    
   }
 
+  /**
+   * Runs the feeder under the shooter at a certain power
+   * 
+   * @param pow - will run the shooterFeeder at this power
+   */
   public void runShooterFeeder(double pow){
     shooterFeeder.set(pow);
   }

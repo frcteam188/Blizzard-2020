@@ -167,10 +167,10 @@ public class TeleopCommand extends CommandBase {
     
       
 
-    if (drStick.getRawButton(8)) { // LB (driver) - hold to shift the gear, otherwise the gear shift will be on
+    if (drStick.getRawButton(8)) {
       base.gearShiftOff();
     }
-    else if(drStick.getRawButton(7)) {
+    else if(drStick.getRawButton(7)) { 
       base.gearShiftOn();
     }
 

@@ -10,6 +10,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
+/**
+ * This will run the feeder at the value of pow
+ * 
+ * @author Edward Su
+ */
 public class MoveFeeder extends CommandBase {
   /**
    * Creates a new MoveFeeder.

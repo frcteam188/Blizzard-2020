@@ -13,7 +13,9 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
+/**
+ * Class that calls the turretPID
+ */
 public class TurretPID extends PIDCommand {
 
   public Shooter shooter;

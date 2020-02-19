@@ -18,7 +18,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
 
-
+/**
+ * This is a subsystem for the hang on the robot
+ * 
+ * @author Zayeed Ghori
+ */
 public class Hang extends SubsystemBase {
   /**
    * Creates a new Hang.
@@ -37,7 +41,6 @@ public class Hang extends SubsystemBase {
    * This method will pull the robot up with the motor
    * 
    * @param pow - the power at which the hang will be run at
-   * @author Zayeed Ghori
    */
   public void pullUp(double pow){
     hang.set(pow);
@@ -47,7 +50,6 @@ public class Hang extends SubsystemBase {
    * Method to move stage one of the hang based on the state that is passed in
    * 
    * @param state: can either be 1 (to deploy) or -1 (to retract)
-   * @author Shiv Patel
    */
   public void moveStageOne(int state){
     if (state == 1){
@@ -63,7 +65,6 @@ public class Hang extends SubsystemBase {
    * Method to move stage two of the hang based on the state that is passed in
    * 
    * @param state: can either be 1 (to deploy) or -1 (to retract)
-   * @author Shiv Patel
    */
   public void moveStageTwo(int state){
     if (state == 1){
@@ -72,7 +73,6 @@ public class Hang extends SubsystemBase {
     else if(state == -1){
       stageTwo.set(kReverse);
     }
-    // System.out.println("State: " + state);
   }
 
 

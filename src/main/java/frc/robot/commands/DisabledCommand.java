@@ -10,7 +10,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Base;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter; 
+
+// THIS COMMAND WILL SET THE ZERO
+/**
+ * This command will set encoder values (positions) to zero before the robot is enabled
+ * 
+ * @author Zayeed Ghori, Edward Su
+ */
 
 public class DisabledCommand extends CommandBase {
   /**

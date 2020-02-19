@@ -10,6 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
+/**
+ * This command will run the feeder, the intake, and the shooter feeder in unison
+ * This command is only to be run when the shooter is at optimal speeds
+ * 
+ * @author Zayeed Ghori, Edward Su, Shiv Patel
+ */
 public class Shoot extends CommandBase {
   /**
    * Creates a new Shoot.

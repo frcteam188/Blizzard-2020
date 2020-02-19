@@ -13,6 +13,11 @@ import frc.robot.Constants;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * Prints data on the SmartDashboard
+ * 
+ * @author Zayeed Ghori, Shiv Patel
+ */
 public class SmartDashboardPrints extends CommandBase {
   /**
    * Creates a new SmartDashboardPrints.

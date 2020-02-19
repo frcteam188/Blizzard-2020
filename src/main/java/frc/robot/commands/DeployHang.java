@@ -10,6 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hang;
 
+
+/**
+ * This command will shoot the hang pistons when called
+ * 
+ * @author Shiv Patel
+ */
 public class DeployHang extends CommandBase {
   /**
    * Creates a new DeployHang.

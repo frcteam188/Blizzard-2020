@@ -10,6 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
+/**
+ * Command to run the intake at the value of pow
+ * 
+ * @author Zayeed Ghori, Edward Su, Shiv Patel
+ */
+
 public class MoveIntake extends CommandBase {
   private final Intake intake;
   private final double pow;

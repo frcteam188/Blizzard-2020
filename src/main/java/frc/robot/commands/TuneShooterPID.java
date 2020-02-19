@@ -15,6 +15,12 @@ import com.revrobotics.ControlType;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
+/**
+ * Use this class to tune the shooterPID
+ * 
+ * @author Edward Su, Zayeed Ghori
+ */
+
 public class TuneShooterPID extends CommandBase {
   /**
    * Creates a new tuneShooterPID.

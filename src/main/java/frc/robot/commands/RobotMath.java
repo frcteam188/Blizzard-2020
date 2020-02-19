@@ -11,6 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.util.Units;
 
+/**
+ * Does math for different things
+ * 
+ * @author Zayeed Ghori, Shiv Patel
+ */
+
 public class RobotMath extends CommandBase {
   /**
    * Creates a new RobotMath.
@@ -24,7 +30,7 @@ public class RobotMath extends CommandBase {
   private double d;
 
   private double area;
-  
+
   public RobotMath(Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
@@ -32,14 +38,14 @@ public class RobotMath extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize(){
     // h1 = Units.inchesToMeters(h1);
     // h2 = Units.inchesToMeters(h2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute(){
     a2 = shooter.getLimelightY();
     d = (h2 - h1)/Math.tan(Units.degreesToRadians(a1 + a2)); // 105
     // d = Units.metersToInches(d);

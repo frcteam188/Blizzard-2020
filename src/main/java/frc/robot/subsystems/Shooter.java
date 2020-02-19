@@ -133,7 +133,6 @@ public class Shooter extends SubsystemBase {
    * Method to run the turret
    * 
    * @param pow - the power at which the turret will be run at
-   * @author Zayeed Ghori
    */
   public void moveTurret(double pow){
     if(pow > 0 && getTurretAngle() > 30){
@@ -159,7 +158,6 @@ public class Shooter extends SubsystemBase {
    * Method to run the hood
    * 
    * @param pow - the power at which the hood will be run at
-   * @author Zayeed Ghori
    */
 
   public void moveHood(double pow){
@@ -176,7 +174,6 @@ public class Shooter extends SubsystemBase {
   /**
    * Method to get the velocity of the flywheel, through the speed of motors
    * 
-   * @author Zayeed Ghori
    */
 
   public double getVelShooter(){
@@ -186,7 +183,6 @@ public class Shooter extends SubsystemBase {
   /**
    * Method to get the hood's position
    * 
-   * @author Zayeed Ghori
    */
 
   public double getHoodPos(){
@@ -206,22 +202,36 @@ public class Shooter extends SubsystemBase {
   /**
    * Testing method to reset the hood encoder to 0
    * 
-   * @author Zayeed Ghori
    */
-
   public void resetHoodPos(){
     hoodEnc.setPosition(0);
   }
 
+  /**
+   * Return the value of the x outputted by the limelight
+   * 
+   * @return the value of x
+   */
   public double getLimelightX(){
     x = tx.getDouble(0.0);
     return x;
   }
+
+  /**
+   * Return the value of y outputted by the limelight
+   * 
+   * @return the value of y
+   */
   public double getLimelightY(){
     y = ty.getDouble(0.0);
     return y;
   }
 
+  /**
+   * Get the area of the target
+   * 
+   * @return the area of the target
+   */
   public double getLimelightArea(){
     hor = thor.getDouble(0.0);
     vert = tvert.getDouble(0.0);
@@ -231,22 +241,36 @@ public class Shooter extends SubsystemBase {
     return area;
   }
 
+
+  /**
+   * returns the Spark of the shooterLeft motor
+   * 
+   * @return the Spark of the shooterLeft motor
+   */
   public CANSparkMax getShooterLeft(){
     return this.shooterLeft;
   }
 
+  /**
+   * Returns the Spark of the shooterRight motor
+   * 
+   * @return the Spark of the shooterRight motor
+   */
   public CANSparkMax getShooterRight(){
     return this.shooterRight;
   }
 
+  /**
+   * Sets turret angle to something new based on the value of the parameter
+   * 
+   * @param newAngle - the new angle of the turret
+   */
   public void setTurretAngle(double newAngle){
     turretEnc.setPosition(newAngle);
   }
 
   /**
    * Testing method to reset the turret encoder to 0
-   * 
-   * @author Zayeed Ghori
    */
 
   public void resetTurretPos(){

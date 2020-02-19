@@ -16,7 +16,9 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * This command will run the PID on the hood
  * 
+ * @author Edward Su
  */
 public class HoodPID extends CommandBase {
   /**
