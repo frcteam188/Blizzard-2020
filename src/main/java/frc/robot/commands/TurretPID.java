@@ -58,6 +58,8 @@ public class TurretPID extends PIDCommand {
   public void end(boolean interrupted) {
     // TODO Auto-generated method stub
     super.end(interrupted);
+    
+    // Turn limelight off
     shooter.setLimelightLED(Shooter.LED_OFF);
 
   }

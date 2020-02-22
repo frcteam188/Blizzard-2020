@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
-
 /**
  * Class for the intake subsystem
  * 
@@ -25,13 +24,12 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 public class Intake extends SubsystemBase {
   CANSparkMax intake = new CANSparkMax(RobotMap.intake, MotorType.kBrushless);
   CANSparkMax feeder = new CANSparkMax(RobotMap.feeder, MotorType.kBrushless);
-  
+
   DoubleSolenoid intakeS = new DoubleSolenoid(RobotMap.forwardChannelIntake, RobotMap.reverseChannelIntake);
 
   CANSparkMax shooterFeeder = new CANSparkMax(RobotMap.shooterFeeder, MotorType.kBrushless);
 
   AnalogInput sensor = new AnalogInput(0);
-
 
   /**
    * Creates a new Intake.
@@ -45,7 +43,7 @@ public class Intake extends SubsystemBase {
    * 
    * @param pow - the power at which the intake will be run at
    */
-  public void succ(double pow){
+  public void intake(double pow) {
     intake.set(pow);
   }
 
@@ -54,7 +52,7 @@ public class Intake extends SubsystemBase {
    * 
    * @param pow - the power at which the feeder will be run at
    */
-  public void feed(double pow){
+  public void feed(double pow) {
     feeder.set(pow);
   }
 
@@ -62,7 +60,7 @@ public class Intake extends SubsystemBase {
    * Method to deploy the intake
    * 
    */
-  public void deployIntake(){
+  public void deployIntake() {
     intakeS.set(kReverse);
   }
 
@@ -70,7 +68,7 @@ public class Intake extends SubsystemBase {
    * Method reset the intake
    * 
    */
-  public void resetIntake(){
+  public void resetIntake() {
     intakeS.set(kForward);
   }
 
@@ -79,7 +77,7 @@ public class Intake extends SubsystemBase {
    * 
    * @return the value that the sensor is outputting
    */
-  public double getValueOfSensor(){
+  public double getValueOfSensor() {
     return sensor.getVoltage();
   }
 
@@ -88,10 +86,9 @@ public class Intake extends SubsystemBase {
    * 
    * @param pow - will run the shooterFeeder at this power
    */
-  public void runShooterFeeder(double pow){
+  public void runShooterFeeder(double pow) {
     shooterFeeder.set(pow);
   }
-
 
   @Override
   public void periodic() {

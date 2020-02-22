@@ -26,10 +26,10 @@ public final class Constants {
     public static double kTurretI = 0;
     public static double kTurretD = 0.001100;
 
-    public static double kShooterP = 0;
+    public static double kShooterP = 0.0001;
     public static double kShooterI = 0;
     public static double kShooterD = 0;
-    public static double kShooterF = 0.00018348623; // 0.80 / 4360
+    public static double kShooterF = 0.00018348623; // 0.80 / 4360 // change to 0.5 setpoint
     public static double kShooterMaxOutput = 1;
     public static double kShooterMinOutput = -1;
     public static double shooterSetpoint = 1;

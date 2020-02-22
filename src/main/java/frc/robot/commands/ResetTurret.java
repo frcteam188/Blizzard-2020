@@ -7,29 +7,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-/**
- * Will run the intake and the feeder at the same time, and will intake the feeder if the sensor detects something
- * 
- * @author Shiv Patel, Edward Su, Zayeed Ghori
- */
-
-public class AutoIntake extends CommandBase {
+public class ResetTurret extends CommandBase {
+  private Shooter shooter;
+  private int turretDeadZone = 5;
   /**
-   * Creates a new AutoIntake.
+   * Creates a new ResetTurret.
    */
-  private final Intake intake;
-  private final Shooter shooter;
-
-  public AutoIntake(Intake intake, Shooter shooter) {
+  public ResetTurret(Shooter s) {
+    this.shooter = s;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
-    this.shooter = shooter;
-    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -38,30 +27,22 @@ public class AutoIntake extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-
   @Override
   public void execute() {
-    // If sensor is detecting a ball, turn on the feeder and blink the LimeLight
-    if(intake.getValueOfSensor() < 2.5){
-      intake.feed(-0.3);
-      shooter.setLimelightLED(Shooter.LED_BLINK);
+    // Move Turret to middle
+    if (shooter.getTurretAngle() > 0 + turretDeadZone) {
+      shooter.moveTurret(-0.5);
+    } else if (shooter.getTurretAngle() < 0 - turretDeadZone) {
+      shooter.moveTurret(0.5);
+    } else {
+      shooter.moveTurret(0);
     }
-    else{
-      intake.feed(0);
-      shooter.setLimelightLED(Shooter.LED_OFF);
-    }
-    
-    intake.runShooterFeeder(0.75);
-    intake.intake(0.4);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.feed(0);
-    intake.runShooterFeeder(0);
-    intake.intake(0);
-    shooter.setLimelightLED(Shooter.LED_OFF);
+    shooter.moveTurret(0);
   }
 
   // Returns true when the command should end.

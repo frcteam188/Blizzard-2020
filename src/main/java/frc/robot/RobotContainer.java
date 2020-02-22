@@ -10,8 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.DisabledCommand;
-import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -89,26 +87,36 @@ public class RobotContainer {
     // Operator Controls
 
     // Regular intake with autofeed
-    // ltBtnOp.whileHeld(new AutoIntake(intake));
+    ltBtnOp.whenHeld(new AutoIntake(intake, shooter));
 
-    // // Low pwr hoodSp = 60
-    // aBtnOp.whileHeld(new HoodPID(shooter, 60));
-    // aBtnOp.whileHeld(new TurretPID(shooter));
+    // Outtake
+    lbBtnOp.whenHeld(new MoveIntake(intake, -0.4));
 
-    // // Med pwr, hoodSp = 80
-    // bBtnOp.whileHeld(new HoodPID(shooter, 80));
-    // bBtnOp.whileHeld(new TurretPID(shooter));
+    // Shoot Ball at %50 power while changing hood depending on distance
+    aBtnOp.whenHeld(new HoodPID(shooter, RobotMath.getHoodPosFromDistance()));
+    aBtnOp.whenHeld(new TurretPID(shooter));
+    aBtnOp.whenHeld(new ShootBall(shooter, 0.5));
+    aBtnDr.whenReleased(new ResetTurret(shooter));
 
-    // // Hi pwr, hoodSp = 100
-    // yBtnOp.whileHeld(new HoodPID(shooter, 100));
-    // yBtnOp.whileHeld(new TurretPID(shooter));
+    // can call like Btn.whenHeld().whenHeld();
+    bBtnOp.whenHeld(new HoodPID(shooter, RobotMath.getHoodPosFromDistance()));
+    bBtnOp.whenHeld(new TurretPID(shooter));
+    bBtnOp.whenHeld(new ShootBall(shooter, 0.5));
+    bBtnOp.whenReleased(new ResetTurret(shooter));
 
-    // // Activate shootFeed
-    // lbBtnOp.whileHeld(new Shoot(intake));
+    // 
+    yBtnOp.whenHeld(new HoodPID(shooter, RobotMath.getHoodPosFromDistance()));
+    yBtnOp.whenHeld(new TurretPID(shooter));
+    yBtnOp.whenHeld(new ShootBall(shooter, 0.5));
+    yBtnOp.whenReleased(new ResetTurret(shooter));
 
-    // // Driver Controls
-    // aBtnDr.whenHeld(new DeployHang(hang));
-    // yBtnDr.whenHeld(new Winch(hang));
+    // Driver Controls
+    aBtnDr.whenPressed(new DeployHang(hang));
+    bBtnDr.whenPressed(new RetractHang(hang));
+    yBtnDr.whenHeld(new Winch(hang));
+
+    ltBtnDr.whenPressed(new BaseHighGearShift(base));
+    rtBtnDr.whenPressed(new BaseLowGearShift(base));
   }
 
   /**

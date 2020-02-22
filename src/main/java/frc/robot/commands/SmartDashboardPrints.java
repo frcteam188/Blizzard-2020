@@ -67,6 +67,7 @@ public class SmartDashboardPrints extends CommandBase {
 
     SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
 
+    
   }
 
   // Called once the command ends or is interrupted.
