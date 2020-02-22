@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.Constants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -42,14 +43,15 @@ public class TeleopCommand extends CommandBase {
   private final Joystick drStick;
   private final TuneShooterPID shooterPID;
   private final RobotMath quikmaphs;
+  private final ShootBall shootBall;
   
   // power for the feeder
   private final double pow = -1;
   private double hoodSetpoint;
   private final int turretDeadZone = 5;
-  private final double shooterP = 0.0001;
-  private double shooterSetpoint = 5420;
-  private int shooterDeadZone = 5;
+  private final double shooterP = 0.0002; // 0.00000002
+  private double shooterSetpoint = 3600;
+  private int shooterDeadZone = 60;
 
   private boolean gearShiftTrue = false;
   private boolean gearShiftOn = false;
@@ -62,7 +64,7 @@ public class TeleopCommand extends CommandBase {
   private final boolean hoodPIDTrue = false;
   private boolean shootingButtonX = false;
   private boolean shootingButtonA = false;
-  private boolean shootingButtonB = false;
+  private boolean shootingButtonY = false;
   private boolean shootPressed = false;
 
   private boolean canShoot = false;
@@ -78,7 +80,7 @@ public class TeleopCommand extends CommandBase {
     this.opStick = opStick;
     this.drStick = drStick;
 
-    turretPID = new TurretPID(shooter);
+    turretPID = new TurretPID(shooter,-2);
     tuneTurretPID = new TuneTurretPID(shooter);
     hoodPID = new HoodPID(shooter, hoodSetpoint);
     autoIntake = new AutoIntake(intake, shooter);
@@ -87,6 +89,7 @@ public class TeleopCommand extends CommandBase {
     shoot = new Shoot(intake);
     shooterPID = new TuneShooterPID(shooter, 4360);
     quikmaphs = new RobotMath(shooter);
+    shootBall = new ShootBall(shooter, 0.95);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.base);
     addRequirements(this.shooter);
@@ -113,6 +116,8 @@ public class TeleopCommand extends CommandBase {
   @Override
   public void execute() {
 
+    SmartDashboard.putNumber("Left Shooter Pwr", shooter.getShooterLeft().getAppliedOutput());
+
     // Reporting to SmartDashBoard
 
     // SmartDashboard.putNumber("Limelight Angle:", shooter.getLimelightX());
@@ -124,15 +129,15 @@ public class TeleopCommand extends CommandBase {
     // // Shooter Stuff (Actual PID values are printed and modified in
     // // TuneShooterPID.java)
     SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
-    // SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
+    SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
 
     // Uncomment after not using tuneShooterPID
-    // SmartDashboard.putNumber("Shooter P: ", Constants.kShooterP);
-    // SmartDashboard.putNumber("Shooter I: ", Constants.kShooterI);
-    // SmartDashboard.putNumber("Shooter D: ", Constants.kShooterD);
-    // SmartDashboard.putNumber("Shooter F: ", Constants.kShooterF);
-    // SmartDashboard.putNumber("Max Output: ", Constants.kShooterMaxOutput);
-    // SmartDashboard.putNumber("Min Output: ", Constants.kShooterMinOutput);
+    SmartDashboard.putNumber("Shooter P: ", Constants.kShooterP);
+    SmartDashboard.putNumber("Shooter I: ", Constants.kShooterI);
+    SmartDashboard.putNumber("Shooter D: ", Constants.kShooterD);
+    SmartDashboard.putNumber("Shooter F: ", Constants.kShooterF);
+    SmartDashboard.putNumber("Max Output: ", Constants.kShooterMaxOutput);
+    SmartDashboard.putNumber("Min Output: ", Constants.kShooterMinOutput);
 
     // Base Motor retport
     // SmartDashboard.putNumber("Base leftFront Current: ", base.getLeftFront().getOutputCurrent());
@@ -141,12 +146,13 @@ public class TeleopCommand extends CommandBase {
     // SmartDashboard.putNumber("Base rightBack Current: ", base.getRightBack().getOutputCurrent());
 
     // HOOD
-    // SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
+    SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
 
     // CAN SHOOT?
     SmartDashboard.putBoolean("Can Shoot", canShoot);
 
     // Distance 
+    SmartDashboard.putNumber("Distance: ", quikmaphs.getDistance());
 
     // CONTROLS
 
@@ -174,11 +180,11 @@ public class TeleopCommand extends CommandBase {
       base.gearShiftOn();
     }
 
-    if (drStick.getRawButton(2)) { // X (operator) - Fire both hang stages
+    if (drStick.getRawButton(2)) { // X (driver) - Fire both hang stages
       hang.moveStageOne(1);
       hang.moveStageTwo(1);
 
-    } else if (drStick.getRawButton(3)) { // A (operator) - Retract both
+    } else if (drStick.getRawButton(3)) { // A (driver) - Retract both
       hang.moveStageOne(-1);
       hang.moveStageTwo(-1);
     }
@@ -194,14 +200,14 @@ public class TeleopCommand extends CommandBase {
     !opStick.getRawButton(4) && 
     !opStick.getRawButton(6) &&
     drStick.getRawButton(12)){
-      shooter.setLimelightLED(Shooter.LED_BLINK);
+      // shooter.setLimelightLED(Shooter.LED_BLINK);
     }
     else if (!opStick.getRawButton(2) && 
     !opStick.getRawButton(3) && 
     !opStick.getRawButton(4) && 
     !opStick.getRawButton(6) &&
     !drStick.getRawButton(12)){
-      shooter.setLimelightLED(Shooter.LED_ON); // change to off
+      // shooter.setLimelightLED(Shooter.LED_ON); // change to off
     }
 
     // LT (driver) - fire piston to deploy intake and run the intake motor
@@ -209,20 +215,33 @@ public class TeleopCommand extends CommandBase {
       if (autoIntakeOn == false) {
         moveIntake.cancel();
         autoIntake.schedule();
+        // if(opStick.getRawButton(2) || opStick.getRawButton(3) || opStick.getRawButton(4))
+          // shooter.setLimelightLED(Shooter.LED_ON);
+        // else
+          // shooter.setLimelightLED(Shooter.LED_OFF);
         autoIntakeOn = true;
       } 
       
     }
+
     else if(opStick.getRawButton(8)){
       if (intakeOn == false){
         autoIntake.cancel();
+        // if(opStick.getRawButton(2) || opStick.getRawButton(3) || opStick.getRawButton(4))
+          // shooter.setLimelightLED(Shooter.LED_ON);
+        // else
+          // shooter.setLimelightLED(Shooter.LED_OFF);
         moveIntake.schedule();
         intakeOn = true;
       }
     }
-    else{ // RT (driver) - retract the intake piston
+    else{ // when button released (driver) - retract the intake piston
       if (autoIntakeOn == true) {
         autoIntake.cancel();
+        // if(opStick.getRawButton(2) || opStick.getRawButton(3) || opStick.getRawButton(4))
+        //   shooter.setLimelightLED(Shooter.LED_ON);
+        // else
+        //   shooter.setLimelightLED(Shooter.LED_OFF);
         autoIntakeOn = false;
       }
       else if (intakeOn == true){
@@ -250,72 +269,86 @@ public class TeleopCommand extends CommandBase {
     //   moveIntake.cancel();
     // }
 
-    if (opStick.getRawButton(2)) { // X (operator) - shoot at 70%
-      opStick.setRumble(RumbleType.kLeftRumble, 0.5);
-      opStick.setRumble(RumbleType.kRightRumble, 0.5);
-      shooter.shoot(0.98);
-      if (!shootingButtonX) {
-        hoodPID.setSetpoint(60);
-        hoodPID.schedule();
-        turretPID.schedule();
-      }
+    shooter.moveHood(-opStick.getRawAxis(1));
+    // System.out.println(shooter.getHoodPos());
 
-    }
-
-    else if (opStick.getRawButton(3)) {
-      opStick.setRumble(RumbleType.kLeftRumble, 1.0);
-      opStick.setRumble(RumbleType.kRightRumble, 1.0);
-      shooter.shoot(0.98);
-      if (!shootingButtonA) {
-        hoodPID.setSetpoint(85);
-        hoodPID.schedule();
-        turretPID.schedule();
-      }
-
-    } else if (opStick.getRawButton(4)) { // Y (operator) - shoot at 90%
-      opStick.setRumble(RumbleType.kLeftRumble, 0.2);
-      opStick.setRumble(RumbleType.kRightRumble, 0.2);
-
-      // BANG BANG
-      // if the shooter velocity is under the setpoint, the shooter will run at full power
-      if(shooter.getVelShooter() < shooterSetpoint){
-        shooter.shoot(1);
-        System.out.println("BANG BANG IS RUNNING");
-
-      }
-      // if the shooter velocity is around the setpoint, the shooter will run at 60 percent power
-      else if(shooter.getVelShooter() > shooterSetpoint + shooterDeadZone){
-        shooter.shoot(0.6);
-        System.out.println("BANG BANG IS RUNNING");
-      }
-      // if it is under, run at 95 percent power
-      else{
-        shooter.shoot(0.95);
-        System.out.println("BANG BANG IS RUNNING");
-      }
+    // if (opStick.getRawButton(2)) {
+         // X (operator) - shoot at 70%
+    //   shooter.shoot(0.65);
       
-      shooter.shoot(0.95);
-      // shooter.shoot(shooterP * (setpoint - shooter.getVelShooter()) + 0.95);
-      if (!shootingButtonB) {
-        hoodPID.setSetpoint(105);
-        hoodPID.schedule();
+      if (!shootingButtonX) {
+        // hoodPID.setSetpoint(60);
+        // hoodPID.schedule();
         turretPID.schedule();
       }
-    } else {
-      opStick.setRumble(RumbleType.kLeftRumble, 0);
-      opStick.setRumble(RumbleType.kRightRumble, 0);
-      shooter.shoot(0);
-      hoodPID.setSetpoint(0);
-      if (turretPID.isScheduled()) {
+
+     if (opStick.getRawButton(3)) {
+      shooter.shoot(0.65);
+      if (!shootingButtonA) {
+        // hoodPID.setSetpoint(85);
+        // hoodPID.schedule();
+        turretPID.schedule();
+        // System.out.println("LIMELIGHT IS RUNning");
+      }
+
+    } else if (opStick.getRawButton(4)) {
+       // Y (operator) - shoot at 90%
+       hoodPID.setSetpoint(17/132*quikmaphs.getDistance()+8917/132);
+      if (!shootingButtonY) {
+        // hoodPID.setSetpoint(85);
+        hoodPID.schedule();
+        turretPID.schedule();
+        // shooterPID.schedule();
+      }
+      // if(turretPID.isScheduled())
+      //   System.out.println("LIMELIGHT IS RUNning");
+
+      // if(!opStick.getRawButton(4))
+      //   shooterPID.cancel();
+    
+      // BANG BANG
+      //if the shooter velocity is UNDER the setpoint, the shooter will run at full power
+      // if(shooter.getVelShooter() < shooterSetpoint - shooterDeadZone){
+      //   shooter.shoot(1);
+        
+      //   System.out.println("BANG BANG IS RUNNING");
+
+      // }
+      // // if the shooter velocity is GREATER the setpoint, the shooter will run at 60 percent power
+      // else if(shooter.getVelShooter() > shooterSetpoint + shooterDeadZone){
+      shooter.shoot(shooterP * Math.pow((shooterSetpoint - shooter.getVelShooter()), 1) + 0.5);
+      //   shooter.shoot(0.47);
+      //   System.out.println("BANG BANG IS RUNNING");
+      // }
+      // // if it is at the setpoint, run at 95 percent power
+      // else{
+      //   shooter.shoot(0.5);
+      //   System.out.println("BANG BANG IS RUNNING");
+      // }
+      
+    
+      // shooter.shoot(0.92);
+
+      //if setpoint is equal to limelight angle, cancel pid 
+      if (shooter.getLimelightX() < turretPID.getSetpoint() + 0.01 && shooter.getLimelightX() > turretPID.getSetpoint() - 0.01){
         turretPID.cancel();
       }
+    }
+      else {
+        opStick.setRumble(RumbleType.kLeftRumble, 0);
+        opStick.setRumble(RumbleType.kRightRumble, 0);
+        shooter.shoot(0);
+        hoodPID.setSetpoint(0);
+        if (turretPID.isScheduled()) {
+          turretPID.cancel();
+        }
       
       //if turret pid is off, manual turret mvmt
       if (!turretPID.isScheduled()){
         shooter.moveTurret(opStick.getRawAxis(0));
 
       }
-      // put turret to middle again
+      //put turret to middle again
       if (shooter.getTurretAngle() > 0 + turretDeadZone) {
         shooter.moveTurret(-0.5);
       } else if (shooter.getTurretAngle() < 0 - turretDeadZone) {
@@ -326,15 +359,15 @@ public class TeleopCommand extends CommandBase {
     }
 
     //runs all feeding mechanisms if lb is pressed
-    if (opStick.getPOV(0) == 0 && !shootPressed){
+    if(opStick.getPOV(0) == 0 && !shootPressed){
       shoot.schedule();
     }
-    else if (opStick.getPOV(0) != 0 ){
+    if(opStick.getPOV(0) != 0 ){
       shoot.cancel();
     }
 
     //boolean value for proper rpm
-    if (shooter.getVelShooter() >= 4500){
+    if (shooter.getVelShooter() >= 2750){
       canShoot = true;
     }
     else{
@@ -364,8 +397,8 @@ public class TeleopCommand extends CommandBase {
     // turretButtonPressed = opStick.getRawButton(4);
     shootingButtonX = opStick.getRawButton(1);
     shootingButtonA = opStick.getRawButton(2);
-    shootingButtonB = opStick.getRawButton(3);
-    shootPressed = opStick.getPOV(0) == 0;
+    shootingButtonY = opStick.getRawButton(4);
+    shootPressed = (opStick.getPOV(0) == 0);
   }
 
   // Called once the command ends or is interrupted.

@@ -29,7 +29,7 @@ public final class Constants {
     public static double kShooterP = 0;
     public static double kShooterI = 0;
     public static double kShooterD = 0;
-    public static double kShooterF = 0.00018348623; // 0.80 / 4360
+    public static double kShooterF = 0.00017433751; // 0.80 / 4360
     public static double kShooterMaxOutput = 1;
     public static double kShooterMinOutput = -1;
     public static double shooterSetpoint = 1;

@@ -21,7 +21,7 @@ public class TuneShooterPID extends CommandBase {
    */
 
   private final Shooter shooter;
-  private double setpoint;
+  private double setpoint = 2860;
   private CANPIDController pidControllerLeft;
   private CANPIDController pidControllerRight;
 
@@ -54,15 +54,15 @@ public class TuneShooterPID extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Shooter P: ", kP);
-    SmartDashboard.putNumber("Shooter I: ", kI);
-    SmartDashboard.putNumber("Shooter D: ", kD);
-    SmartDashboard.putNumber("Shooter F: ", kF);
-    SmartDashboard.putNumber("Max Output: ", kMaxOutput);
-    SmartDashboard.putNumber("Min Output: ", kMinOutput);
+    // SmartDashboard.putNumber("Shooter P: ", kP);
+    // SmartDashboard.putNumber("Shooter I: ", kI);
+    // SmartDashboard.putNumber("Shooter D: ", kD);
+    // SmartDashboard.putNumber("Shooter F: ", kF);
+    // SmartDashboard.putNumber("Max Output: ", kMaxOutput);
+    // SmartDashboard.putNumber("Min Output: ", kMinOutput);
     SmartDashboard.putNumber("Shooter Setpoint: ", setpoint);
 
-    shooter.setLimelightLED(Shooter.LED_ON);
+    // shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -122,7 +122,9 @@ public class TuneShooterPID extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setLimelightLED(Shooter.LED_OFF);
+    System.out.println("Ended shooter PID");
+    // shooter.setLimelightLED(Shooter.LED_OFF);
+    shooter.shoot(0);
   }
 
 

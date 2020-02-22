@@ -37,14 +37,14 @@ public class AutoIntake extends CommandBase {
     // If sensor is detecting a ball, turn on the feeder
     if(intake.getValueOfSensor() < 2.5){
       intake.feed(-0.3);
-      shooter.setLimelightLED(Shooter.LED_BLINK);
+      // shooter.setLimelightLED(Shooter.LED_BLINK);
     }
     else{
       intake.feed(0);
-      shooter.setLimelightLED(Shooter.LED_OFF);
+      // shooter.setLimelightLED(Shooter.LED_OFF);
     }
     intake.runShooterFeeder(0.75);
-    intake.succ(0.4);
+    intake.succ(0.8);
   }
 
   // Called once the command ends or is interrupted.
@@ -53,7 +53,7 @@ public class AutoIntake extends CommandBase {
     intake.feed(0);
     intake.runShooterFeeder(0);
     intake.succ(0);
-    shooter.setLimelightLED(Shooter.LED_OFF);
+    // shooter.setLimelightLED(Shooter.LED_OFF);
   }
 
   // Returns true when the command should end.

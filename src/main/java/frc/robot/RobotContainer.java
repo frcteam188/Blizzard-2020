@@ -30,6 +30,8 @@ public class RobotContainer {
   private final Hang hang = new Hang();
   private final Shooter shooter = new Shooter();
 
+  private int setpoint = 2868;
+
   // creating a new stick (controller) which will be the OPERATOR controller (port 0)
   private Joystick opStick = new Joystick(0);
   private JoystickButton opABtn = new JoystickButton(opStick, 2);
@@ -109,6 +111,8 @@ public class RobotContainer {
     // // Driver Controls
     // aBtnDr.whenHeld(new DeployHang(hang));
     // yBtnDr.whenHeld(new Winch(hang));
+
+    // yBtnOp.whileActiveOnce(new RunShooterPID(shooter, setpoint));
   }
 
   /**

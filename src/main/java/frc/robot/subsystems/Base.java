@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Compressor;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
@@ -41,6 +42,9 @@ public class Base extends SubsystemBase {
 
   // ini
   AHRS navx = new AHRS(Port.kMXP);
+
+  // Compressor
+  Compressor compressor = new Compressor();
   /**
    * Creates a new Base.
    */
@@ -49,6 +53,8 @@ public class Base extends SubsystemBase {
     // leftBack.setOpenLoopRampRate(0.2);
     // rightFront.setOpenLoopRampRate(0.2);
     // rightBack.setOpenLoopRampRate(0.2);
+
+    compressor.setClosedLoopControl(false);
   }
   /**
    * Method used to actually drive the robot itself
