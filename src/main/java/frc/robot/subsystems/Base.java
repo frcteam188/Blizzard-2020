@@ -43,8 +43,6 @@ public class Base extends SubsystemBase {
   // ini
   AHRS navx = new AHRS(Port.kMXP);
 
-  // Compressor
-  Compressor compressor = new Compressor();
   /**
    * Creates a new Base.
    */
@@ -54,12 +52,10 @@ public class Base extends SubsystemBase {
     // rightFront.setOpenLoopRampRate(0.2);
     // rightBack.setOpenLoopRampRate(0.2);
 
-    compressor.setClosedLoopControl(false);
   }
   /**
    * Method used to actually drive the robot itself
    * 
-   * @author Shiv Patel
    * @param y - the y axis for the joystick
    * @param x - the x axis for the joystick
    */
@@ -72,8 +68,6 @@ public class Base extends SubsystemBase {
 
   /**
    * Method shift the gear in
-   * 
-   * @author Shiv Patel
    */
   public void gearShiftOn(){
     baseS.set(kForward);
@@ -82,7 +76,6 @@ public class Base extends SubsystemBase {
   /**
    * Method to shift the gear back out
    * 
-   * @author Shiv Patel
    */
   public void gearShiftOff(){
     baseS.set(kReverse);
@@ -91,31 +84,56 @@ public class Base extends SubsystemBase {
   /**
    * Returns the angle of the navx
    * 
-   * @author Shiv Patel
    */
   public double getBaseAngle(){
     return navx.getAngle();
   }
 
   // Test, change to zero navx angle if necessary
+  /**
+   * This will reset the navx angle
+   */
   public void resetNavxAngle(){
     navx.zeroYaw();
   }
 
   // Test
+  /**
+   * Returns the Spark at the Left front motor
+   * 
+   * @return the Left Front Spark
+   */
   public CANSparkMax getLeftFront(){
     return leftFront;
   }
+  /**
+   * Returns the Spark at the Left Back motor
+   * 
+   * @return the Right Front Spark
+   */
   public CANSparkMax getLeftBack(){
     return leftBack;
   }
+  /**
+   * Returns the Spark at the Right Front motor
+   * 
+   * @return the Right Front Spark
+   */
   public CANSparkMax getRightFront(){
     return rightFront;
   }
+  /**
+   * Returns the Spark at the Right Back motor
+   * 
+   * @return the Right Back Spark
+   */
   public CANSparkMax getRightBack(){
     return rightBack;
   }
 
+  /**
+   * Sets the position of the base to zero when called
+   */
   public void resetBaseEnc(){
     frontLeftEnc.setPosition(0);
   }

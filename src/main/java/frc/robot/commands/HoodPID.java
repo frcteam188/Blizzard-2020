@@ -10,13 +10,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotMath;
 import frc.robot.subsystems.Shooter;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * This command will run the PID on the hood
  * 
+ * @author Edward Su
  */
 public class HoodPID extends CommandBase {
   /**
@@ -27,14 +30,19 @@ public class HoodPID extends CommandBase {
   private Shooter shooter;
   private CANPIDController hoodPIDController;
 
-  public HoodPID(Shooter s,double sp) {
+  public HoodPID(Shooter s, double sp) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = s;
     SmartDashboard.putNumber("Hood Setpoint: ", 0);
     this.setpoint = sp;
     hoodPIDController = shooter.getHoodPIDController();
-
     
+  }
+
+  public HoodPID(Shooter s){
+    this.shooter = s; 
+    this.setpoint = RobotMath.getDistanceFromTarget(shooter);
+    hoodPIDController = shooter.getHoodPIDController();
   }
 
   public void setSetpoint(double setpoint) {
@@ -59,7 +67,7 @@ public class HoodPID extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hoodPIDController.setReference(0,ControlType.kDutyCycle);
+    hoodPIDController.setReference(0,ControlType.kPosition);
   }
 
   // Returns true when the command should end.

@@ -10,12 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.DisabledCommand;
-import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -48,6 +48,8 @@ public class RobotContainer {
   JoystickButton rbBtnOp = new JoystickButton(opStick, 6);
   JoystickButton ltBtnOp = new JoystickButton(opStick, 7);
   JoystickButton rtBtnOp = new JoystickButton(opStick, 8);
+  POVButton upBtnOp = new POVButton(opStick, 0);
+  
 
   // Buttons Driver
   JoystickButton xBtnDr = new JoystickButton(drStick, 1);
@@ -64,12 +66,35 @@ public class RobotContainer {
   private double intakePow = 0;
   private double hoodSp = 0;
   private double shooterSp = 0;
+  private double turretSp = -2.5;
+  private double closeRPM = 2350;
   
 
   // constructor for teleopCommand
   private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, opStick, drStick);
   private final DisabledCommand disabledCommand = new DisabledCommand(drStick, base, shooter);
   private final SmartDashboardPrints smartDashboardPrints = new SmartDashboardPrints(shooter, intake, hang, base);
+  private final AutoIntake autoIntake = new AutoIntake(intake, shooter);
+  private final MoveIntake moveIntake = new MoveIntake(intake, -0.4);
+  private final HoodPID hoodPID = new HoodPID(shooter, 0);
+  private final HoodPID closeHood = new HoodPID(shooter, 38.832951);
+  private final TurretPID turretPID = new TurretPID(shooter, turretSp);
+  private final ShootBall shootBall = new ShootBall(shooter, 0.65);
+  private final ResetTurret resetTurret = new ResetTurret(shooter);
+  private final ManualHood manualHood = new ManualHood(shooter, opStick);
+  private final DeployIntake deployIntake = new DeployIntake(intake, true);
+  private final DeployIntake resetIntake = new DeployIntake(intake, false);
+  private final ShootFeed shootFeed = new ShootFeed(intake, -0.9);
+  private final ShootFeed closeFeed = new ShootFeed(intake, -0.6);
+  private final ConditionalCommand variableFeed = new ConditionalCommand(closeFeed, shootFeed, aBtnOp::get);
+  private final MidHoodPID midHoodPID = new MidHoodPID(shooter);
+  private final MidShooterPID midShooterPID = new MidShooterPID(shooter);
+
+  private final DeployHang deployHang = new DeployHang(hang);
+  private final RetractHang retractHang = new RetractHang(hang);
+  private final Winch winch = new Winch(hang);
+  private final BaseLowGearShift baseLowGearShift = new BaseLowGearShift(base);
+  private final BaseHighGearShift baseHighGearShift = new BaseHighGearShift(base);
 
   // constructor for auto commmand
 
@@ -91,34 +116,61 @@ public class RobotContainer {
     // Operator Controls
 
     // Regular intake with autofeed
-    // ltBtnOp.whileHeld(new AutoIntake(intake));
+    rbBtnOp.whileActiveOnce(autoIntake);
 
-    // // Low pwr hoodSp = 60
-    // aBtnOp.whileHeld(new HoodPID(shooter, 60));
-    // aBtnOp.whileHeld(new TurretPID(shooter));
+    // Outtake
+    rtBtnOp.whileActiveOnce(moveIntake);
 
-    // // Med pwr, hoodSp = 80
-    // bBtnOp.whileHeld(new HoodPID(shooter, 80));
-    // bBtnOp.whileHeld(new TurretPID(shooter));
+    // CLOSE 
+    aBtnOp.whileActiveOnce(closeHood);
+    // aBtnOp.whileActiveOnce(shootBall);
+    aBtnOp.whenReleased(resetTurret);
+    aBtnOp.whenReleased(manualHood);
+    // aBtnOp.cancelWhenPressed(manualHood);
+    aBtnOp.cancelWhenPressed(resetTurret);
+    aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
 
-    // // Hi pwr, hoodSp = 100
-    // yBtnOp.whileHeld(new HoodPID(shooter, 100));
-    // yBtnOp.whileHeld(new TurretPID(shooter));
 
-    // // Activate shootFeed
-    // lbBtnOp.whileHeld(new Shoot(intake));
 
-    // // Driver Controls
-    // aBtnDr.whenHeld(new DeployHang(hang));
-    // yBtnDr.whenHeld(new Winch(hang));
+    // can call like Btn.whenHeld().whenHeld();
+    bBtnOp.whileActiveOnce(midHoodPID);
+    bBtnOp.whileActiveOnce(turretPID);
+    bBtnOp.whileActiveOnce(midShooterPID);
+    bBtnOp.whenReleased(resetTurret);
+    // bBtnOp.whenReleased(manualHood);
+    // bBtnOp.cancelWhenPressed(manualHood);
+    bBtnOp.cancelWhenPressed(resetTurret);
 
-    // yBtnOp.whileActiveOnce(new RunShooterPID(shooter, setpoint));
+
+    yBtnOp.whileActiveOnce(midHoodPID);
+    yBtnOp.whileActiveOnce(turretPID);
+    yBtnOp.whileActiveOnce(midShooterPID);
+    yBtnOp.whenReleased(resetTurret);
+    // yBtnOp.whenReleased(manualHood);
+    // yBtnOp.cancelWhenPressed(manualHood);
+    yBtnOp.cancelWhenPressed(resetTurret);
+
+
+
+    lbBtnOp.whenPressed(deployIntake);
+    ltBtnOp.whenPressed(resetIntake);
+
+    upBtnOp.whileActiveOnce(variableFeed);
+    upBtnOp.cancelWhenPressed(turretPID);
+
+    // Driver Controls
+    aBtnDr.whenPressed(deployHang);
+    bBtnDr.whenPressed(retractHang);
+    yBtnDr.whileActiveOnce(winch);
+
+    ltBtnDr.whenPressed(baseHighGearShift);
+    rtBtnDr.whenPressed(baseLowGearShift);
+
   }
 
   /**
    * Returns the teleop command
    * 
-   * @author Shiv Patel
    * @return the command to run in teleop
    */
   public Command getTeleopCommand(){

@@ -7,45 +7,44 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANPIDController;
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hang;
+import frc.robot.Constants;
+import frc.robot.RobotMath;
+import frc.robot.subsystems.Shooter;
 
+public class MidHoodPID extends CommandBase {
 
-/**
- * This command will shoot the hang pistons when called
- * 
- * @author Shiv Patel
- */
-public class DeployHang extends CommandBase {
+  private Shooter shooter;
+  private CANPIDController hoodPIDController;
   /**
-   * Creates a new DeployHang.
-   * 
+   * Creates a new MidHoodPID.
    */
-  public Hang hang;
 
-  public DeployHang(Hang h) {
-    this.hang = h;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(h);
+  public MidHoodPID(Shooter s){
+    this.shooter = s; 
+    hoodPIDController = shooter.getHoodPIDController();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hang.moveStageOne(Hang.STATE_OUT);
-    // wait(1000, 0);
-    hang.moveStageTwo(Hang.STATE_OUT);
+    hoodPIDController.setP(Constants.kHoodP);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    hoodPIDController.setReference(RobotMath.getHoodPosFromDistance(shooter), ControlType.kPosition);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    hoodPIDController.setReference(0, ControlType.kPosition);
   }
 
   // Returns true when the command should end.

@@ -8,44 +8,49 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hang;
-
+import frc.robot.subsystems.Intake;
 
 /**
- * This command will shoot the hang pistons when called
+ * This command will run the feeder, the intake, and the shooter feeder in unison
+ * This command is only to be run when the shooter is at optimal speeds
  * 
- * @author Shiv Patel
+ * @author Zayeed Ghori, Edward Su, Shiv Patel
  */
-public class DeployHang extends CommandBase {
+public class ShootFeed extends CommandBase {
+  public double feederSpeed = -0.6;
   /**
-   * Creates a new DeployHang.
-   * 
+   * Creates a new Shoot.
    */
-  public Hang hang;
-
-  public DeployHang(Hang h) {
-    this.hang = h;
+  public double speed;
+  private final Intake intake;
+  public ShootFeed(Intake i, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(h);
+    this.intake = i;
+    this.speed = speed;
+    addRequirements(i);
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hang.moveStageOne(Hang.STATE_OUT);
-    // wait(1000, 0);
-    hang.moveStageTwo(Hang.STATE_OUT);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    intake.runShooterFeeder(speed);
+    intake.intake(0.30);
+    intake.feed(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.runShooterFeeder(0);
+    intake.intake(0);
+    intake.feed(0);
   }
 
   // Returns true when the command should end.

@@ -7,45 +7,53 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hang;
+import frc.robot.subsystems.Shooter;
+import frc.robot.Constants;
 
-
-/**
- * This command will shoot the hang pistons when called
- * 
- * @author Shiv Patel
- */
-public class DeployHang extends CommandBase {
+public class ShooterPID extends CommandBase {
   /**
-   * Creates a new DeployHang.
-   * 
+   * Creates a new ShooterPID.
    */
-  public Hang hang;
+  public double pidOutput;
+  public double setpoint;
+  public PIDController pidController;
 
-  public DeployHang(Hang h) {
-    this.hang = h;
+  private Shooter shooter;
+  public ShooterPID(Shooter s, double sP) {
+    this.shooter = s;
+    this.setpoint = sP;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(h);
   }
 
   // Called when the command is initially scheduled.
+
+  public double getF(){
+    return pidController.getSetpoint() * Constants.kShooterF;
+  }
   @Override
   public void initialize() {
-    hang.moveStageOne(Hang.STATE_OUT);
-    // wait(1000, 0);
-    hang.moveStageTwo(Hang.STATE_OUT);
+    pidController = new PIDController(SmartDashboard.getNumber("Shooter P: ", Constants.kShooterP),
+                    SmartDashboard.getNumber("Shooter I: ", Constants.kShooterI), 
+                    SmartDashboard.getNumber("Shooter D: ", Constants.kShooterD));
+    pidController.setIntegratorRange(-1, 1);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    pidOutput = pidController.calculate(shooter.getVelShooter(), setpoint);
 
+    shooter.shoot(pidOutput + getF());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.shoot(0);
   }
 
   // Returns true when the command should end.

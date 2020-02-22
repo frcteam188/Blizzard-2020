@@ -13,7 +13,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
+/**
+ * Use this command to tune the TurretPID
+ * 
+ * @author Shiv Patel, Zayeed Ghori
+ */
 public class TuneTurretPID extends PIDCommand {
   
 

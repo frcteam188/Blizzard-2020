@@ -17,12 +17,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TurretPID extends PIDCommand {
 
   public Shooter shooter;
-  private int setpoint;
+  private double setpoint;
 
   /**
    * Creates a new TurretFaceToAngle.
    */
-  public TurretPID(Shooter s, int sp) {
+  public TurretPID(Shooter s, double sp) {
     super(
         // The controller that the command will use
         new PIDController(Constants.kTurretP, Constants.kTurretI, Constants.kTurretD),
@@ -39,30 +39,26 @@ public class TurretPID extends PIDCommand {
           // outputs the power at which the turret is moving on the SmartDashboard
           SmartDashboard.putNumber("Turret Power", -output);
         });
+    getController().setTolerance(0.2);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
     this.shooter = s;
-
-   
   }
-  public int getSetpoint(){
-    return this.setpoint;
 
+  public double getSetpoint(){
+    return this.setpoint;
   }
 
   @Override
   public void initialize() {
     // TODO Auto-generated method stub
     super.initialize();
-    // shooter.setLimelightLED(Shooter.LED_ON);
-
-
+    shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   public void end(boolean interrupted) {
     // TODO Auto-generated method stub
     super.end(interrupted);
-    // shooter.setLimelightLED(Shooter.LED_OFF);
 
   }
   // Returns true when the command should end.

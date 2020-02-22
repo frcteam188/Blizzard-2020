@@ -10,6 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
+/**
+ * This command will run the motor that is connected to the Winch
+ * 
+ * @author Shiv Patel, Edward Su, Zayeed Ghori
+ */
+
 public class Winch extends CommandBase {
   /**
    * Creates a new Winch.
@@ -24,7 +30,7 @@ public class Winch extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hang.pullUp(1);
+    hang.pullUp(-1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

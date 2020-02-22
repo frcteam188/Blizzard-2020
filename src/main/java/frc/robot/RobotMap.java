@@ -8,7 +8,9 @@
 package frc.robot;
 
 /**
- * Add your docs here.
+ * Holds all of the constants for things like ids for motors and selenoids
+ * 
+ * @author Zayeed Ghori, Edward Su, Shiv Patel
  */
 public class RobotMap {
     // ids for the base motors

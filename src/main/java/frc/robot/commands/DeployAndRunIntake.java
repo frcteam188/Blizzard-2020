@@ -9,6 +9,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
+
+/**
+ * This command will deploy the intake, run it, and after it is ended, will bring the Intake back up
+ * 
+ * @author Shiv Patel
+ */
 public class DeployAndRunIntake extends CommandBase {
   /**
    * Creates a new DeployAndRunIntake.
@@ -29,7 +35,7 @@ public class DeployAndRunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.succ(0.8);
+    intake.intake(0.8);
   }
 
   // Called once the command ends or is interrupted.

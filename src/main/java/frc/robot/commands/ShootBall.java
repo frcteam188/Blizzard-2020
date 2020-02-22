@@ -11,16 +11,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
 public class ShootBall extends CommandBase {
-
   private Shooter shooter;
-  private double power;
+  private double pow;
+
+
   /**
-   * Creates a new ShootBall.
+   * Creates new ShootBall, requires shooter subsystem
+   * @param shooter - Shooter subsystem
+   * @param power - % power to give the shooter
    */
-  public ShootBall(Shooter s, double pow) {
+  public ShootBall(Shooter shooter, double power) {
+    this.shooter = shooter;
+    this.pow = power;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = s;
-    this.power = pow;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -31,12 +36,13 @@ public class ShootBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.shoot(power);
+    shooter.shoot(pow);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.shoot(0);
   }
 
   // Returns true when the command should end.

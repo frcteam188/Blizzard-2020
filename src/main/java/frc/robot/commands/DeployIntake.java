@@ -8,33 +8,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hang;
+import frc.robot.subsystems.Intake;
 
 
-/**
- * This command will shoot the hang pistons when called
- * 
- * @author Shiv Patel
- */
-public class DeployHang extends CommandBase {
+public class DeployIntake extends CommandBase {
   /**
-   * Creates a new DeployHang.
-   * 
+   * Creates a new DeployIntake.
    */
-  public Hang hang;
+  private Intake intake;
+  private boolean state;
 
-  public DeployHang(Hang h) {
-    this.hang = h;
+  public DeployIntake(Intake i, boolean state) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(h);
+    this.state = state;
+    this.intake = i;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hang.moveStageOne(Hang.STATE_OUT);
-    // wait(1000, 0);
-    hang.moveStageTwo(Hang.STATE_OUT);
+    if (state == false){
+      intake.deployIntake();
+    }
+    else if(state == true){
+      intake.resetIntake();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,7 +40,6 @@ public class DeployHang extends CommandBase {
   public void execute() {
 
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -51,6 +48,6 @@ public class DeployHang extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

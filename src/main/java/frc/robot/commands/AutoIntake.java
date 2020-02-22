@@ -12,6 +12,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
+/**
+ * Will run the intake and the feeder at the same time, and will intake the feeder if the sensor detects something
+ * 
+ * @author Shiv Patel, Edward Su, Zayeed Ghori
+ */
+
 public class AutoIntake extends CommandBase {
   /**
    * Creates a new AutoIntake.
@@ -32,19 +38,21 @@ public class AutoIntake extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+
   @Override
   public void execute() {
-    // If sensor is detecting a ball, turn on the feeder
+    // If sensor is detecting a ball, turn on the feeder and blink the LimeLight
     if(intake.getValueOfSensor() < 2.5){
       intake.feed(-0.3);
-      // shooter.setLimelightLED(Shooter.LED_BLINK);
+      shooter.setLimelightLED(Shooter.LED_BLINK);
     }
     else{
       intake.feed(0);
-      // shooter.setLimelightLED(Shooter.LED_OFF);
+      shooter.setLimelightLED(Shooter.LED_OFF);
     }
+    
     intake.runShooterFeeder(0.75);
-    intake.succ(0.8);
+    intake.intake(0.7);
   }
 
   // Called once the command ends or is interrupted.
@@ -52,8 +60,8 @@ public class AutoIntake extends CommandBase {
   public void end(boolean interrupted) {
     intake.feed(0);
     intake.runShooterFeeder(0);
-    intake.succ(0);
-    // shooter.setLimelightLED(Shooter.LED_OFF);
+    intake.intake(0);
+    shooter.setLimelightLED(Shooter.LED_OFF);
   }
 
   // Returns true when the command should end.

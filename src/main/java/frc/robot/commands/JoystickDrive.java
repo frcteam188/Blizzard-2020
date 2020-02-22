@@ -8,18 +8,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.subsystems.Base;
 
-public class Shoot extends CommandBase {
+public class JoystickDrive extends CommandBase {
+  private Base base;
+
   /**
-   * Creates a new Shoot.
+   * Creates a new JoystickDrive.
+   * @param b - Base subsystem
+   * @param driver - Joystick that drives the base
    */
-
-  private final Intake intake;
-  public Shoot(Intake i) {
+  public JoystickDrive(Base b, Joystick driver) {
+    this.base = b;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = i;
-    addRequirements(i);
   }
 
   // Called when the command is initially scheduled.
@@ -30,17 +32,12 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.runShooterFeeder(-1);
-    intake.succ(0.30);
-    intake.feed(-1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.runShooterFeeder(0);
-    intake.succ(0);
-    intake.feed(0);
+    base.drive(0, 0);
   }
 
   // Returns true when the command should end.

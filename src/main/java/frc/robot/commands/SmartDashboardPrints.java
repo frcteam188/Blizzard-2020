@@ -13,6 +13,11 @@ import frc.robot.Constants;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * Prints data on the SmartDashboard
+ * 
+ * @author Zayeed Ghori, Shiv Patel
+ */
 public class SmartDashboardPrints extends CommandBase {
   /**
    * Creates a new SmartDashboardPrints.
@@ -37,6 +42,7 @@ public class SmartDashboardPrints extends CommandBase {
     SmartDashboard.putNumber("Turret I: ", Constants.kTurretI);
     SmartDashboard.putNumber("Turret D: ", Constants.kTurretD);
     SmartDashboard.putNumber("Turret Setpoint: ", 0);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -62,6 +68,7 @@ public class SmartDashboardPrints extends CommandBase {
 
     SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
 
+    
   }
 
   // Called once the command ends or is interrupted.

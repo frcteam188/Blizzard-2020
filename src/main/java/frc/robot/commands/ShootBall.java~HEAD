@@ -8,39 +8,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.ControlType;
-
-import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
-/**
- * ShooterPID command 
- * 
- * @author Zayeed Ghori, Edward Su
- */
-public class RunShooterPID extends CommandBase {
+public class ShootBall extends CommandBase {
+
+  private Shooter shooter;
+  private double power;
   /**
-   * Creates a new runShooterPID.
+   * Creates a new ShootBall.
    */
-
-  private final Shooter shooter;
-  private int setpoint;
-  private CANPIDController pidControllerLeft;
-  private CANPIDController pidControllerRight;
-
-
-  
-  
-  public RunShooterPID(Shooter shooter,int sP) {
-    // Use addRequirements() here to declare subsystem dependenacies.
-
-    this.shooter = shooter;
-    this.setpoint = sP;
-    this.pidControllerLeft = shooter.getShooterLeftPIDController();
-    this.pidControllerRight = shooter.getShooterRightPIDController();
-
-    
+  public ShootBall(Shooter s, double pow) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.shooter = s;
+    this.power = pow;
   }
 
   // Called when the command is initially scheduled.
@@ -51,15 +31,12 @@ public class RunShooterPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pidControllerLeft.setReference(setpoint, ControlType.kVelocity);
-    pidControllerRight.setReference(-setpoint, ControlType.kVelocity);
+    shooter.shoot(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pidControllerLeft.setReference(0,ControlType.kDutyCycle);
-    pidControllerRight.setReference(0,ControlType.kDutyCycle);
   }
 
   // Returns true when the command should end.
