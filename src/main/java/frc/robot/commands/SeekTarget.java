@@ -33,8 +33,10 @@ public class SeekTarget extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isFound = shooter.getTargetIsVisible();
-
+    if(shooter.getTargetIsVisible()){
+      isFound = true;
+      return;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,13 +44,14 @@ public class SeekTarget extends CommandBase {
   public void execute() {
 
     // oscillates turret until target is found
-    if(shooter.getTurretAngle() < range)
+    if(shooter.getTargetIsVisible()){
+      isFound = true;
+      return;
+    }
+    else if(shooter.getTurretAngle() < range)
       shooter.moveTurret(0.5);
     else if(shooter.getTurretAngle() > -range)
       shooter.moveTurret(-0.5);
-    
-    isFound = shooter.getTargetIsVisible();
-
   }
 
   // Called once the command ends or is interrupted.
