@@ -103,9 +103,7 @@ public class TeleopCommand extends CommandBase {
 
     // CONTROLS
 
-    base.drive(-drStick.getRawAxis(1), drStick.getRawAxis(2)*0.4); 
-
-    shooter.moveTurret(opStick.getRawAxis(0));
+    base.drive(-drStick.getRawAxis(1), drStick.getRawAxis(2)*0.4);
 
     if (shooter.getVelShooter() >= 2750){
       canShoot = true;
