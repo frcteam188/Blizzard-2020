@@ -5,33 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.autoCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Base;
 
-public class ShootBall extends CommandBase {
-
-  private Shooter shooter;
-  private double power;
+public class DriveStraight extends CommandBase {
+  private Base base;
   /**
-   * Creates a new ShootBall.
+   * Creates a new DriveStraight. *UNFINISHED*
    */
-  public ShootBall(Shooter s, double pow) {
+  public DriveStraight(Base b, double distInches) {
+    this.base = b;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = s;
-    this.power = pow;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.shoot(power);
+
   }
 
   // Called once the command ends or is interrupted.

@@ -34,6 +34,7 @@ public class TeleopCommand extends CommandBase {
   private final Hang hang;
 
   private final Joystick drStick;
+  private final Joystick opStick;
 
   // power for the feeder
   private final double pow = -1;
@@ -51,6 +52,7 @@ public class TeleopCommand extends CommandBase {
     this.shooter = shooter;
     this.hang = hang;
     this.drStick = drStick;
+    this.opStick = opStick;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -102,6 +104,8 @@ public class TeleopCommand extends CommandBase {
     // CONTROLS
 
     base.drive(-drStick.getRawAxis(1), drStick.getRawAxis(2)*0.4); 
+
+    shooter.moveTurret(opStick.getRawAxis(0));
 
     if (shooter.getVelShooter() >= 2750){
       canShoot = true;

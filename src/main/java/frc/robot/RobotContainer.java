@@ -34,7 +34,6 @@ public class RobotContainer {
 
   // creating a new stick (controller) which will be the OPERATOR controller (port 0)
   private Joystick opStick = new Joystick(0);
-  private JoystickButton opABtn = new JoystickButton(opStick, 2);
 
   //creating a new stick (controller) which will be the DRIVER controller (port 1)
   private Joystick drStick =  new Joystick(1);
@@ -79,6 +78,7 @@ public class RobotContainer {
   private final HoodPID hoodPID = new HoodPID(shooter, 0);
   private final HoodPID closeHood = new HoodPID(shooter, 38.832951);
   private final TurretPID turretPID = new TurretPID(shooter, turretSp);
+  private final ManualTurret manualTurret = new ManualTurret(shooter, opStick);
   private final ShootBall shootBall = new ShootBall(shooter, 0.65);
   private final ResetTurret resetTurret = new ResetTurret(shooter);
   private final ManualHood manualHood = new ManualHood(shooter, opStick);
@@ -119,15 +119,17 @@ public class RobotContainer {
     rbBtnOp.whileActiveOnce(autoIntake);
 
     // Outtake
-    rtBtnOp.whileActiveOnce(moveIntake);
+    lbBtnOp.whileActiveOnce(moveIntake);
 
     // CLOSE 
     aBtnOp.whileActiveOnce(closeHood);
     // aBtnOp.whileActiveOnce(shootBall);
-    aBtnOp.whenReleased(resetTurret);
+    // aBtnOp.whenReleased(resetTurret);
+    aBtnOp.whenReleased(manualTurret);
     aBtnOp.whenReleased(manualHood);
-    // aBtnOp.cancelWhenPressed(manualHood);
-    aBtnOp.cancelWhenPressed(resetTurret);
+    aBtnOp.cancelWhenPressed(manualHood);
+    aBtnOp.cancelWhenPressed(manualTurret);
+    // aBtnOp.cancelWhenPressed(resetTurret);
     aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
 
 
@@ -136,19 +138,23 @@ public class RobotContainer {
     bBtnOp.whileActiveOnce(midHoodPID);
     bBtnOp.whileActiveOnce(turretPID);
     bBtnOp.whileActiveOnce(midShooterPID);
-    bBtnOp.whenReleased(resetTurret);
-    // bBtnOp.whenReleased(manualHood);
-    // bBtnOp.cancelWhenPressed(manualHood);
-    bBtnOp.cancelWhenPressed(resetTurret);
+    // bBtnOp.whenReleased(resetTurret);
+    bBtnOp.whenReleased(manualTurret);
+    bBtnOp.whenReleased(manualHood);
+    bBtnOp.cancelWhenPressed(manualHood);
+    // bBtnOp.cancelWhenPressed(resetTurret);
+    bBtnOp.cancelWhenPressed(manualTurret);
 
 
     yBtnOp.whileActiveOnce(midHoodPID);
     yBtnOp.whileActiveOnce(turretPID);
     yBtnOp.whileActiveOnce(midShooterPID);
-    yBtnOp.whenReleased(resetTurret);
-    // yBtnOp.whenReleased(manualHood);
-    // yBtnOp.cancelWhenPressed(manualHood);
-    yBtnOp.cancelWhenPressed(resetTurret);
+    // yBtnOp.whenReleased(resetTurret);
+    yBtnOp.whenReleased(manualTurret);
+    yBtnOp.whenReleased(manualHood);
+    yBtnOp.cancelWhenPressed(manualTurret);
+    yBtnOp.cancelWhenPressed(manualHood);
+    // yBtnOp.cancelWhenPressed(resetTurret);
 
 
 

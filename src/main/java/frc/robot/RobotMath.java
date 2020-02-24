@@ -30,6 +30,7 @@ public class RobotMath {
 
   /**
    * Calculates distance from Limelight target
+   * @param shooter - Shooter subsystem
    * @return Distance from Limelight target
    */
   public static double getDistanceFromTarget(Shooter shooter){
@@ -41,6 +42,7 @@ public class RobotMath {
 
   /**
    * Calculates hood position using distance and a relationship between them
+   * @param shooter - Shooter subsystem
    * @return Hood position based on distance
    */
   public static double getHoodPosFromDistance(Shooter shooter){
@@ -50,10 +52,14 @@ public class RobotMath {
     return hoodPosFromDistance;
   }
 
+  /**
+   * Calculates shooter velocity using distance and a relationship between them
+   * @param shooter - Shooter subsystem
+   * @return Velocity of the shooter based on distance
+   */
   public static double getVelFromDistance(Shooter shooter){
     d = getDistanceFromTarget(shooter);
     double velFromDistance = 0.2431*Math.pow(d, 2)-42.176*d + 4759.2;
     return velFromDistance;
   }
-
 }

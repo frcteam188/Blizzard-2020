@@ -138,6 +138,13 @@ public class Base extends SubsystemBase {
     frontLeftEnc.setPosition(0);
   }
 
+  /**
+   * @return the frontLeftEnc
+   */
+  public CANEncoder getFrontLeftEnc() {
+    return frontLeftEnc;
+  }
+
 
 
   @Override

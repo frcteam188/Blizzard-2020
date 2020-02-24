@@ -30,6 +30,7 @@ public class Shooter extends SubsystemBase {
    */
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTableEntry tv = table.getEntry("tv");
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
@@ -43,6 +44,7 @@ public class Shooter extends SubsystemBase {
   double hor = thor.getDouble(0);
   double vert = tvert.getDouble(0);
   double area = 0;
+  boolean targetIsVisible = tv.getBoolean(false);
 
   // Flywheel (motors, encoder)
   CANSparkMax shooterLeft = new CANSparkMax(RobotMap.shooterLeft, MotorType.kBrushless);
@@ -191,7 +193,7 @@ public class Shooter extends SubsystemBase {
 
 
   /**
-   * Method to get the turret's position
+   * Method to get the turret's position in degrees from the middle of the turret
    * 
    * @author Zayeed Ghori
    */
@@ -225,6 +227,17 @@ public class Shooter extends SubsystemBase {
   public double getLimelightY(){
     y = ty.getDouble(0.0);
     return y;
+  }
+
+
+  /**
+   * Return true if a target is visible to the Limelight
+   * @return True if target is visible
+   */
+  public boolean getTargetIsVisible(){
+    targetIsVisible = tv.getBoolean(false);
+
+    return targetIsVisible;
   }
 
   /**
