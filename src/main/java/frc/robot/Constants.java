@@ -34,6 +34,10 @@ public final class Constants {
     public static double shooterSetpoint = 1;
     public static double kShooterIZone = 0;
 
+    public static double kTurnBaseP = 0;
+    public static double kTurnBaseI = 0;
+    public static double kTurnBaseD = 0;
+
     public static double kBaseP = 0;
     public static double kBaseI = 0;
     public static double kBaseD = 0;

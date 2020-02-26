@@ -79,14 +79,14 @@ public class Shooter extends SubsystemBase {
     hoodPIDController.setI(Constants.kHoodI);
     hoodPIDController.setD(Constants.kHoodD);
 
-    pidControllerLeft.setP(Constants.kShooterP);
-    pidControllerLeft.setI(Constants.kShooterI);
-    pidControllerLeft.setD(Constants.kShooterD);
-    pidControllerLeft.setFF(Constants.kShooterF);
-    pidControllerLeft.setOutputRange(Constants.kShooterMinOutput,Constants.kShooterMaxOutput);
-    pidControllerLeft.setIZone(0);
+    // pidControllerLeft.setP(Constants.kShooterP);
+    // pidControllerLeft.setI(Constants.kShooterI);
+    // pidControllerLeft.setD(Constants.kShooterD);
+    // pidControllerLeft.setFF(Constants.kShooterF);
+    // pidControllerLeft.setOutputRange(Constants.kShooterMinOutput,Constants.kShooterMaxOutput);
+    // pidControllerLeft.setIZone(0);
 
-    pidControllerRight = pidControllerLeft;
+    // pidControllerRight = pidControllerLeft;
 
     turretEnc.setPositionConversionFactor(1.54373);
 
@@ -105,17 +105,18 @@ public class Shooter extends SubsystemBase {
   public CANPIDController getHoodPIDController(){
     return hoodPIDController;
   }
+  
   /**
-   * returns the hoodPIDController object
+   * returns the shooterPIDController object
    * 
-   * @return hoodPIDController - the PIDController instance variable
+   * @return shooterPIDController - the PIDController instance variable
    */
-  public CANPIDController getShooterLeftPIDController(){
-    return pidControllerLeft;
-  }
-  public CANPIDController getShooterRightPIDController(){
-    return pidControllerRight;
-  }
+  // public CANPIDController getShooterLeftPIDController(){
+  //   return pidControllerLeft;
+  // }
+  // public CANPIDController getShooterRightPIDController(){
+  //   return pidControllerRight;
+  // }
 
 
 

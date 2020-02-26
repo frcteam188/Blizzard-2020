@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Spark;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
@@ -42,6 +43,9 @@ public class Base extends SubsystemBase {
 
   // ini
   AHRS navx = new AHRS(Port.kMXP);
+
+  // LED Strip
+  Spark ledStrip = new Spark(RobotMap.ledStrip);
 
   /**
    * Creates a new Base.
@@ -83,10 +87,18 @@ public class Base extends SubsystemBase {
 
   /**
    * Returns the angle of the navx
-   * 
+   * @return the angle of the base from the navx
    */
   public double getBaseAngle(){
     return navx.getAngle();
+  }
+
+  /**
+   * Returns the navx
+   * @return the navx on the base
+   */
+  public AHRS getNavx(){
+    return navx;
   }
 
   // Test, change to zero navx angle if necessary
@@ -145,6 +157,22 @@ public class Base extends SubsystemBase {
     return frontLeftEnc;
   }
 
+  /**
+   * Sets the mode of the LED strip based on the power to LED mode table
+   * @link Table: http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+   * @param mode - The mode of the LED strip
+   */
+  public void setLEDStripMode(double mode){
+    ledStrip.set(mode);
+  }
+
+  /**
+   * Returns the LEDStrip
+   * @return - The LEDStrip on the base
+   */
+  public Spark getLEDStrip(){
+    return ledStrip;
+  }
 
 
   @Override

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.Constants;
 import frc.robot.RobotMath;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -75,6 +76,8 @@ public class TeleopCommand extends CommandBase {
     // Start in low gear
     base.gearShiftOff();
 
+    // Start with strip off
+    base.getLEDStrip().disable();
 
   }
 
@@ -111,6 +114,12 @@ public class TeleopCommand extends CommandBase {
     else{
       canShoot = false;
     }
+    
+    // Makes the strips red if timer is under 20 secs
+    if(Timer.getMatchTime() < 20){
+      // Sets to red
+      base.setLEDStripMode(0.61);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -118,6 +127,7 @@ public class TeleopCommand extends CommandBase {
   public void end(final boolean interrupted) {
     // stops the base by setting the inputs to 0
     base.drive(0, 0);
+    base.getLEDStrip().disable();
     intake.intake(0);
     intake.feed(0);
     shooter.moveTurret(0);

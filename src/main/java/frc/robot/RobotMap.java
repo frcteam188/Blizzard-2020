@@ -51,6 +51,9 @@ public class RobotMap {
     // id for feeder motor
     public static int feeder = 5;
 
+    // PWM port for ledStrip
+    public static int ledStrip = 0;
+
 
 
 }
