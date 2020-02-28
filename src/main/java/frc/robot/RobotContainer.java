@@ -19,6 +19,7 @@ import frc.robot.commands.autoCommands.TuneDriveStraight;
 import frc.robot.commands.autoCommands.TuneTurnBasePID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -85,16 +86,17 @@ public class RobotContainer {
   private final HoodPID closeHood = new HoodPID(shooter, 38.832951);
   private final TurretPID turretPID = new TurretPID(shooter, turretSp);
   private final ManualTurret manualTurret = new ManualTurret(shooter, opStick);
-  private final ShootBall shootBall = new ShootBall(shooter, 0.65);
+  private final ShootBall shootBall = new ShootBall(shooter, 0.75); //0.65
   private final ResetTurret resetTurret = new ResetTurret(shooter);
   private final ManualHood manualHood = new ManualHood(shooter, opStick);
   private final DeployIntake deployIntake = new DeployIntake(intake, true);
   private final DeployIntake resetIntake = new DeployIntake(intake, false);
   private final ShootFeed shootFeed = new ShootFeed(intake, -0.9);
-  private final ShootFeed closeFeed = new ShootFeed(intake, -0.6);
+  private final ShootFeed closeFeed = new ShootFeed(intake, -0.3); // -0.6
   private final ConditionalCommand variableFeed = new ConditionalCommand(closeFeed, shootFeed, aBtnOp::get);
   private final MidHoodPID midHoodPID = new MidHoodPID(shooter);
   private final MidShooterPID midShooterPID = new MidShooterPID(shooter);
+  // private final SequentialCommandGroup shootWhenAtSpeed = new SequentialCommandGroup(new ShooterGetToSpeed(shooter), closeFeed);
 
   private final DeployHang deployHang = new DeployHang(hang);
   private final RetractHang retractHang = new RetractHang(hang);
@@ -144,39 +146,39 @@ public class RobotContainer {
     lbBtnOp.whileActiveOnce(moveIntake);
 
     // CLOSE 
-    aBtnOp.whileActiveOnce(closeHood);
+    // aBtnOp.whileActiveOnce(closeHood);
     aBtnOp.whileActiveOnce(shootBall);
-    aBtnOp.whenReleased(resetTurret);
-    // aBtnOp.whenReleased(manualTurret);
-    // aBtnOp.whenReleased(manualHood);
+    // aBtnOp.whenReleased(resetTurret);
+    aBtnOp.whenReleased(manualTurret);
+    aBtnOp.whenReleased(manualHood);
     // aBtnOp.cancelWhenPressed(manualHood);
-    // aBtnOp.cancelWhenPressed(manualTurret);
-    aBtnOp.cancelWhenPressed(resetTurret);
-    aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
+    // aBtnOp.ca`ncelWhenPressed(manualTurret);
+    // aBtnOp.cancelWhenPressed(resetTurret);
+    // aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
 
 
 
     // can call like Btn.whenHeld().whenHeld();
-    bBtnOp.whileActiveOnce(midHoodPID);
-    bBtnOp.whileActiveOnce(turretPID);
-    bBtnOp.whileActiveOnce(midShooterPID);
-    bBtnOp.whenReleased(resetTurret);
-    bBtnOp.whenReleased(manualTurret);
+    // bBtnOp.whileActiveOnce(midHoodPID);
+    // bBtnOp.whileActiveOnce(turretPID);
+    // bBtnOp.whileActiveOnce(midShooterPID);
+    // bBtnOp.whenReleased(resetTurret);
+    // bBtnOp.whenReleased(manualTurret);
     // bBtnOp.whenReleased(manualHood);
     // bBtnOp.cancelWhenPressed(manualHood);
-    bBtnOp.cancelWhenPressed(resetTurret);
-    // bBtnOp.cancelWhenPressed(manualTurret);
+    // bBtnOp.cancelWhenPressed(resetTurret);
+    // // bBtnOp.cancelWhenPressed(manualTurret);
     
 
-    yBtnOp.whileActiveOnce(midHoodPID);
-    yBtnOp.whileActiveOnce(turretPID);
-    yBtnOp.whileActiveOnce(midShooterPID);
-    yBtnOp.whenReleased(resetTurret);
+    // // yBtnOp.whileActiveOnce(midHoodPID);
+    // // yBtnOp.whileActiveOnce(turretPID);
+    // // yBtnOp.whileActiveOnce(midShooterPID);
+    // // yBtnOp.whenReleased(resetTurret);
     // yBtnOp.whenReleased(manualTurret);
     // yBtnOp.whenReleased(manualHood);
     // yBtnOp.cancelWhenPressed(manualTurret);
     // yBtnOp.cancelWhenPressed(manualHood);
-    yBtnOp.cancelWhenPressed(resetTurret);
+    // yBtnOp.cancelWhenPressed(resetTurret);
 
 
 
@@ -184,7 +186,8 @@ public class RobotContainer {
     ltBtnOp.whileActiveOnce(resetIntake);
 
     upBtnOp.whileActiveOnce(variableFeed);
-    upBtnOp.cancelWhenPressed(turretPID);
+    // upBtnOp.whileActiveOnce(shootWhenAtSpeed);
+    // upBtnOp.cancelWhenPressed(turretPID);
 
     // Driver Controls
     aBtnDr.whileActiveOnce(deployHang);

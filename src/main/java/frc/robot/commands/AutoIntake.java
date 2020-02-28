@@ -61,7 +61,7 @@ public class AutoIntake extends CommandBase {
     intake.feed(0);
     intake.runShooterFeeder(0);
     intake.intake(0);
-    shooter.setLimelightLED(Shooter.LED_OFF);
+    // shooter.setLimelightLED(Shooter.LED_OFF);
   }
 
   // Returns true when the command should end.
