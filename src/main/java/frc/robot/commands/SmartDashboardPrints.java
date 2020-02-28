@@ -32,7 +32,13 @@ public class SmartDashboardPrints extends CommandBase {
     this.hang = h;
     this.base = b;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(s, i, h, b);
+
+  }
+
+  @Override
+  public boolean runsWhenDisabled() {
+    // TODO Auto-generated method stub
+    return true;
   }
 
   // Called when the command is initially scheduled.
@@ -68,7 +74,7 @@ public class SmartDashboardPrints extends CommandBase {
 
     SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
 
-    
+    SmartDashboard.putNumber("Drive Ticks: ", base.getFrontLeftEnc().getPosition());
   }
 
   // Called once the command ends or is interrupted.

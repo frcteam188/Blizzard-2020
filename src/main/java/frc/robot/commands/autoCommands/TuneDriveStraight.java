@@ -11,17 +11,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Base;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveStraight extends CommandBase {
+public class TuneDriveStraight extends CommandBase {
   private Base base;
   private double angleSetpoint;
-  private double distInches;
   private double distanceSetpoint;
   private double gyroOutput;
   private double driveOutput;
-  private double drivePow;
-  private int count;
+  private double output;
 
   public PIDController gyroPID = new PIDController(
     Constants.kDriveTurnP,
@@ -38,24 +37,29 @@ public class DriveStraight extends CommandBase {
   /**
    * Creates a new DriveStraight. *UNFINISHED*
    */
-  public DriveStraight(Base b, double distInches, double a, double dPow) {
+  public TuneDriveStraight(Base b, double distInches, double aS) {
     this.base = b;
-    this.angleSetpoint = a;
-    this.distInches = distInches;
-    this.drivePow = dPow;
+    this.angleSetpoint = aS;
+    this.distanceSetpoint = distInches;
+
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.distanceSetpoint = distInches + base.getFrontLeftEnc().getPosition();
-
-    count = 0;
-
-    // angle setpoint is equal to current base angle
-    // angleSetpoint = base.getBaseAngle();
     
     // Reporting
+    SmartDashboard.putNumber("Drive Turn P", Constants.kDriveTurnP);
+    SmartDashboard.putNumber("Drive Turn I", Constants.kDriveTurnI);
+    SmartDashboard.putNumber("Drive Turn D", Constants.kDriveTurnD);
+
+    SmartDashboard.putNumber("Drive P", Constants.kBaseP);
+    SmartDashboard.putNumber("Drive I", Constants.kBaseI);
+    SmartDashboard.putNumber("Drive D", Constants.kBaseD);
+
+    SmartDashboard.putNumber("Drive Setpoint", this.distanceSetpoint);
+    SmartDashboard.putNumber("Angle Setpoint", this.angleSetpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,22 +67,31 @@ public class DriveStraight extends CommandBase {
   public void execute() {
     // Makes the PID tuneable
 
+    gyroPID.setPID(
+      SmartDashboard.getNumber("Turn P", Constants.kDriveTurnP),
+      SmartDashboard.getNumber("Turn I", Constants.kDriveTurnI),
+      SmartDashboard.getNumber("Turn D", Constants.kDriveTurnD)
+    );
+    drivePID.setPID(
+      SmartDashboard.getNumber("Drive P", Constants.kBaseP),
+      SmartDashboard.getNumber("Drive I", Constants.kBaseI),
+      SmartDashboard.getNumber("Drive D", Constants.kBaseD)
+    );
+
+    this.angleSetpoint = SmartDashboard.getNumber("Angle Setpoint", angleSetpoint);
+
+    this.distanceSetpoint = SmartDashboard.getNumber("Drive Setpoint", distanceSetpoint);
+  
     gyroOutput = gyroPID.calculate(base.getBaseAngle(), angleSetpoint);
     driveOutput = drivePID.calculate(base.getFrontLeftEnc().getPosition(), distanceSetpoint);
 
-    if(driveOutput > 0) driveOutput = Math.min(driveOutput, drivePow);
-    else driveOutput = Math.max(driveOutput, -drivePow);
+    if(driveOutput > 0) driveOutput = Math.min(driveOutput, 0.65);
+    else driveOutput = Math.max(driveOutput, -0.65);
 
     if(gyroOutput > 0) gyroOutput = Math.min(gyroOutput, 0.35);
     else gyroOutput = Math.max(gyroOutput, -0.35);
 
-    // output = gyroOutput + driveOutput;
     base.drive(driveOutput, gyroOutput);
-
-    if(Math.abs(base.getFrontLeftEnc().getPosition() - distanceSetpoint) < 0.2)
-      count++;
-    else
-      count = 0;
   }
 
   // Called once the command ends or is interrupted.
@@ -90,6 +103,6 @@ public class DriveStraight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return count > 3;
+    return false;
   }
 }

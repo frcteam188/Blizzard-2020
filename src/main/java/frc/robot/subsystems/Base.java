@@ -9,10 +9,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import com.kauailabs.navx.frc.AHRS;
@@ -55,6 +57,7 @@ public class Base extends SubsystemBase {
     // leftBack.setOpenLoopRampRate(0.2);
     // rightFront.setOpenLoopRampRate(0.2);
     // rightBack.setOpenLoopRampRate(0.2);
+    frontLeftEnc.setPositionConversionFactor(0.1626704);
 
   }
   /**
@@ -178,5 +181,19 @@ public class Base extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void setToCoast(){
+    leftFront.setIdleMode(IdleMode.kCoast);
+    leftBack.setIdleMode(IdleMode.kCoast);
+    rightFront.setIdleMode(IdleMode.kCoast);
+    rightBack.setIdleMode(IdleMode.kCoast);
+  }
+
+  public void setToBrake(){
+    leftFront.setIdleMode(IdleMode.kBrake);
+    leftBack.setIdleMode(IdleMode.kBrake);
+    rightFront.setIdleMode(IdleMode.kBrake);
+    rightBack.setIdleMode(IdleMode.kBrake);
   }
 }

@@ -7,29 +7,20 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-/**
- * Will run the intake and the feeder at the same time, and will intake the feeder if the sensor detects something
- * 
- * @author Shiv Patel, Edward Su, Zayeed Ghori
- */
-
-public class AutoIntake extends CommandBase {
+public class TurnTurret extends CommandBase {
+  private Shooter shooter;
+  private double angle;
+  private double turretDeadZone = 5;
   /**
-   * Creates a new AutoIntake.
+   * Creates a new TurnTurret.
    */
-  private final Intake intake;
-  private final Shooter shooter;
-
-  public AutoIntake(Intake intake, Shooter shooter) {
+  public TurnTurret(Shooter s, double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
-    this.shooter = shooter;
-    addRequirements(intake);
+    this.shooter = s;
+    this.angle = angle;
   }
 
   // Called when the command is initially scheduled.
@@ -38,35 +29,28 @@ public class AutoIntake extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-
   @Override
   public void execute() {
-    // If sensor is detecting a ball, turn on the feeder and blink the LimeLight
-    if(intake.getValueOfSensor() < 2.5){
-      intake.feed(-0.3);
-      shooter.setLimelightLED(Shooter.LED_BLINK);
+    // Move Turret to middle
+    if (shooter.getTurretAngle() > angle + turretDeadZone) {
+      shooter.moveTurret(-0.5);
+    } else if (shooter.getTurretAngle() < angle - turretDeadZone) {
+      shooter.moveTurret(0.5);
+    } else {
+      shooter.moveTurret(0);
     }
-    else{
-      intake.feed(0);
-      shooter.setLimelightLED(Shooter.LED_ON);
-    }
-    
-    intake.runShooterFeeder(0.75);
-    intake.intake(0.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.feed(0);
-    intake.runShooterFeeder(0);
-    intake.intake(0);
-    shooter.setLimelightLED(Shooter.LED_OFF);
+    shooter.moveTurret(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return shooter.getTurretAngle() < angle + turretDeadZone && 
+    shooter.getTurretAngle() > angle - turretDeadZone;
   }
 }

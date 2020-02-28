@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.util.Units;
 /**
  * Does math for different things
  * 
- * @author Zayeed Ghori, Shiv Patel
+ * @author Zayeed Ghori, Shiv Patel, Edward Su
  */
 public class RobotMath {
 
@@ -81,7 +81,7 @@ public class RobotMath {
    */
   public static double getHoodPosFromDistance(Shooter shooter){
     d = getDistanceFromTarget(shooter);
-    hoodPosFromDistance = 0.3096*d + 40.3;
+    hoodPosFromDistance = 0.2656*d + 42.772;
 
     return hoodPosFromDistance;
   }

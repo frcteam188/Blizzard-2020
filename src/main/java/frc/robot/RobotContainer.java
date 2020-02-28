@@ -10,10 +10,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.commands.autoCommands.DriveStraight;
+import frc.robot.commands.autoCommands.TuneDriveStraight;
+import frc.robot.commands.autoCommands.TuneTurnBasePID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -65,7 +71,7 @@ public class RobotContainer {
   private double intakePow = 0;
   private double hoodSp = 0;
   private double shooterSp = 0;
-  private double turretSp = -2.5;
+  private double turretSp = -2.0;
   private double closeRPM = 2350;
   
 
@@ -97,14 +103,22 @@ public class RobotContainer {
   private final BaseHighGearShift baseHighGearShift = new BaseHighGearShift(base);
 
   // constructor for auto commmand
-
+  private final AutoTestCommand autoTestCommand = new AutoTestCommand(base, intake, shooter);
+  private final SendableChooser<Command> chooser = new SendableChooser<Command>();
+  private final DriveStraight driveStraight = new DriveStraight(base, 0, 0, 0.65);
+  private final TuneDriveStraight tuneDriveStraight = new TuneDriveStraight(base, 0, 0);
+  private final TuneTurnBasePID turnTurnBasePID = new TuneTurnBasePID(base, 0);
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    chooser();
   }
+
+
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
@@ -112,6 +126,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+
+  private void chooser(){
+    chooser.setDefaultOption("Tune Turn ", turnTurnBasePID);
+    chooser.addOption("Tune Drive Forward", tuneDriveStraight);
+    chooser.addOption("Test Auto", autoTestCommand);
+    SmartDashboard.putData("Auto Options", chooser);
+
+  }
   private void configureButtonBindings() {
     // Operator Controls
 
@@ -123,13 +145,13 @@ public class RobotContainer {
 
     // CLOSE 
     aBtnOp.whileActiveOnce(closeHood);
-    // aBtnOp.whileActiveOnce(shootBall);
-    // aBtnOp.whenReleased(resetTurret);
-    aBtnOp.whenReleased(manualTurret);
-    aBtnOp.whenReleased(manualHood);
-    aBtnOp.cancelWhenPressed(manualHood);
-    aBtnOp.cancelWhenPressed(manualTurret);
-    // aBtnOp.cancelWhenPressed(resetTurret);
+    aBtnOp.whileActiveOnce(shootBall);
+    aBtnOp.whenReleased(resetTurret);
+    // aBtnOp.whenReleased(manualTurret);
+    // aBtnOp.whenReleased(manualHood);
+    // aBtnOp.cancelWhenPressed(manualHood);
+    // aBtnOp.cancelWhenPressed(manualTurret);
+    aBtnOp.cancelWhenPressed(resetTurret);
     aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
 
 
@@ -138,39 +160,39 @@ public class RobotContainer {
     bBtnOp.whileActiveOnce(midHoodPID);
     bBtnOp.whileActiveOnce(turretPID);
     bBtnOp.whileActiveOnce(midShooterPID);
-    // bBtnOp.whenReleased(resetTurret);
+    bBtnOp.whenReleased(resetTurret);
     bBtnOp.whenReleased(manualTurret);
-    bBtnOp.whenReleased(manualHood);
-    bBtnOp.cancelWhenPressed(manualHood);
-    // bBtnOp.cancelWhenPressed(resetTurret);
-    bBtnOp.cancelWhenPressed(manualTurret);
-
+    // bBtnOp.whenReleased(manualHood);
+    // bBtnOp.cancelWhenPressed(manualHood);
+    bBtnOp.cancelWhenPressed(resetTurret);
+    // bBtnOp.cancelWhenPressed(manualTurret);
+    
 
     yBtnOp.whileActiveOnce(midHoodPID);
     yBtnOp.whileActiveOnce(turretPID);
     yBtnOp.whileActiveOnce(midShooterPID);
-    // yBtnOp.whenReleased(resetTurret);
-    yBtnOp.whenReleased(manualTurret);
-    yBtnOp.whenReleased(manualHood);
-    yBtnOp.cancelWhenPressed(manualTurret);
-    yBtnOp.cancelWhenPressed(manualHood);
-    // yBtnOp.cancelWhenPressed(resetTurret);
+    yBtnOp.whenReleased(resetTurret);
+    // yBtnOp.whenReleased(manualTurret);
+    // yBtnOp.whenReleased(manualHood);
+    // yBtnOp.cancelWhenPressed(manualTurret);
+    // yBtnOp.cancelWhenPressed(manualHood);
+    yBtnOp.cancelWhenPressed(resetTurret);
 
 
 
-    lbBtnOp.whenPressed(deployIntake);
-    ltBtnOp.whenPressed(resetIntake);
+    lbBtnOp.whileActiveOnce(deployIntake);
+    ltBtnOp.whileActiveOnce(resetIntake);
 
     upBtnOp.whileActiveOnce(variableFeed);
     upBtnOp.cancelWhenPressed(turretPID);
 
     // Driver Controls
-    aBtnDr.whenPressed(deployHang);
-    bBtnDr.whenPressed(retractHang);
+    aBtnDr.whileActiveOnce(deployHang);
+    bBtnDr.whileActiveOnce(retractHang);
     yBtnDr.whileActiveOnce(winch);
 
-    ltBtnDr.whenPressed(baseHighGearShift);
-    rtBtnDr.whenPressed(baseLowGearShift);
+    ltBtnDr.whileActiveOnce(baseHighGearShift);
+    rtBtnDr.whileActiveOnce(baseLowGearShift);
 
   }
 
@@ -184,7 +206,7 @@ public class RobotContainer {
   }
 
   public Command getAutoCommand(){
-    return null;
+    return chooser.getSelected();
   }
 
   public Command getDisabledCommand(){
@@ -194,7 +216,5 @@ public class RobotContainer {
   public Command getSmartDashboardPrints(){
     return smartDashboardPrints;
   }
-
-
 
 }

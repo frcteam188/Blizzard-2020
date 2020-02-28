@@ -29,16 +29,16 @@ public final class Constants {
     public static double kShooterI = 0;
     public static double kShooterD = 0.000050;
     public static double kShooterF = 0.00017857142;
-    public static double kShooterMaxOutput = 1;
-    public static double kShooterMinOutput = -1;
-    public static double shooterSetpoint = 1;
-    public static double kShooterIZone = 0;
 
-    public static double kTurnBaseP = 0;
+    public static double kTurnBaseP = 0.025;
     public static double kTurnBaseI = 0;
-    public static double kTurnBaseD = 0;
+    public static double kTurnBaseD = 0.0045;
 
-    public static double kBaseP = 0;
+    public static double kDriveTurnP = 0.025;
+    public static double kDriveTurnI = 0;
+    public static double kDriveTurnD = 0.003;
+
+    public static double kBaseP = 0.55;
     public static double kBaseI = 0;
-    public static double kBaseD = 0;
+    public static double kBaseD = 0.05;
 }

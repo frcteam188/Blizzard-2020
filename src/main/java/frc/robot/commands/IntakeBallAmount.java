@@ -7,29 +7,22 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-/**
- * Will run the intake and the feeder at the same time, and will intake the feeder if the sensor detects something
- * 
- * @author Shiv Patel, Edward Su, Zayeed Ghori
- */
-
-public class AutoIntake extends CommandBase {
+public class IntakeBallAmount extends CommandBase {
   /**
-   * Creates a new AutoIntake.
+   * Creates a new IntakeBallAmount.
    */
-  private final Intake intake;
-  private final Shooter shooter;
-
-  public AutoIntake(Intake intake, Shooter shooter) {
+  private int limit;
+  private Intake intake;
+  private int numBalls = 0;
+  private double sensorValue = 0;
+  public IntakeBallAmount(int l, Intake i) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
-    this.shooter = shooter;
-    addRequirements(intake);
+    this.limit = l;
+    this.intake = i;
   }
 
   // Called when the command is initially scheduled.
@@ -38,35 +31,33 @@ public class AutoIntake extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-
   @Override
   public void execute() {
-    // If sensor is detecting a ball, turn on the feeder and blink the LimeLight
     if(intake.getValueOfSensor() < 2.5){
       intake.feed(-0.3);
-      shooter.setLimelightLED(Shooter.LED_BLINK);
     }
     else{
       intake.feed(0);
-      shooter.setLimelightLED(Shooter.LED_ON);
+    }
+
+    if (intake.getValueOfSensor() < 2.5 && sensorValue > 2.5){
+      numBalls += 1;
     }
     
     intake.runShooterFeeder(0.75);
-    intake.intake(0.8);
+    intake.intake(0.7);
+
+    sensorValue = intake.getValueOfSensor();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.feed(0);
-    intake.runShooterFeeder(0);
-    intake.intake(0);
-    shooter.setLimelightLED(Shooter.LED_OFF);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return numBalls >= limit;
   }
 }
