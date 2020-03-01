@@ -7,47 +7,54 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotMath;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterGetToSpeed extends CommandBase {
+public class FarShooterPID extends CommandBase {
   /**
-   * Creates a new ShooterGetToSpeed.
+   * Creates a new MidShooterPID.
    */
+  public double pidOutput;
+  public PIDController pidController;
   private Shooter shooter;
-  private double shooterLimit;
-  private double maxRpm = 99999999;
-
-  public ShooterGetToSpeed(Shooter s) {
+  public FarShooterPID(Shooter s) {
     this.shooter = s;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  public ShooterGetToSpeed(Shooter s, double shooterMax) {
-    this.shooter = s;
-    this.maxRpm = shooterMax;
+  public double getF(){
+    return pidController.getSetpoint() * Constants.kShooterF;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterLimit = RobotMath.getVelFromDistance(shooter);
+    pidController = new PIDController(Constants.kShooterP, Constants.kShooterI, Constants.kShooterD);
+    pidController.setIntegratorRange(-1, 1);
+    // shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterLimit = RobotMath.getVelFromDistance(shooter);
+    pidOutput = pidController.calculate(shooter.getVelShooter(), RobotMath.getTrenchShooterRPMFromDistance(shooter));
+    shooter.shoot(pidOutput + getF());
+    // shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.shoot(0);
+    // shooter.setLimelightLED(Shooter.LED_OFF);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(shooter.getVelShooter() - shooterLimit) < 80 || shooter.getVelShooter() >= maxRpm;
+    return false;
   }
 }

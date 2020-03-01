@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-import frc.robot.commands.autoCommands.DriveStraight;
-import frc.robot.commands.autoCommands.TuneDriveStraight;
-import frc.robot.commands.autoCommands.TuneTurnBasePID;
+import frc.robot.commands.autoCommands.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -55,6 +53,7 @@ public class RobotContainer {
   JoystickButton ltBtnOp = new JoystickButton(opStick, 7);
   JoystickButton rtBtnOp = new JoystickButton(opStick, 8);
   POVButton upBtnOp = new POVButton(opStick, 0);
+  JoystickButton startBtn = new JoystickButton(opStick, 10);
   
 
   // Buttons Driver
@@ -80,25 +79,28 @@ public class RobotContainer {
   private final TeleopCommand teleopCommand = new TeleopCommand(base, intake, shooter, hang, opStick, drStick);
   private final DisabledCommand disabledCommand = new DisabledCommand(drStick, base, shooter);
   private final SmartDashboardPrints smartDashboardPrints = new SmartDashboardPrints(shooter, intake, hang, base);
-  private final AutoIntake autoIntake = new AutoIntake(intake, shooter);
-  private final MoveIntake moveIntake = new MoveIntake(intake, -0.4);
+  private final AutoIntake autoIntake = new AutoIntake(intake, shooter, base);
+  private final MoveIntake moveIntake = new MoveIntake(intake, -0.8);
   private final HoodPID hoodPID = new HoodPID(shooter, 0);
   private final HoodPID closeHood = new HoodPID(shooter, 38.832951);
   private final TurretPID turretPID = new TurretPID(shooter, turretSp);
   private final ManualTurret manualTurret = new ManualTurret(shooter, opStick);
-  private final ShootBall shootBall = new ShootBall(shooter, 0.75); //0.65
+  private final ShootBall shootBall = new ShootBall(shooter, 0.65); //0.65 // 0.75 is trench test speed
   private final ResetTurret resetTurret = new ResetTurret(shooter);
   private final ManualHood manualHood = new ManualHood(shooter, opStick);
   private final DeployIntake deployIntake = new DeployIntake(intake, true);
   private final DeployIntake resetIntake = new DeployIntake(intake, false);
   private final ShootFeed shootFeed = new ShootFeed(intake, -0.9);
-  private final ShootFeed closeFeed = new ShootFeed(intake, -0.3); // -0.6
+  private final ShootFeed closeFeed = new ShootFeed(intake, -0.6); // -0.3 is trench test speed
   private final ConditionalCommand variableFeed = new ConditionalCommand(closeFeed, shootFeed, aBtnOp::get);
   private final MidHoodPID midHoodPID = new MidHoodPID(shooter);
   private final MidShooterPID midShooterPID = new MidShooterPID(shooter);
+  private final FarHoodPID farHoodPID = new FarHoodPID(shooter);
+  private final FarShooterPID farShooterPID = new FarShooterPID(shooter);
+  private final TurnTurret180 turnTurret180 = new TurnTurret180(shooter);
   // private final SequentialCommandGroup shootWhenAtSpeed = new SequentialCommandGroup(new ShooterGetToSpeed(shooter), closeFeed);
 
-  private final DeployHang deployHang = new DeployHang(hang);
+  private final DeployHang deployHang = new DeployHang(hang, intake);
   private final RetractHang retractHang = new RetractHang(hang);
   private final Winch winch = new Winch(hang);
   private final BaseLowGearShift baseLowGearShift = new BaseLowGearShift(base);
@@ -106,6 +108,7 @@ public class RobotContainer {
 
   // constructor for auto commmand
   private final AutoTestCommand autoTestCommand = new AutoTestCommand(base, intake, shooter);
+  private final AutoNineBall autoNineBall = new AutoNineBall(base, intake, shooter);
   private final SendableChooser<Command> chooser = new SendableChooser<Command>();
   private final DriveStraight driveStraight = new DriveStraight(base, 0, 0, 0.65);
   private final TuneDriveStraight tuneDriveStraight = new TuneDriveStraight(base, 0, 0);
@@ -133,6 +136,7 @@ public class RobotContainer {
     chooser.setDefaultOption("Tune Turn ", turnTurnBasePID);
     chooser.addOption("Tune Drive Forward", tuneDriveStraight);
     chooser.addOption("Test Auto", autoTestCommand);
+    chooser.addOption("Nine Ball Auto", autoNineBall);
     SmartDashboard.putData("Auto Options", chooser);
 
   }
@@ -143,59 +147,70 @@ public class RobotContainer {
     rbBtnOp.whileActiveOnce(autoIntake);
 
     // Outtake
-    lbBtnOp.whileActiveOnce(moveIntake);
+    rtBtnOp.whileActiveOnce(moveIntake);
 
     // CLOSE 
-    // aBtnOp.whileActiveOnce(closeHood);
+    aBtnOp.whileActiveOnce(closeHood);
     aBtnOp.whileActiveOnce(shootBall);
-    // aBtnOp.whenReleased(resetTurret);
-    aBtnOp.whenReleased(manualTurret);
-    aBtnOp.whenReleased(manualHood);
+    aBtnOp.whenReleased(resetTurret);
+    // aBtnOp.whenReleased(manualTurret);
+    // aBtnOp.whenReleased(manualHood);
     // aBtnOp.cancelWhenPressed(manualHood);
     // aBtnOp.ca`ncelWhenPressed(manualTurret);
-    // aBtnOp.cancelWhenPressed(resetTurret);
-    // aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
+    aBtnOp.cancelWhenPressed(resetTurret);
+    aBtnOp.cancelWhenPressed(turnTurret180);
+    aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
 
 
 
     // can call like Btn.whenHeld().whenHeld();
-    // bBtnOp.whileActiveOnce(midHoodPID);
-    // bBtnOp.whileActiveOnce(turretPID);
-    // bBtnOp.whileActiveOnce(midShooterPID);
-    // bBtnOp.whenReleased(resetTurret);
+    bBtnOp.whileActiveOnce(midHoodPID);
+    bBtnOp.whileActiveOnce(turretPID);
+    bBtnOp.whileActiveOnce(midShooterPID);
+    bBtnOp.whenReleased(resetTurret);
     // bBtnOp.whenReleased(manualTurret);
     // bBtnOp.whenReleased(manualHood);
     // bBtnOp.cancelWhenPressed(manualHood);
-    // bBtnOp.cancelWhenPressed(resetTurret);
-    // // bBtnOp.cancelWhenPressed(manualTurret);
+    bBtnOp.cancelWhenPressed(resetTurret);
+    // bBtnOp.cancelWhenPressed(manualTurret);
+    bBtnOp.cancelWhenPressed(turnTurret180);
+
     
 
-    // // yBtnOp.whileActiveOnce(midHoodPID);
-    // // yBtnOp.whileActiveOnce(turretPID);
-    // // yBtnOp.whileActiveOnce(midShooterPID);
-    // // yBtnOp.whenReleased(resetTurret);
+    yBtnOp.whileActiveOnce(farHoodPID);
+    yBtnOp.whileActiveOnce(turretPID);
+    yBtnOp.whileActiveOnce(farShooterPID);
+    yBtnOp.whenReleased(resetTurret);
     // yBtnOp.whenReleased(manualTurret);
     // yBtnOp.whenReleased(manualHood);
     // yBtnOp.cancelWhenPressed(manualTurret);
     // yBtnOp.cancelWhenPressed(manualHood);
-    // yBtnOp.cancelWhenPressed(resetTurret);
+    yBtnOp.cancelWhenPressed(resetTurret);
+    yBtnOp.cancelWhenPressed(turnTurret180);
 
 
 
     lbBtnOp.whileActiveOnce(deployIntake);
     ltBtnOp.whileActiveOnce(resetIntake);
 
+    xBtnOp.whileActiveOnce(turnTurret180);
+    xBtnOp.cancelWhenPressed(resetTurret);
+
+    startBtn.whileActiveOnce(resetTurret);
+    startBtn.cancelWhenPressed(turnTurret180);
+
+
     upBtnOp.whileActiveOnce(variableFeed);
     // upBtnOp.whileActiveOnce(shootWhenAtSpeed);
-    // upBtnOp.cancelWhenPressed(turretPID);
+    upBtnOp.cancelWhenPressed(turretPID);
 
     // Driver Controls
-    aBtnDr.whileActiveOnce(deployHang);
+    aBtnDr.whenActive(deployHang);
     bBtnDr.whileActiveOnce(retractHang);
     yBtnDr.whileActiveOnce(winch);
 
-    ltBtnDr.whileActiveOnce(baseHighGearShift);
-    rtBtnDr.whileActiveOnce(baseLowGearShift);
+    ltBtnDr.whileActiveOnce(baseLowGearShift);
+    rtBtnDr.whileActiveOnce(baseHighGearShift);
 
   }
 

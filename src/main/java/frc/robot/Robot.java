@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     smartDashboardPrints = m_robotContainer.getSmartDashboardPrints();
     
-    smartDashboardPrints.schedule();
+    // smartDashboardPrints.schedule();
   }
 
   /**

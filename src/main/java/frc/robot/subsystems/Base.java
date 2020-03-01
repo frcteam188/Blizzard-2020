@@ -68,16 +68,16 @@ public class Base extends SubsystemBase {
    */
   public void drive(double y, double x){
     leftFront.set(y + x);
-    leftBack.set(y + x);
-    rightFront.set(-y + x);
-    rightBack.set(-y + x);
+    // leftBack.set(y + x);
+    // rightFront.set(-y + x);
+    // rightBack.set(-y + x);
   }
 
   /**
    * Method shift the gear in
    */
   public void gearShiftOn(){
-    baseS.set(kForward);
+    baseS.set(kReverse);
   }
   
   /**
@@ -85,7 +85,7 @@ public class Base extends SubsystemBase {
    * 
    */
   public void gearShiftOff(){
-    baseS.set(kReverse);
+    baseS.set(kForward);
   }
 
   /**
@@ -167,6 +167,7 @@ public class Base extends SubsystemBase {
    */
   public void setLEDStripMode(double mode){
     ledStrip.set(mode);
+    System.out.println(mode);
   }
 
   /**

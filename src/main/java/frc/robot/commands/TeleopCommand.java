@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 // import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.Constants;
 import frc.robot.RobotMath;
-// import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Timer;
 // import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -53,7 +53,7 @@ public class TeleopCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // base.setToCoast();
+    base.setToCoast();
     SmartDashboard.putNumber("Turret P: ", Constants.kTurretP);
     SmartDashboard.putNumber("Turret I: ", Constants.kTurretI);
     SmartDashboard.putNumber("Turret D: ", Constants.kTurretD);
@@ -64,13 +64,12 @@ public class TeleopCommand extends CommandBase {
     SmartDashboard.putNumber("Shooter D: ", Constants.kShooterD);
     SmartDashboard.putNumber("Shooter F: ", Constants.kShooterF);
     
-    
 
-    // Start in low gear
-    base.gearShiftOff();
+    // Start with strip red
+    base.setLEDStripMode(0.93);
 
-    // Start with strip off
-    base.setLEDStripMode(-0.99);;
+    // Turns the limelight on in teleop mode
+    shooter.setLimelightLED(shooter.LED_ON);
 
   }
 
@@ -78,22 +77,22 @@ public class TeleopCommand extends CommandBase {
   @Override
   public void execute() {
 
-    SmartDashboard.putNumber("Left Shooter Pwr", shooter.getShooterLeft().getAppliedOutput());
+    // SmartDashboard.putNumber("Left Shooter Pwr", shooter.getShooterLeft().getAppliedOutput());
 
-    SmartDashboard.putNumber("Distance: " , RobotMath.getDistanceFromTarget(shooter));
+    // SmartDashboard.putNumber("Distance: " , RobotMath.getDistanceFromTarget(shooter));
 
     
-    SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
-    SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
+    // SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
+    // SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
 
-    // Uncomment after not using tuneShooterPID
+    // // Uncomment after not using tuneShooterPID
 
 
-    // HOOD
-    SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
+    // // HOOD
+    // SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
 
-    // CAN SHOOT?
-    SmartDashboard.putBoolean("Can Shoot", canShoot);
+    // // CAN SHOOT?
+    // SmartDashboard.putBoolean("Can Shoot", canShoot);
 
 
     // CONTROLS
@@ -107,14 +106,15 @@ public class TeleopCommand extends CommandBase {
       canShoot = false;
     }
     
-    // Makes the strips red if timer is under 20 secs
-    // if(Timer.getMatchTime() <= 20){
-    //   // Sets to red
-    //   base.setLEDStripMode(0.61);
-    // }
-    // // if(Timer.getMatchTime() < 20 && Timer.getMatchTime() > 10){
-    // //   base.setLEDStripMode();
-    // // }
+    // Makes the strips white if timer is under 20 secs
+    if(Timer.getMatchTime() <= 20 && Timer.getMatchTime() > 10){
+      // Sets to blinking Colour 2 aka yellow
+      base.setLEDStripMode(0.35);
+    }
+    else if(Timer.getMatchTime() <= 10 && Timer.getMatchTime() >= 0){ // yellow flashing
+      // sets to red-orange aka red
+      base.setLEDStripMode(0.61);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -123,7 +123,7 @@ public class TeleopCommand extends CommandBase {
     // stops the base by setting the inputs to 0
     // base.setToBrake();
     base.drive(0, 0);
-    base.getLEDStrip().disable();
+    base.setLEDStripMode(0.93);
     intake.intake(0);
     intake.feed(0);
     shooter.moveTurret(0);

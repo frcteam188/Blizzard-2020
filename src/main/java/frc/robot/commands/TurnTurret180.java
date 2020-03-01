@@ -8,46 +8,47 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotMath;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterGetToSpeed extends CommandBase {
-  /**
-   * Creates a new ShooterGetToSpeed.
-   */
+public class TurnTurret180 extends CommandBase {
   private Shooter shooter;
-  private double shooterLimit;
-  private double maxRpm = 99999999;
-
-  public ShooterGetToSpeed(Shooter s) {
+  private int count;
+  /**
+   * Creates a new TurnTurret180.
+   */
+  public TurnTurret180(Shooter s) {
+    // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = s;
-  }
-
-  public ShooterGetToSpeed(Shooter s, double shooterMax) {
-    this.shooter = s;
-    this.maxRpm = shooterMax;
+    count = 0;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterLimit = RobotMath.getVelFromDistance(shooter);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterLimit = RobotMath.getVelFromDistance(shooter);
+    if(shooter.getTurretAngle() < -180 - 5)
+      shooter.moveTurret(0.5);
+    else if(shooter.getTurretAngle()> -180 + 5)
+      shooter.moveTurret(-0.5);
+    else{
+      shooter.moveTurret(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.moveTurret(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(shooter.getVelShooter() - shooterLimit) < 80 || shooter.getVelShooter() >= maxRpm;
+    return false;
   }
 }

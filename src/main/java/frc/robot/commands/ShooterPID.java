@@ -35,11 +35,12 @@ public class ShooterPID extends CommandBase {
   }
   @Override
   public void initialize() {
-    pidController = new PIDController(SmartDashboard.getNumber("Shooter P: ", Constants.kShooterP),
-                    SmartDashboard.getNumber("Shooter I: ", Constants.kShooterI), 
-                    SmartDashboard.getNumber("Shooter D: ", Constants.kShooterD));
+    // pidController = new PIDController(SmartDashboard.getNumber("Shooter P: ", Constants.kShooterP),
+    //                 SmartDashboard.getNumber("Shooter I: ", Constants.kShooterI), 
+    //                 SmartDashboard.getNumber("Shooter D: ", Constants.kShooterD));
+    pidController = new PIDController(Constants.kShooterP,Constants.kShooterI, Constants.kShooterD);
     pidController.setIntegratorRange(-1, 1);
-    
+    // shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,12 +49,17 @@ public class ShooterPID extends CommandBase {
     pidOutput = pidController.calculate(shooter.getVelShooter(), setpoint);
 
     shooter.shoot(pidOutput + getF());
+
+    // shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     shooter.shoot(0);
+    // shooter.setLimelightLED(Shooter.LED_OFF);
+
+    // Colours always white, blinking yellow, solid red
   }
 
   // Returns true when the command should end.

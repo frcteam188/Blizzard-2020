@@ -37,7 +37,7 @@ public class TurretPID extends PIDCommand {
           // moves the turret based off the output of this method
           s.moveTurret(-output);
           // outputs the power at which the turret is moving on the SmartDashboard
-          SmartDashboard.putNumber("Turret Power", -output);
+          // SmartDashboard.putNumber("Turret Power", -output);
         });
     getController().setTolerance(0.2);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -53,13 +53,11 @@ public class TurretPID extends PIDCommand {
   public void initialize() {
     // TODO Auto-generated method stub
     super.initialize();
-    shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   public void end(boolean interrupted) {
     // TODO Auto-generated method stub
     super.end(interrupted);
-
   }
   // Returns true when the command should end.
   @Override

@@ -44,6 +44,7 @@ public class DisabledCommand extends CommandBase {
   public void initialize() {
     // base.setToBrake();
     shooter.setLimelightLED(Shooter.LED_ON); // change to off
+    base.getLEDStrip().disable();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,6 +56,7 @@ public class DisabledCommand extends CommandBase {
       base.resetBaseEnc();
       base.resetNavxAngle();
     }
+    shooter.setLimelightLED(Shooter.LED_ON);
 
   }
 
@@ -62,6 +64,7 @@ public class DisabledCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     // base.setToCoast();
+    // base.getLEDStrip().disable();
   }
 
   // Returns true when the command should end.

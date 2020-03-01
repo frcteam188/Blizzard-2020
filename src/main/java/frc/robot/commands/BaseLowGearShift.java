@@ -30,6 +30,7 @@ public class BaseLowGearShift extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    base.gearShiftOff();
   }
 
   // Called once the command ends or is interrupted.
@@ -40,6 +41,6 @@ public class BaseLowGearShift extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -11,33 +11,35 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMath;
 import frc.robot.subsystems.Shooter;
 
-public class ShooterGetToSpeed extends CommandBase {
-  /**
-   * Creates a new ShooterGetToSpeed.
-   */
+public class HoodGetToPos extends CommandBase {
   private Shooter shooter;
-  private double shooterLimit;
-  private double maxRpm = 99999999;
-
-  public ShooterGetToSpeed(Shooter s) {
+  private double hoodDeadZone;
+  private double hoodSp;
+  private int count;
+  /**
+   * Creates a new HoodGetToPos.
+   */
+  public HoodGetToPos(Shooter s) {
     this.shooter = s;
-  }
-
-  public ShooterGetToSpeed(Shooter s, double shooterMax) {
-    this.shooter = s;
-    this.maxRpm = shooterMax;
+    hoodDeadZone = 5;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterLimit = RobotMath.getVelFromDistance(shooter);
+    hoodSp = RobotMath.getHoodPosFromDistance(shooter);
+    count = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterLimit = RobotMath.getVelFromDistance(shooter);
+    hoodSp = RobotMath.getHoodPosFromDistance(shooter);
+
+    if(Math.abs(shooter.getHoodPos() - hoodSp) < hoodDeadZone){
+      count += 1;
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -48,6 +50,6 @@ public class ShooterGetToSpeed extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(shooter.getVelShooter() - shooterLimit) < 80 || shooter.getVelShooter() >= maxRpm;
+    return count > 5;
   }
 }

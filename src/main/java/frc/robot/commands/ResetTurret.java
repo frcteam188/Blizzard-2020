@@ -13,11 +13,13 @@ import frc.robot.subsystems.Shooter;
 public class ResetTurret extends CommandBase {
   private Shooter shooter;
   private int turretDeadZone = 5;
+  private int count;
   /**
    * Creates a new ResetTurret.
    */
   public ResetTurret(Shooter s) {
     this.shooter = s;
+    count = 0;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -36,6 +38,7 @@ public class ResetTurret extends CommandBase {
       shooter.moveTurret(0.5);
     } else {
       shooter.moveTurret(0);
+      count += 1;
     }
   }
 

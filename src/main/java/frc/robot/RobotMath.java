@@ -109,4 +109,19 @@ public class RobotMath {
 
     return angleOffsetFromRobotAngle;
   }
+  public static double getTrenchHoodAngleFromDistance(Shooter shooter){
+    d = getDistanceFromTarget(shooter);
+
+    double hoodPos = 78.9;
+
+    return hoodPos;
+  }
+
+  public static double getTrenchShooterRPMFromDistance(Shooter shooter){
+    d = getDistanceFromTarget(shooter);
+
+    double shooterRPM = 4450;
+
+    return shooterRPM;
+  }
 }
