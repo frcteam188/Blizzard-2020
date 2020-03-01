@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 // import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.Constants;
 import frc.robot.RobotMath;
-// import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Timer;
 // import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -69,8 +69,8 @@ public class TeleopCommand extends CommandBase {
     // Start in low gear
     base.gearShiftOff();
 
-    // Start with strip off
-    base.setLEDStripMode(-0.99);;
+    // Start with strip red
+    base.setLEDStripMode(0.61);
 
   }
 
@@ -107,14 +107,15 @@ public class TeleopCommand extends CommandBase {
       canShoot = false;
     }
     
-    // Makes the strips red if timer is under 20 secs
-    // if(Timer.getMatchTime() <= 20){
-    //   // Sets to red
-    //   base.setLEDStripMode(0.61);
-    // }
-    // // if(Timer.getMatchTime() < 20 && Timer.getMatchTime() > 10){
-    // //   base.setLEDStripMode();
-    // // }
+    // Makes the strips white if timer is under 20 secs
+    if(Timer.getMatchTime() <= 20 && Timer.getMatchTime() > 10){
+      // Sets to blinking Colour 2 aka white
+      base.setLEDStripMode(0.35);
+    }
+    else if(Timer.getMatchTime() <= 10 && Timer.getMatchTime() >= 0){ // yellow flashing
+      // sets to red-orange aka white
+      base.setLEDStripMode(0.93);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -123,7 +124,7 @@ public class TeleopCommand extends CommandBase {
     // stops the base by setting the inputs to 0
     // base.setToBrake();
     base.drive(0, 0);
-    base.getLEDStrip().disable();
+    base.setLEDStripMode(0.61);
     intake.intake(0);
     intake.feed(0);
     shooter.moveTurret(0);

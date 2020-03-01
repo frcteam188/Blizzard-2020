@@ -34,6 +34,7 @@ public class MidShooterPID extends CommandBase {
   public void initialize() {
     pidController = new PIDController(Constants.kShooterP, Constants.kShooterI, Constants.kShooterD);
     pidController.setIntegratorRange(-1, 1);
+    shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,6 +48,7 @@ public class MidShooterPID extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooter.shoot(0);
+    shooter.setLimelightLED(Shooter.LED_OFF);
   }
 
   // Returns true when the command should end.

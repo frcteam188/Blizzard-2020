@@ -53,13 +53,11 @@ public class TurretPID extends PIDCommand {
   public void initialize() {
     // TODO Auto-generated method stub
     super.initialize();
-    shooter.setLimelightLED(Shooter.LED_ON);
   }
 
   public void end(boolean interrupted) {
     // TODO Auto-generated method stub
     super.end(interrupted);
-
   }
   // Returns true when the command should end.
   @Override
