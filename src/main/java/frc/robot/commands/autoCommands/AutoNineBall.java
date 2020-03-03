@@ -26,25 +26,29 @@ public class AutoNineBall extends SequentialCommandGroup {
   public AutoNineBall(Base b, Intake i, Shooter s) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new ParallelCommandGroup(
+    super(
+    new ParallelCommandGroup(
       new BaseHighGearShift(b),
-      new DeployIntake(i, false),
-      new TurnTurret(s, -70)),
-    new TimeKillCommand(
-      new AutoIntake(i, s, b),
-      3
+      new TurnTurret(s, -70)
     ),
-    new ShootingSequence(s, i),
+    new DeployIntake(i, false),
+    new ShootingSequence(s, i, 5),
     new ParallelRaceGroup(
       new DriveStraight(b, -6, 0, 0.65), 
       new ResetTurret(s)), 
     new TimeKillCommand(
-      new TurnBasePID(b, -90), 1.2),
+      new TurnBasePID(b, -90), 1.2
+    ),
     new ParallelRaceGroup(new AutoIntake(i, s, b),
                         new SequentialCommandGroup(
-                          new DriveStraight(b, 14, -90, 0.45), 
-                          new TurnBasePID(b, -75))),
-    new DriveStraight(b, -14, -75, 0.65),
+                          new DriveStraight(b, 14, -90, 0.45),
+                          new DriveStraight(b, -15.5, -102, 0.65))),
+    // TEST
+    // new ParallelRaceGroup(new AutoIntake(i, s, b),
+    //                       new SequentialCommandGroup(
+    //                         new DriveStraight(b, 14, 0, 0.45),
+    //                         new DriveStraight(b, -14, -15, 0.65)))
+    // TEST
     new ShootingSequence(s, i),
     new ResetTurret(s)
     );

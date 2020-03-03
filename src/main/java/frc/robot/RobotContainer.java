@@ -53,6 +53,8 @@ public class RobotContainer {
   JoystickButton ltBtnOp = new JoystickButton(opStick, 7);
   JoystickButton rtBtnOp = new JoystickButton(opStick, 8);
   POVButton upBtnOp = new POVButton(opStick, 0);
+  POVButton downBtnOp = new POVButton(opStick, 180);
+  POVButton leftBtnOp = new POVButton(opStick, 270);
   JoystickButton startBtn = new JoystickButton(opStick, 10);
   
 
@@ -92,7 +94,14 @@ public class RobotContainer {
   private final DeployIntake resetIntake = new DeployIntake(intake, false);
   private final ShootFeed shootFeed = new ShootFeed(intake, -0.9);
   private final ShootFeed closeFeed = new ShootFeed(intake, -0.6); // -0.3 is trench test speed
+  private final SequentialCommandGroup shootFeedLimited = 
+                                                    new SequentialCommandGroup(
+                                                      new ShooterGetToSpeed(shooter),
+                                                      new ShootFeed(intake, -0.9)
+                                                    );
+  private final OutFeed outFeed = new OutFeed(intake, 0.6);
   private final ConditionalCommand variableFeed = new ConditionalCommand(closeFeed, shootFeed, aBtnOp::get);
+  private final ConditionalCommand variableFeedLimited = new ConditionalCommand(new ShootFeed(intake, -0.6), shootFeedLimited, aBtnOp::get);
   private final MidHoodPID midHoodPID = new MidHoodPID(shooter);
   private final MidShooterPID midShooterPID = new MidShooterPID(shooter);
   private final FarHoodPID farHoodPID = new FarHoodPID(shooter);
@@ -200,9 +209,21 @@ public class RobotContainer {
     startBtn.cancelWhenPressed(turnTurret180);
 
 
-    upBtnOp.whileActiveOnce(variableFeed);
+    leftBtnOp.whileActiveOnce(variableFeed);
+    leftBtnOp.cancelWhenPressed(turretPID);
+    leftBtnOp.cancelWhenPressed(variableFeedLimited);
+    leftBtnOp.cancelWhenPressed(outFeed);
     // upBtnOp.whileActiveOnce(shootWhenAtSpeed);
+    upBtnOp.whileActiveOnce(variableFeedLimited);
     upBtnOp.cancelWhenPressed(turretPID);
+    upBtnOp.cancelWhenPressed(variableFeed);
+    upBtnOp.cancelWhenPressed(outFeed);
+
+    downBtnOp.whileActiveOnce(outFeed);
+    downBtnOp.cancelWhenPressed(turretPID);
+    downBtnOp.cancelWhenPressed(variableFeed);
+    downBtnOp.cancelWhenPressed(variableFeedLimited);
+    
 
     // Driver Controls
     aBtnDr.whenActive(deployHang);

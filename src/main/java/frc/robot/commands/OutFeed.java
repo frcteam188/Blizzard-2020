@@ -16,27 +16,18 @@ import frc.robot.subsystems.Intake;
  * 
  * @author Zayeed Ghori, Edward Su, Shiv Patel
  */
-public class ShootFeed extends CommandBase {
+public class OutFeed extends CommandBase {
   public double feederSpeed = -0.6;
   public double shooterLimit; 
-  public double intakeSpeed = 0.3;
   /**
    * Creates a new Shoot.
    */
   public double speed;
   private final Intake intake;
-  public ShootFeed(Intake i, double speed) {
+  public OutFeed(Intake i, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = i;
     this.speed = speed;
-    addRequirements(i);    
-  }
-
-  public ShootFeed(Intake i, double speed, double intakeSpeed) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = i;
-    this.speed = speed;
-    this.intakeSpeed = intakeSpeed;
     addRequirements(i);    
   }
 
@@ -49,9 +40,11 @@ public class ShootFeed extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // if(shooter.getVelShooter() < shooterLimit - 80){
     intake.runShooterFeeder(speed);
-    intake.intake(intakeSpeed);
+    intake.intake(-0.80);
     intake.feed(speed);
+    // }
   }
 
   // Called once the command ends or is interrupted.

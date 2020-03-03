@@ -40,16 +40,17 @@ public class AutoTestCommand extends SequentialCommandGroup {
             new TurnBasePID(b, -90), 1.2),
           new ParallelRaceGroup(new AutoIntake(i, s, b), 
             new SequentialCommandGroup(new DriveStraight(b, 14, -90, 0.45),
-                                      new DriveStraight(b, -4.5, -90, 0.65))),
-          new TimeKillCommand(
-            new TurnBasePID(b, 0), 1.2),
-          new ParallelRaceGroup(
-            new AutoIntake(i, s, b),
-            new DriveStraight(b, 5, 0, 0.65)),
-          // new DriveStraight(b, -1.5, -25, 0.65),
-          new TimeKillCommand(
-            new TurnBasePID(b, -90), 1.2),
-          new DriveStraight(b, -8, -90, 0.65),
+                                      // new DriveStraight(b, -4.5, -90, 0.65))),
+                                      new DriveStraight(b, -16, -102, 0.65))),
+          // new TimeKillCommand(
+          //   new TurnBasePID(b, 0), 1.2),
+          // new ParallelRaceGroup(
+          //   new AutoIntake(i, s, b),
+          //   new DriveStraight(b, 4.5, 0, 0.65)),
+          // // new DriveStraight(b, -1.5, -25, 0.65),
+          // new TimeKillCommand(
+          //   new TurnBasePID(b, -90), 1.2),
+          // new DriveStraight(b, -8, -90, 0.65),
           new ShootingSequence(s, i),
           new ResetTurret(s)
          );

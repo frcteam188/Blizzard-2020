@@ -34,22 +34,22 @@ public class ShootingSequence extends ParallelRaceGroup {
         new SequentialCommandGroup(
             new ShooterGetToSpeed(s),
             new ParallelRaceGroup(
-                new ShootFeed(i,-0.9),
+                new ShootFeed(i, -0.9),
                 new WaitCommand(1)))
       
     );
   }
-  public ShootingSequence(Shooter s, Intake i, double shooterMax) {
+  public ShootingSequence(Shooter s, Intake i, double timeSecs) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(new MidHoodPID(s),
         new MidShooterPID(s),
         new TurretPID(s, -2),
         new SequentialCommandGroup(
-            new ShooterGetToSpeed(s, shooterMax),
+            new ShooterGetToSpeed(s),
             new ParallelRaceGroup(
-                new ShootFeed(i,-0.9),
-                new WaitCommand(1)))
+                new ShootFeed(i, -0.9, 0.7),
+                new WaitCommand(timeSecs)))
       
     );
   }

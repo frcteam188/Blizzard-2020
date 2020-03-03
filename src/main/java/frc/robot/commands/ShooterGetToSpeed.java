@@ -48,6 +48,7 @@ public class ShooterGetToSpeed extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(shooter.getVelShooter() - shooterLimit) < 80 || shooter.getVelShooter() >= maxRpm;
+    return Math.abs(shooter.getVelShooter() - shooterLimit) < 80 || 
+    Math.abs(shooter.getVelShooter() - maxRpm) <= 100;
   }
 }
