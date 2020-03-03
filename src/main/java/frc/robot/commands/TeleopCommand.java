@@ -79,17 +79,18 @@ public class TeleopCommand extends CommandBase {
 
     // SmartDashboard.putNumber("Left Shooter Pwr", shooter.getShooterLeft().getAppliedOutput());
 
-    // SmartDashboard.putNumber("Distance: " , RobotMath.getDistanceFromTarget(shooter));
+    SmartDashboard.putNumber("Distance: " , RobotMath.getDistanceFromTarget(shooter));
 
     
-    // SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
+    SmartDashboard.putNumber("Shooter RPM:", shooter.getVelShooter());
+    System.out.println("Distance: " + RobotMath.getDistanceFromTarget(shooter));
     // SmartDashboard.putNumber("Shooter RPM Graph", shooter.getVelShooter());
 
     // // Uncomment after not using tuneShooterPID
 
 
     // // HOOD
-    // SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
+    SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
 
     // // CAN SHOOT?
     // SmartDashboard.putBoolean("Can Shoot", canShoot);

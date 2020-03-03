@@ -159,41 +159,41 @@ public class RobotContainer {
     rtBtnOp.whileActiveOnce(moveIntake);
 
     // CLOSE 
-    aBtnOp.whileActiveOnce(closeHood);
-    aBtnOp.whileActiveOnce(shootBall);
-    aBtnOp.whenReleased(resetTurret);
-    // aBtnOp.whenReleased(manualTurret);
-    // aBtnOp.whenReleased(manualHood);
-    // aBtnOp.cancelWhenPressed(manualHood);
-    // aBtnOp.ca`ncelWhenPressed(manualTurret);
-    aBtnOp.cancelWhenPressed(resetTurret);
-    aBtnOp.cancelWhenPressed(turnTurret180);
-    aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
+    // aBtnOp.whileActiveOnce(closeHood);
+    // aBtnOp.whileActiveOnce(shootBall);
+    // aBtnOp.whenReleased(resetTurret);
+    // // aBtnOp.whenReleased(manualTurret);
+    // // aBtnOp.whenReleased(manualHood);
+    // // aBtnOp.cancelWhenPressed(manualHood);
+    // // aBtnOp.ca`ncelWhenPressed(manualTurret);
+    // aBtnOp.cancelWhenPressed(resetTurret);
+    // aBtnOp.cancelWhenPressed(turnTurret180);
+    // aBtnOp.whileActiveOnce(new ShooterPID(shooter, closeRPM));
 
 
 
-    // can call like Btn.whenHeld().whenHeld();
-    bBtnOp.whileActiveOnce(midHoodPID);
-    bBtnOp.whileActiveOnce(turretPID);
-    bBtnOp.whileActiveOnce(midShooterPID);
-    bBtnOp.whenReleased(resetTurret);
+    // // can call like Btn.whenHeld().whenHeld();
+    // bBtnOp.whileActiveOnce(midHoodPID);
+    // bBtnOp.whileActiveOnce(turretPID);
+    // bBtnOp.whileActiveOnce(midShooterPID);
+    // bBtnOp.whenReleased(resetTurret);
     // bBtnOp.whenReleased(manualTurret);
     // bBtnOp.whenReleased(manualHood);
     // bBtnOp.cancelWhenPressed(manualHood);
-    bBtnOp.cancelWhenPressed(resetTurret);
-    // bBtnOp.cancelWhenPressed(manualTurret);
-    bBtnOp.cancelWhenPressed(turnTurret180);
+    // bBtnOp.cancelWhenPressed(resetTurret);
+    // // bBtnOp.cancelWhenPressed(manualTurret);
+    // bBtnOp.cancelWhenPressed(turnTurret180);
 
     
 
-    yBtnOp.whileActiveOnce(farHoodPID);
-    yBtnOp.whileActiveOnce(turretPID);
+    // yBtnOp.whileActiveOnce(farHoodPID);
+    // yBtnOp.whileActiveOnce(turretPID);
     yBtnOp.whileActiveOnce(farShooterPID);
-    yBtnOp.whenReleased(resetTurret);
-    // yBtnOp.whenReleased(manualTurret);
-    // yBtnOp.whenReleased(manualHood);
-    // yBtnOp.cancelWhenPressed(manualTurret);
-    // yBtnOp.cancelWhenPressed(manualHood);
+    // yBtnOp.whenReleased(resetTurret);
+    yBtnOp.whenReleased(manualTurret);
+    yBtnOp.whenReleased(manualHood);
+    yBtnOp.cancelWhenPressed(manualTurret);
+    yBtnOp.cancelWhenPressed(manualHood);
     yBtnOp.cancelWhenPressed(resetTurret);
     yBtnOp.cancelWhenPressed(turnTurret180);
 
@@ -233,6 +233,7 @@ public class RobotContainer {
     ltBtnDr.whileActiveOnce(baseLowGearShift);
     rtBtnDr.whileActiveOnce(baseHighGearShift);
 
+    rbBtnDr.whileActiveContinuous(new StandStill(base, 0.5));
   }
 
   /**
