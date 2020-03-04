@@ -16,23 +16,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class StandStill extends CommandBase {
   private Base base;
   private double angleSetpoint;
-  private double distInches;
   private double distanceSetpoint;
   private double gyroOutput;
   private double driveOutput;
   private double drivePow;
-  private int count;
 
   public PIDController gyroPID = new PIDController(
-    Constants.kDriveTurnP,
-    Constants.kDriveTurnI,
-    Constants.kDriveTurnD
+    Constants.kStillGyroP,
+    Constants.kStillGyroI,
+    Constants.kStillGyroD
   );
 
   public PIDController drivePID = new PIDController(
-    Constants.kBaseP,
-    Constants.kBaseI,
-    Constants.kBaseD
+    Constants.kStillBaseP,
+    Constants.kStillBaseI,
+    Constants.kStillBaseD
   );
 
   /**
@@ -40,15 +38,15 @@ public class StandStill extends CommandBase {
    */
   public StandStill(Base b, double dPow) {
     this.base = b;
-    this.angleSetpoint = base.getBaseAngle();
-    this.distInches = 0;
     this.drivePow = dPow;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.distanceSetpoint = distInches + base.getFrontLeftEnc().getPosition();
+    angleSetpoint = base.getBaseAngle();
+
+    distanceSetpoint = base.getFrontLeftEnc().getPosition();
 
     count = 0;
 
@@ -74,11 +72,6 @@ public class StandStill extends CommandBase {
 
     // output = gyroOutput + driveOutput;
     base.drive(driveOutput, gyroOutput);
-
-    if(Math.abs(base.getFrontLeftEnc().getPosition() - distanceSetpoint) < 0.2)
-      count++;
-    else
-      count = 0;
   }
 
   // Called once the command ends or is interrupted.
@@ -90,6 +83,6 @@ public class StandStill extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return count > 3;
+    return false;
   }
 }

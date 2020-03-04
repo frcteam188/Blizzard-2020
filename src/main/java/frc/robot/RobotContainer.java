@@ -233,7 +233,7 @@ public class RobotContainer {
     ltBtnDr.whileActiveOnce(baseLowGearShift);
     rtBtnDr.whileActiveOnce(baseHighGearShift);
 
-    rbBtnDr.whileActiveContinuous(new StandStill(base, 0.5));
+    rbBtnDr.whileActiveOnce(new StandStill(base, 0.5));
   }
 
   /**

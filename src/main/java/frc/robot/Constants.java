@@ -41,4 +41,13 @@ public final class Constants {
     public static double kBaseP = 0.55;
     public static double kBaseI = 0;
     public static double kBaseD = 0.05;
+
+    // To be used with StandStill Command
+    public static double kStillBaseP = 0;
+    public static double kStillBaseI = 0;
+    public static double kStillBaseD = 0;
+
+    public static double kStillGyroP = 0;
+    public static double kStillGyroI = 0;
+    public static double kStillGyroD = 0;
 }
