@@ -13,7 +13,7 @@ import frc.robot.subsystems.Base;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class StandStill extends CommandBase {
+public class TuneStandStill extends CommandBase {
   private Base base;
   private double angleSetpoint;
   private double distanceSetpoint;
@@ -21,13 +21,13 @@ public class StandStill extends CommandBase {
   private double driveOutput;
   private double drivePow;
 
-  public PIDController gyroPID = new PIDController(
+  public PIDController stillGyroPID = new PIDController(
     Constants.kStillGyroP,
     Constants.kStillGyroI,
     Constants.kStillGyroD
   );
 
-  public PIDController drivePID = new PIDController(
+  public PIDController stillDrivePID = new PIDController(
     Constants.kStillBaseP,
     Constants.kStillBaseI,
     Constants.kStillBaseD
@@ -36,7 +36,7 @@ public class StandStill extends CommandBase {
   /**
    * Creates a new DriveStraight. *UNFINISHED*
    */
-  public StandStill(Base b, double dPow) {
+  public TuneStandStill(Base b, double dPow) {
     this.base = b;
     this.drivePow = dPow;
   }
@@ -44,25 +44,45 @@ public class StandStill extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    //sets setpoints to equal themselves so the bot can stop.
     angleSetpoint = base.getBaseAngle();
 
     distanceSetpoint = base.getFrontLeftEnc().getPosition();
 
-    // count = 0;
-
-    // angle setpoint is equal to current base angle
-    // angleSetpoint = base.getBaseAngle();
-    
     // Reporting
+    
+    SmartDashboard.putNumber("Stand Still Base P", Constants.kStillBaseP);
+    SmartDashboard.putNumber("Stand Still Base I", Constants.kStillBaseI);
+    SmartDashboard.putNumber("Stand Still Base D", Constants.kStillBaseD);
+
+    SmartDashboard.putNumber("Stand Still Gyro P", Constants.kStillGyroP);
+    SmartDashboard.putNumber("Stand Still Gyro I", Constants.kStillGyroI);
+    SmartDashboard.putNumber("Stand Still Gyro D", Constants.kStillGyroD);
+    
+    SmartDashboard.putNumber("Still Dist Setpoint", distanceSetpoint);
+    SmartDashboard.putNumber("Still Angle Setpoint", angleSetpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // Makes the PID tuneable
+    
+    stillDrivePID.setPID(
+      SmartDashboard.getNumber("Stand Still Base P", Constants.kStillBaseP),
+      SmartDashboard.getNumber("Stand Still Base I", Constants.kStillBaseI),
+      SmartDashboard.getNumber("Stand Still Base D", Constants.kStillBaseD)
+    );
 
-    gyroOutput = gyroPID.calculate(base.getBaseAngle(), angleSetpoint);
-    driveOutput = drivePID.calculate(base.getFrontLeftEnc().getPosition(), distanceSetpoint);
+    stillGyroPID.setPID(
+      SmartDashboard.getNumber("Stand Still Gyro P", Constants.kStillGyroP),
+      SmartDashboard.getNumber("Stand Still Gyro I", Constants.kStillGyroI),
+      SmartDashboard.getNumber("Stand Still Gyro D", Constants.kStillGyroD)
+    );
+
+    gyroOutput = stillGyroPID.calculate(base.getBaseAngle(), angleSetpoint);
+    driveOutput = stillDrivePID.calculate(base.getFrontLeftEnc().getPosition(), distanceSetpoint);
 
 
     if(driveOutput > 0) driveOutput = Math.min(driveOutput, drivePow);
@@ -70,7 +90,6 @@ public class StandStill extends CommandBase {
 
     if(gyroOutput > 0) gyroOutput = Math.min(gyroOutput, 0.35);
     else gyroOutput = Math.max(gyroOutput, -0.35);
-    System.out.println("Drive out: " + driveOutput);
 
     // output = gyroOutput + driveOutput;
     base.drive(driveOutput, gyroOutput);
