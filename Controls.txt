@@ -1,14 +1,26 @@
 Driver:
-rb - Intake In
-rt - deploy intake (piston)
-lt - retracting intake
-lb - base gear shift
+-Press-
+rb - base gear shift off
+lb - base gear shift on
+a - deploy hang
+b - retract hang
+x - winch
+
 joysticks for arcade drive
 
 Operator:
-x - 70% for flywheel
-a - 80% for flywheel
-b - 90% for flywheel
-lt - runs hopper feeder, shooter feeder
-POV 90/180 - turret right/left
-POV 0/270 - hood up/down
+-Hold-
+y - Close shot
+a - Medium Shot
+b - Far Shot
+x - Turn turret 180 degrees
+reset - Turn turret 0 degrees
+rt - Intake balls, feed with sensor
+rb - Reverse intake
+POV 0  - shoot feed when at speed
+POV 270 - force shoot feed
+POV 180 - Outake from feeder
+
+-Press-
+lt - Retract intake
+lb - Deploy intake
