@@ -85,7 +85,7 @@ public class RobotContainer {
   private final MoveIntake moveIntake = new MoveIntake(intake, -0.8);
   private final HoodPID hoodPID = new HoodPID(shooter, 0);
   private final HoodPID closeHood = new HoodPID(shooter, 38.832951);
-  private final TurretPID turretPID = new TurretPID(shooter, turretSp);
+  private final TurretPID turretPID = new TurretPID(shooter, -3.1);
   private final ManualTurret manualTurret = new ManualTurret(shooter, opStick);
   private final ShootBall shootBall = new ShootBall(shooter, 0.65); //0.65 // 0.75 is trench test speed
   private final ResetTurret resetTurret = new ResetTurret(shooter);
@@ -101,12 +101,13 @@ public class RobotContainer {
                                                     );
   private final OutFeed outFeed = new OutFeed(intake, 0.6);
   private final ConditionalCommand variableFeed = new ConditionalCommand(closeFeed, shootFeed, aBtnOp::get);
-  private final ConditionalCommand variableFeedLimited = new ConditionalCommand(new ShootFeed(intake, -0.6), shootFeedLimited, aBtnOp::get);
+  private final ConditionalCommand variableFeedLimited = new ConditionalCommand(new ShootFeed(intake, -0.6), shootFeedLimited, yBtnOp::get);
   private final MidHoodPID midHoodPID = new MidHoodPID(shooter);
   private final MidShooterPID midShooterPID = new MidShooterPID(shooter);
   private final FarHoodPID farHoodPID = new FarHoodPID(shooter);
   private final FarShooterPID farShooterPID = new FarShooterPID(shooter);
   private final TurnTurret180 turnTurret180 = new TurnTurret180(shooter);
+  private final FeedFromTrench feedFromTrench = new FeedFromTrench(intake, shooter);
   // private final SequentialCommandGroup shootWhenAtSpeed = new SequentialCommandGroup(new ShooterGetToSpeed(shooter), closeFeed);
 
   private final DeployHang deployHang = new DeployHang(hang, intake);
@@ -187,13 +188,13 @@ public class RobotContainer {
     
 
     // yBtnOp.whileActiveOnce(farHoodPID);
-    // yBtnOp.whileActiveOnce(turretPID);
+    yBtnOp.whileActiveOnce(turretPID);
     yBtnOp.whileActiveOnce(farShooterPID);
     // yBtnOp.whenReleased(resetTurret);
-    yBtnOp.whenReleased(manualTurret);
+    // yBtnOp.whenReleased(manualTurret);
     yBtnOp.whenReleased(manualHood);
-    yBtnOp.cancelWhenPressed(manualTurret);
-    yBtnOp.cancelWhenPressed(manualHood);
+    // yBtnOp.cancelWhenPressed(manualTurret);
+    // yBtnOp.cancelWhenPressed(manualHood);
     yBtnOp.cancelWhenPressed(resetTurret);
     yBtnOp.cancelWhenPressed(turnTurret180);
 
@@ -209,7 +210,8 @@ public class RobotContainer {
     startBtn.cancelWhenPressed(turnTurret180);
 
 
-    leftBtnOp.whileActiveOnce(variableFeed);
+    // leftBtnOp.whileActiveOnce(variableFeed);
+    leftBtnOp.whileActiveOnce(feedFromTrench);
     leftBtnOp.cancelWhenPressed(turretPID);
     leftBtnOp.cancelWhenPressed(variableFeedLimited);
     leftBtnOp.cancelWhenPressed(outFeed);

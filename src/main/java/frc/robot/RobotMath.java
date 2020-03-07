@@ -120,7 +120,7 @@ public class RobotMath {
   public static double getTrenchVelFromDistance(Shooter shooter){
     d = getDistanceFromTarget(shooter);
 
-    double shooterRPM = 4450;
+    double shooterRPM = 4025;
 
     return shooterRPM;
   }

@@ -26,7 +26,7 @@ public final class Constants {
     public static double kTurretD = 0.001100;
 
     public static double kShooterP = 0.000340; // EXPERIMENT WITH THIS
-    public static double kShooterI = 0;
+    public static double kShooterI = 0.000400;
     public static double kShooterD = 0.000050;
     public static double kShooterF = 0.00017857142;
 
@@ -43,11 +43,11 @@ public final class Constants {
     public static double kBaseD = 0.05;
 
     // To be used with StandStill Command
-    public static double kStillBaseP = 0.5;
+    public static double kStillBaseP = 0.55;
     public static double kStillBaseI = 0;
-    public static double kStillBaseD = 0;
+    public static double kStillBaseD = 0.05;
 
     public static double kStillGyroP = 0.025;
     public static double kStillGyroI = 0;
-    public static double kStillGyroD = 0;
+    public static double kStillGyroD = 0.003;
 }

@@ -62,6 +62,11 @@ public class TuneStandStill extends CommandBase {
     
     SmartDashboard.putNumber("Still Dist Setpoint", distanceSetpoint);
     SmartDashboard.putNumber("Still Angle Setpoint", angleSetpoint);
+
+    base.getRightBack().setOpenLoopRampRate(0.005);
+    base.getRightFront().setOpenLoopRampRate(0.005);
+    base.getLeftBack().setOpenLoopRampRate(0.005);
+    base.getLeftFront().setOpenLoopRampRate(0.005);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -88,17 +93,21 @@ public class TuneStandStill extends CommandBase {
     if(driveOutput > 0) driveOutput = Math.min(driveOutput, drivePow);
     else driveOutput = Math.max(driveOutput, -drivePow);
 
-    if(gyroOutput > 0) gyroOutput = Math.min(gyroOutput, 0.35);
-    else gyroOutput = Math.max(gyroOutput, -0.35);
+    if(gyroOutput > 0) gyroOutput = Math.min(gyroOutput, 0.5);
+    else gyroOutput = Math.max(gyroOutput, -0.5);
 
     // output = gyroOutput + driveOutput;
-    base.drive(driveOutput, gyroOutput);
+    base.drive(driveOutput, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     base.drive(0, 0);
+    base.getRightBack().setOpenLoopRampRate(0);
+    base.getRightFront().setOpenLoopRampRate(0);
+    base.getLeftBack().setOpenLoopRampRate(0);
+    base.getLeftFront().setOpenLoopRampRate(0);
   }
 
   // Returns true when the command should end.

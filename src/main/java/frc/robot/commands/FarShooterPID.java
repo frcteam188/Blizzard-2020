@@ -40,10 +40,16 @@ public class FarShooterPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // pidOutput = pidController.calculate(shooter.getVelShooter(), RobotMath.getTrenchVelFromDistance(shooter));
-    // shooter.shoot(pidOutput + getF());
-    shooter.shoot(0.7);
-    // shooter.setLimelightLED(Shooter.LED_ON);
+    pidOutput = pidController.calculate(shooter.getVelShooter(), RobotMath.getTrenchVelFromDistance(shooter));
+    shooter.shoot(pidOutput + getF());
+    // shooter.shoot(0.78);
+    shooter.setLimelightLED(Shooter.LED_ON);
+    // if(shooter.getVelShooter() - pidController.getSetpoint() < 5){
+    //   pidController.reset();
+    // }
+    if(shooter.getVelShooter() - pidController.getSetpoint() < -600){
+      pidController.reset();
+    }
   }
 
   // Called once the command ends or is interrupted.
