@@ -85,7 +85,7 @@ public class RobotContainer {
   private final MoveIntake moveIntake = new MoveIntake(intake, -0.8);
   private final HoodPID hoodPID = new HoodPID(shooter, 0);
   private final HoodPID closeHood = new HoodPID(shooter, 38.832951);
-  private final TurretPID turretPID = new TurretPID(shooter, -3.1);
+  private final TurretPID turretPID = new TurretPID(shooter, 1);
   private final ManualTurret manualTurret = new ManualTurret(shooter, opStick);
   private final ShootBall shootBall = new ShootBall(shooter, 0.65); //0.65 // 0.75 is trench test speed
   private final ResetTurret resetTurret = new ResetTurret(shooter);
@@ -107,7 +107,7 @@ public class RobotContainer {
   private final FarHoodPID farHoodPID = new FarHoodPID(shooter);
   private final FarShooterPID farShooterPID = new FarShooterPID(shooter);
   private final TurnTurret180 turnTurret180 = new TurnTurret180(shooter);
-  private final FeedFromTrench feedFromTrench = new FeedFromTrench(intake, shooter);
+  private final FeedFromTrench feedFromTrench = new FeedFromTrench(intake, -0.9);
   // private final SequentialCommandGroup shootWhenAtSpeed = new SequentialCommandGroup(new ShooterGetToSpeed(shooter), closeFeed);
 
   private final DeployHang deployHang = new DeployHang(hang, intake);
@@ -187,12 +187,12 @@ public class RobotContainer {
 
     
 
-    // yBtnOp.whileActiveOnce(farHoodPID);
+    yBtnOp.whileActiveOnce(farHoodPID);
     yBtnOp.whileActiveOnce(turretPID);
     yBtnOp.whileActiveOnce(farShooterPID);
     // yBtnOp.whenReleased(resetTurret);
     // yBtnOp.whenReleased(manualTurret);
-    yBtnOp.whenReleased(manualHood);
+    // yBtnOp.whenReleased(manualHood);
     // yBtnOp.cancelWhenPressed(manualTurret);
     // yBtnOp.cancelWhenPressed(manualHood);
     yBtnOp.cancelWhenPressed(resetTurret);
@@ -215,16 +215,19 @@ public class RobotContainer {
     leftBtnOp.cancelWhenPressed(turretPID);
     leftBtnOp.cancelWhenPressed(variableFeedLimited);
     leftBtnOp.cancelWhenPressed(outFeed);
+
     // upBtnOp.whileActiveOnce(shootWhenAtSpeed);
     upBtnOp.whileActiveOnce(variableFeedLimited);
     upBtnOp.cancelWhenPressed(turretPID);
     upBtnOp.cancelWhenPressed(variableFeed);
     upBtnOp.cancelWhenPressed(outFeed);
+    upBtnOp.cancelWhenPressed(feedFromTrench);
 
     downBtnOp.whileActiveOnce(outFeed);
     downBtnOp.cancelWhenPressed(turretPID);
     downBtnOp.cancelWhenPressed(variableFeed);
     downBtnOp.cancelWhenPressed(variableFeedLimited);
+    downBtnOp.cancelWhenPressed(feedFromTrench);
     
 
     // Driver Controls

@@ -49,7 +49,7 @@ public class ShootFeed extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.runShooterFeeder(speed);
+    intake.runShooterFeeder(-0.9);
     intake.intake(intakeSpeed);
     intake.feed(speed);
   }

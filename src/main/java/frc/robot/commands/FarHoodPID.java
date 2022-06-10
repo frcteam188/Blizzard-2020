@@ -10,6 +10,8 @@ package frc.robot.commands;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotMath;
@@ -38,8 +40,9 @@ public class FarHoodPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hoodPIDController.setReference(RobotMath.getTurretHoodPosFromDistance(shooter), ControlType.kPosition);
-  }
+    hoodPIDController.setReference(RobotMath.getMagicHoodAngleFromDistance(shooter), ControlType.kPosition);
+    // SmartDashboard.putNumber("Hood Setpoint", RobotMath.getMagicHoodAngleFromDistance(shooter));
+    }
 
   // Called once the command ends or is interrupted.
   @Override

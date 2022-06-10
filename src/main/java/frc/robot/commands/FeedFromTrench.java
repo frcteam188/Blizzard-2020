@@ -16,11 +16,11 @@ public class FeedFromTrench extends CommandBase {
    * Creates a new FeedFromTrench.
    */
   private Intake intake;
-  private Shooter shooter;
   private double shooterRPM = 4650;
-  public FeedFromTrench(Intake i, Shooter s) {
+  private double speed;
+  public FeedFromTrench(Intake i, double  beltSpeed) {
     this.intake = i;
-    this.shooter = s;
+    this.speed = beltSpeed;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -43,8 +43,8 @@ public class FeedFromTrench extends CommandBase {
     //   intake.runShooterFeeder(0);
     //   intake.intake(0);
     // }
-    intake.feed(-0.5);
-    intake.runShooterFeeder(-0.4);
+    intake.feed(speed);
+    intake.runShooterFeeder(-0.9);
     intake.intake(1);
   }
 

@@ -26,7 +26,7 @@ public final class Constants {
     public static double kTurretD = 0.001100;
 
     public static double kShooterP = 0.000340; // EXPERIMENT WITH THIS
-    public static double kShooterI = 0.000400;
+    public static double kShooterI = 0.000600;
     public static double kShooterD = 0.000050;
     public static double kShooterF = 0.00017857142;
 

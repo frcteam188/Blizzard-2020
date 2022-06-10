@@ -9,6 +9,9 @@ package frc.robot;
 
 import frc.robot.subsystems.Base;
 import frc.robot.subsystems.Shooter;
+
+import java.math.BigDecimal;
+
 import edu.wpi.first.wpilibj.util.Units;
 
 /**
@@ -31,6 +34,20 @@ public class RobotMath {
   private static double hoodPosFromDistance;
 
   private static double area;
+
+  private static double magicRPMCoeff[] = {
+    -668.06,
+    87.138,
+    -0.6512,
+    0.0017
+  };
+
+  private static double magicHoodCoeff[] = {
+    -58.743,
+    3.0496,
+    -0.0226,
+    6e-5
+  };
 
   /**
    * Calculates distance from Limelight target
@@ -120,8 +137,29 @@ public class RobotMath {
   public static double getTrenchVelFromDistance(Shooter shooter){
     d = getDistanceFromTarget(shooter);
 
-    double shooterRPM = 4025;
+    double shooterRPM = 2310; // This rpm will be used for
+
 
     return shooterRPM;
+  }
+
+  public static double getMagicVelocityFromDistance(Shooter shooter){
+    d = getDistanceFromTarget(shooter);
+
+    double magicVelFromDistance = 0;
+    for(int i = 0;i < magicRPMCoeff.length;i++)
+      magicVelFromDistance += magicRPMCoeff[i]*Math.pow(d,i);
+    
+    return Math.max(0, magicVelFromDistance);
+  }
+
+  public static double getMagicHoodAngleFromDistance(Shooter shooter){
+    d = getDistanceFromTarget(shooter);
+
+    double magicHoodAngleFromDistance = 0;
+    for(int i = 0;i < magicHoodCoeff.length;i++)
+      magicHoodAngleFromDistance += magicHoodCoeff[i]*Math.pow(d,i);
+
+    return Math.max(0, magicHoodAngleFromDistance); //SETPOINT SAFETY
   }
 }

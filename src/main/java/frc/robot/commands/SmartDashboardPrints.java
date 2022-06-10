@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 import frc.robot.Constants;
+import frc.robot.RobotMath;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -75,6 +76,7 @@ public class SmartDashboardPrints extends CommandBase {
     SmartDashboard.putNumber("Hood Pos", shooter.getHoodPos());
 
     SmartDashboard.putNumber("Drive Ticks: ", base.getFrontLeftEnc().getPosition());
+    SmartDashboard.putNumber("Hood Setpoint: ", RobotMath.getMagicHoodAngleFromDistance(shooter));
   }
 
   // Called once the command ends or is interrupted.
